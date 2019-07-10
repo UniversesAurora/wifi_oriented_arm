@@ -1243,16 +1243,16 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-         0          0          0         16          0        708   base_timer.o
-         0          0          0          8          0        640   bsp_systick.o
-         4          0          0          0          0     228475   main.o
-        64         26        304          0       1536        912   startup_stm32f10x_hd.o
-       120         20          0          0          0       1294   stm32f10x_it.o
-        40          0          0          0          0       1922   stm32f10x_tim.o
-       328         28          0          0          0       2237   system_stm32f10x.o
+         0          0          0         16          0        716   base_timer.o
+         0          0          0          8          0        648   bsp_systick.o
+         4          0          0          0          0     228487   main.o
+        64         26        304          0       1536        916   startup_stm32f10x_hd.o
+       120         20          0          0          0       1306   stm32f10x_it.o
+        40          0          0          0          0       1934   stm32f10x_tim.o
+       328         28          0          0          0       2253   system_stm32f10x.o
 
     ----------------------------------------------------------------------
-       558         74        336         24       1536     236188   Object Totals
+       558         74        336         24       1536     236260   Object Totals
          0          0         32          0          0          0   (incl. Generated)
          2          0          0          0          0          0   (incl. Padding)
 
@@ -1301,8 +1301,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-       836         90        336         24       1632     236300   Grand Totals
-       836         90        336         24       1632     236300   ELF Image Totals
+       836         90        336         24       1632     236372   Grand Totals
+       836         90        336         24       1632     236372   ELF Image Totals
        836         90        336         24          0          0   ROM Totals
 
 ==============================================================================

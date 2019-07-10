@@ -1,5 +1,4 @@
 # 1 "..\\src\\main.c"
- 
 # 1 "..\\lib\\CMSIS\\CM3\\DeviceSupport\\ST\\STM32F10x\\stm32f10x.h"
 
 
@@ -13355,9 +13354,8 @@ void SysTick_CLKSourceConfig(uint32_t SysTick_CLKSource);
  
 
  
-# 3 "..\\src\\main.c"
+# 2 "..\\src\\main.c"
 
- 
 int main(void)
 {
     while (1);

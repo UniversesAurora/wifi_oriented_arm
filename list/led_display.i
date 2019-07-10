@@ -13372,9 +13372,9 @@ void SysTick_CLKSourceConfig(uint32_t SysTick_CLKSource);
 typedef enum
 {
     A = 01000001,
-    B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,
+    B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
     a = 01000001,
-    b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,
+    b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z,
 }
 charset;
 
@@ -13417,6 +13417,11 @@ void init_led_display(void)
     delay_s(0x2FF);
     write_cmd_byte_no_wait(0x38);
     delay_s(0x2FF);
+    write_cmd_byte(0x38);
+    write_cmd_byte(0x08);
+    write_cmd_byte(0x01);
+    write_cmd_byte(0x06);
+    write_cmd_byte(0x0c);
 }
 
 static void set_data_pin_gpio(GPIO_InitTypeDef*
@@ -13526,11 +13531,11 @@ uint8_t read_status_byte(void)
 
     rs_reset();
     rw_set();
-    delay_s(0x1F);
+    delay_s(0x10);
     e_set();
-    delay_s(0x5F);
+    delay_s(0x40);
     data = read_data();
-    delay_s(0x1F);
+    delay_s(0x10);
     e_reset();
 
     return data;
@@ -13544,11 +13549,11 @@ uint8_t read_data_byte(void)
 
     rs_set();
     rw_set();
-    delay_s(0x1F);
+    delay_s(0x10);
     e_set();
-    delay_s(0x5F);
+    delay_s(0x40);
     data = read_data();
-    delay_s(0x1F);
+    delay_s(0x10);
     e_reset();
 
     return data;
@@ -13560,11 +13565,11 @@ void write_cmd_byte(uint8_t data)
     rs_reset();
     rw_reset();
     write_data(data);
-    delay_s(0x3F);
+    delay_s(0x30);
     e_set();
-    delay_s(0x5F);
+    delay_s(0x40);
     e_reset();
-    delay_s(0x1F);
+    delay_s(0x10);
 }
 
 void write_cmd_byte_no_wait(uint8_t data)
@@ -13572,11 +13577,11 @@ void write_cmd_byte_no_wait(uint8_t data)
     rs_reset();
     rw_reset();
     write_data(data);
-    delay_s(0x3F);
+    delay_s(0x30);
     e_set();
-    delay_s(0x5F);
+    delay_s(0x40);
     e_reset();
-    delay_s(0x1F);
+    delay_s(0x10);
 }
 
 void write_data_byte(uint8_t data)
@@ -13585,10 +13590,10 @@ void write_data_byte(uint8_t data)
     rs_set();
     rw_reset();
     write_data(data);
-    delay_s(0x3F);
+    delay_s(0x30);
     e_set();
-    delay_s(0x5F);
+    delay_s(0x40);
     e_reset();
-    delay_s(0x1F);
+    delay_s(0x10);
 }
 

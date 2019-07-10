@@ -28885,9 +28885,9 @@ N
 Ntypedef enum
 N{
 N    A = 01000001,
-N    B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,
+N    B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
 N    a = 01000001,
-N    b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,
+N    b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z,
 N}
 Ncharset;
 N
@@ -28937,6 +28937,11 @@ N    write_cmd_byte_no_wait(0x38);
 N    delay_s(0x2FF);
 N    write_cmd_byte_no_wait(0x38);
 N    delay_s(0x2FF);
+N    write_cmd_byte(0x38);
+N    write_cmd_byte(0x08);
+N    write_cmd_byte(0x01);
+N    write_cmd_byte(0x06);
+N    write_cmd_byte(0x0c);
 N}
 N
 Nstatic void set_data_pin_gpio(GPIO_InitTypeDef*
@@ -29072,11 +29077,11 @@ N    uint8_t data;
 N
 N    rs_reset();
 N    rw_set();
-N    delay_s(0x1F);
+N    delay_s(0x10);
 N    e_set();
-N    delay_s(0x5F);
+N    delay_s(0x40);
 N    data = read_data();
-N    delay_s(0x1F);
+N    delay_s(0x10);
 N    e_reset();
 N
 N    return data;
@@ -29090,11 +29095,11 @@ N    wait_bf();
 N
 N    rs_set();
 N    rw_set();
-N    delay_s(0x1F);
+N    delay_s(0x10);
 N    e_set();
-N    delay_s(0x5F);
+N    delay_s(0x40);
 N    data = read_data();
-N    delay_s(0x1F);
+N    delay_s(0x10);
 N    e_reset();
 N
 N    return data;
@@ -29106,11 +29111,11 @@ N    wait_bf();
 N    rs_reset();
 N    rw_reset();
 N    write_data(data);
-N    delay_s(0x3F);
+N    delay_s(0x30);
 N    e_set();
-N    delay_s(0x5F);
+N    delay_s(0x40);
 N    e_reset();
-N    delay_s(0x1F);
+N    delay_s(0x10);
 N}
 N
 Nvoid write_cmd_byte_no_wait(uint8_t data)
@@ -29118,11 +29123,11 @@ N{
 N    rs_reset();
 N    rw_reset();
 N    write_data(data);
-N    delay_s(0x3F);
+N    delay_s(0x30);
 N    e_set();
-N    delay_s(0x5F);
+N    delay_s(0x40);
 N    e_reset();
-N    delay_s(0x1F);
+N    delay_s(0x10);
 N}
 N
 Nvoid write_data_byte(uint8_t data)
@@ -29131,10 +29136,10 @@ N    wait_bf();
 N    rs_set();
 N    rw_reset();
 N    write_data(data);
-N    delay_s(0x3F);
+N    delay_s(0x30);
 N    e_set();
-N    delay_s(0x5F);
+N    delay_s(0x40);
 N    e_reset();
-N    delay_s(0x1F);
+N    delay_s(0x10);
 N}
 N

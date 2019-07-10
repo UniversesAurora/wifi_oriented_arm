@@ -1,5 +1,4 @@
 L 1 "..\src\main.c"
-N/* Includes ------------------------------------------------------------------*/
 N#include "stm32f10x.h"
 L 1 "..\lib\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h" 1
 N/**
@@ -28857,9 +28856,8 @@ N  * @}
 N  */
 N
 N/******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
-L 3 "..\src\main.c" 2
+L 2 "..\src\main.c" 2
 N
-N/* Main Function ------------------------------------------------------------------*/
 Nint main(void)
 N{
 N    while (1);

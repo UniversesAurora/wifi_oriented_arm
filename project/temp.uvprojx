@@ -442,6 +442,16 @@
               <FileType>5</FileType>
               <FilePath>..\src\timers\bsp_systick.h</FilePath>
             </File>
+            <File>
+              <FileName>list_display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\display\list_display.c</FilePath>
+            </File>
+            <File>
+              <FileName>list_display.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\src\display\list_display.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

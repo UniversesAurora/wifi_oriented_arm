@@ -675,22 +675,23 @@
 ;;;246            k++;
 000012  1c64              ADDS     r4,r4,#1
 ;;;247        }
-;;;248        while (str[k] != '\0');
-000014  5d30              LDRB     r0,[r6,r4]
-000016  2800              CMP      r0,#0
-000018  d1f7              BNE      |L10.10|
+;;;248        while (str[k - 1] != '\0');
+000014  1e60              SUBS     r0,r4,#1
+000016  5c30              LDRB     r0,[r6,r0]
+000018  2800              CMP      r0,#0
+00001a  d1f6              BNE      |L10.10|
 ;;;249    
 ;;;250        while (USART_GetFlagStatus(pUSARTx,
-00001a  bf00              NOP      
-                  |L10.28|
-00001c  f04f0140          MOV      r1,#0x40
-000020  4638              MOV      r0,r7
-000022  f7fffffe          BL       USART_GetFlagStatus
-000026  2800              CMP      r0,#0
-000028  d0f8              BEQ      |L10.28|
+00001c  bf00              NOP      
+                  |L10.30|
+00001e  f04f0140          MOV      r1,#0x40
+000022  4638              MOV      r0,r7
+000024  f7fffffe          BL       USART_GetFlagStatus
+000028  2800              CMP      r0,#0
+00002a  d0f8              BEQ      |L10.30|
 ;;;251                                   USART_FLAG_TC) == RESET);
 ;;;252    }
-00002a  bdd0              POP      {r4,r6,r7,pc}
+00002c  bdd0              POP      {r4,r6,r7,pc}
 ;;;253    
                           ENDP
 

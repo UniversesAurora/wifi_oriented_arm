@@ -1,5 +1,7 @@
 ..\out\esp8266.o: ..\src\wifi\esp8266.c
 ..\out\esp8266.o: ..\src\wifi\esp8266.h
+..\out\esp8266.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\out\esp8266.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ..\out\esp8266.o: ..\src\wifi\bsp_uart.h
 ..\out\esp8266.o: ..\lib\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h
 ..\out\esp8266.o: ..\lib\CMSIS\CM3\CoreSupport\core_cm3.h
@@ -31,3 +33,4 @@
 ..\out\esp8266.o: ..\lib\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 ..\out\esp8266.o: ..\lib\STM32F10x_StdPeriph_Driver\inc\misc.h
 ..\out\esp8266.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\out\esp8266.o: ..\src\wifi\../timers/bsp_systick.h

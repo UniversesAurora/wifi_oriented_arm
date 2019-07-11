@@ -30,3 +30,9 @@
 ..\out\stm32f10x_it.o: ..\lib\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 ..\out\stm32f10x_it.o: ..\lib\STM32F10x_StdPeriph_Driver\inc\misc.h
 ..\out\stm32f10x_it.o: ..\src\timers/base_timer.h
+..\out\stm32f10x_it.o: ..\src\wifi/bsp_uart.h
+..\out\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\out\stm32f10x_it.o: ..\src\wifi/esp8266.h
+..\out\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\out\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\out\stm32f10x_it.o: ..\src\wifi/../timers/bsp_systick.h

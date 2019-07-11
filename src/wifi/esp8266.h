@@ -1,7 +1,10 @@
 #ifndef __ESP8266_H
 #define __ESP8266_H
 
+#include <stdlib.h>
+#include <string.h>
 #include "bsp_uart.h"
+#include "../timers/bsp_systick.h"
 
 #define      WIFI_1_UART                                  UART2
 #define      WIFI_2_UART                                  UART3
@@ -92,7 +95,7 @@
 #define     WIFI_4_RST_HIGH_LEVEL()            GPIO_SetBits (WIFI_4_RST_PORT, WIFI_4_RST_PIN)
 #define     WIFI_4_RST_LOW_LEVEL()             GPIO_ResetBits (WIFI_4_RST_PORT, WIFI_4_RST_PIN)
 
-#define     RX_BUF_MAX_LEN                     2048
+#define     RX_BUF_MAX_LEN                     4096
 
 
 typedef enum
@@ -117,11 +120,18 @@ typedef struct
             __IO u16 FramFinishFlag   : 1;
         } InfBit;
     };
+    uint8_t idle_time;
+    uint8_t idle_need;
 }
 wifi_frame_record;
 
 extern wifi_frame_record  wifi1_frame_record, wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
 
+
+void wifi_init(wifi_t wifi);
+void wifi_reset (wifi_t wifi);
+char* exec_wifi_cmd(wifi_t wifi, char* cmd, uint8_t idle_need);
+void wait_at(wifi_t wifi);
 
 #endif
 

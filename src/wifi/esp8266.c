@@ -1,6 +1,13 @@
 #include "esp8266.h"
 
-wifi_frame_record  wifi1_frame_record, wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
+wifi_frame_record  wifi1_frame_record, wifi2_frame_record,
+                   wifi3_frame_record, wifi4_frame_record;
+
+static void delay_s(uint64_t time)
+{
+    for (; time > 0; time--);
+}
+
 
 static void init_wifi_en_rst(void (*en_fun)(uint32_t,
                              FunctionalState), void (*rst_fun)(uint32_t,
@@ -21,7 +28,7 @@ static void init_wifi_en_rst(void (*en_fun)(uint32_t,
     GPIO_Init(rst_port, &gpio_init_type);
 }
 
-static void init_wifi_1_en_rst()
+static void init_wifi_1_en_rst(void)
 {
     init_wifi_en_rst(WIFI_1_CH_PD_APBxClock_FUN,
                      WIFI_1_RST_APBxClock_FUN, WIFI_1_CH_PD_CLK, WIFI_1_RST_CLK,
@@ -29,7 +36,7 @@ static void init_wifi_1_en_rst()
                      WIFI_1_RST_PIN);
 }
 
-static void init_wifi_2_en_rst()
+static void init_wifi_2_en_rst(void)
 {
     init_wifi_en_rst(WIFI_2_CH_PD_APBxClock_FUN,
                      WIFI_2_RST_APBxClock_FUN, WIFI_2_CH_PD_CLK, WIFI_2_RST_CLK,
@@ -37,7 +44,7 @@ static void init_wifi_2_en_rst()
                      WIFI_2_RST_PIN);
 }
 
-static void init_wifi_3_en_rst()
+static void init_wifi_3_en_rst(void)
 {
     init_wifi_en_rst(WIFI_3_CH_PD_APBxClock_FUN,
                      WIFI_3_RST_APBxClock_FUN, WIFI_3_CH_PD_CLK, WIFI_3_RST_CLK,
@@ -45,7 +52,7 @@ static void init_wifi_3_en_rst()
                      WIFI_3_RST_PIN);
 }
 
-static void init_wifi_4_en_rst()
+static void init_wifi_4_en_rst(void)
 {
     init_wifi_en_rst(WIFI_4_CH_PD_APBxClock_FUN,
                      WIFI_4_RST_APBxClock_FUN, WIFI_4_CH_PD_CLK, WIFI_4_RST_CLK,
@@ -104,3 +111,92 @@ void wifi_init(wifi_t wifi)
     }
 }
 
+void wifi_reset(wifi_t wifi)
+{
+    switch (wifi)
+    {
+    case WIFI_1:
+        WIFI_1_RST_LOW_LEVEL();
+        delay_s(0x5FFFF);
+        WIFI_1_RST_HIGH_LEVEL();
+        break;
+
+    case WIFI_2:
+        WIFI_2_RST_LOW_LEVEL();
+        delay_s(0x5FFFF);
+        WIFI_2_RST_HIGH_LEVEL();
+        break;
+
+    case WIFI_3:
+        WIFI_3_RST_LOW_LEVEL();
+        delay_s(0x5FFFF);
+        WIFI_3_RST_HIGH_LEVEL();
+        break;
+
+    case WIFI_4:
+        WIFI_4_RST_LOW_LEVEL();
+        delay_s(0x5FFFF);
+        WIFI_4_RST_HIGH_LEVEL();
+        break;
+    }
+}
+
+static char* wifi_cmd(wifi_frame_record* record,
+                      USART_TypeDef* uart, char* cmd, uint8_t idle_need)
+{
+    record->InfBit.FramLength = 0;
+    size_t cmd_len = strlen(cmd);
+    char* to_send = malloc(cmd_len + 4);
+    strcpy(to_send, cmd);
+    strcat(to_send, "\r\n");
+    record->InfBit.FramFinishFlag = 0;
+
+    printf("send!\n");
+    record->idle_time = 0;
+    record->idle_need = idle_need;
+    uart_send_string(uart, to_send);
+    free(to_send);
+
+    while (!record->InfBit.FramFinishFlag);
+
+    printf("ok\n");
+
+    record->Data_RX_BUF[record->InfBit.FramLength] = '\0';
+    return record->Data_RX_BUF;
+}
+
+char* exec_wifi_cmd(wifi_t wifi, char* cmd,
+                    uint8_t idle_need)
+{
+    switch (wifi)
+    {
+    case WIFI_1:
+        return wifi_cmd(&wifi1_frame_record, WIFI_1_UART, cmd,
+                        idle_need);
+
+    case WIFI_2:
+        return wifi_cmd(&wifi2_frame_record, WIFI_2_UART, cmd,
+                        idle_need);
+
+    case WIFI_3:
+        return wifi_cmd(&wifi3_frame_record, WIFI_3_UART, cmd,
+                        idle_need);
+
+    case WIFI_4:
+        return wifi_cmd(&wifi4_frame_record, WIFI_4_UART, cmd,
+                        idle_need);
+    }
+
+    return NULL;
+}
+
+void wait_at(wifi_t wifi)
+{
+    while (1)
+    {
+        if (strstr(exec_wifi_cmd(wifi, "AT", 1), "OK"))
+            return;
+
+        wifi_reset(wifi);
+    }
+}

@@ -30393,7 +30393,7 @@ N    {
 N        uart_send_byte(pUSARTx, str[k]);
 N        k++;
 N    }
-N    while (str[k] != '\0');
+N    while (str[k - 1] != '\0');
 N
 N    while (USART_GetFlagStatus(pUSARTx,
 N                               USART_FLAG_TC) == RESET);

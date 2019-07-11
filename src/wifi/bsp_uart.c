@@ -245,7 +245,7 @@ void uart_send_string(USART_TypeDef* pUSARTx, char* str)
         uart_send_byte(pUSARTx, str[k]);
         k++;
     }
-    while (str[k] != '\0');
+    while (str[k - 1] != '\0');
 
     while (USART_GetFlagStatus(pUSARTx,
                                USART_FLAG_TC) == RESET);

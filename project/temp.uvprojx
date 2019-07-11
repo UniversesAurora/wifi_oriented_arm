@@ -188,7 +188,7 @@
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -451,6 +451,26 @@
               <FileName>list_display.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\src\display\list_display.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\wifi\bsp_uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_uart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\src\wifi\bsp_uart.h</FilePath>
+            </File>
+            <File>
+              <FileName>esp8266.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\wifi\esp8266.c</FilePath>
+            </File>
+            <File>
+              <FileName>esp8266.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\src\wifi\esp8266.h</FilePath>
             </File>
           </Files>
         </Group>

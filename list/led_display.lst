@@ -28882,14 +28882,10 @@ N#define E_PIN  GPIO_Pin_12
 N
 N#define BF_BIT 0b10000000
 N
-Ntypedef enum
-N{
-N    A = 01000001,
-N    B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
-N    a = 01000001,
-N    b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z,
-N}
-Ncharset;
+N#define hrow_num 2
+N#define hcol_num 16
+N
+N
 N
 Nvoid init_led_display(void);
 Nuint8_t read_status_byte(void);

@@ -5,6 +5,9 @@
 "..\out\led_display.o"
 "..\out\base_timer.o"
 "..\out\bsp_systick.o"
+"..\out\list_display.o"
+"..\out\bsp_uart.o"
+"..\out\esp8266.o"
 "..\out\misc.o"
 "..\out\stm32f10x_adc.o"
 "..\out\stm32f10x_bkp.o"
@@ -30,7 +33,7 @@
 "..\out\stm32f10x_wwdg.o"
 "..\out\system_stm32f10x.o"
 "..\out\core_cm3.o"
---strict --scatter "..\out\temp.sct"
+--library_type=microlib --strict --scatter "..\out\temp.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "..\list\temp.map" -o ..\out\temp.axf

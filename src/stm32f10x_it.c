@@ -34,22 +34,31 @@ void BASIC_TIM2_IRQHandler(void)
 
 void UART1_IRQHandler(void)
 {
-    
+
 }
 
 void UART2_IRQHandler(void)
 {
     uint8_t ucCh;
+
     if (USART_GetITStatus(UART2, USART_IT_RXNE) != RESET)
     {
         ucCh = USART_ReceiveData(UART2);
-        if(wifi1_frame_record.InfBit.FramLength < (RX_BUF_MAX_LEN - 1))
-            wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength++] = ucCh;
+
+        if (wifi1_frame_record.InfBit.FramLength <
+                (RX_BUF_MAX_LEN - 1))
+            wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength++]
+                = ucCh;
     }
-    
+
     if (USART_GetITStatus(UART2, USART_IT_IDLE) == SET)
     {
-        wifi1_frame_record.InfBit.FramFinishFlag = 1;
+        printf("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nbus idle!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+
+        if (++wifi1_frame_record.idle_time ==
+                wifi1_frame_record.idle_need)
+            wifi1_frame_record.InfBit.FramFinishFlag = 1;
+
         ucCh = USART_ReceiveData(UART2);
     }
 }
@@ -57,16 +66,25 @@ void UART2_IRQHandler(void)
 void UART3_IRQHandler(void)
 {
     uint8_t ucCh;
+
     if (USART_GetITStatus(UART3, USART_IT_RXNE) != RESET)
     {
         ucCh = USART_ReceiveData(UART3);
-        if(wifi2_frame_record.InfBit.FramLength < (RX_BUF_MAX_LEN - 1))
-            wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength++] = ucCh;
+
+        if (wifi2_frame_record.InfBit.FramLength <
+                (RX_BUF_MAX_LEN - 1))
+            wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength++]
+                = ucCh;
     }
-    
+
     if (USART_GetITStatus(UART3, USART_IT_IDLE) == SET)
     {
-        wifi2_frame_record.InfBit.FramFinishFlag = 1;
+        printf("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nbus idle!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+
+        if (++wifi2_frame_record.idle_time ==
+                wifi2_frame_record.idle_need)
+            wifi2_frame_record.InfBit.FramFinishFlag = 1;
+
         ucCh = USART_ReceiveData(UART3);
     }
 }
@@ -74,16 +92,25 @@ void UART3_IRQHandler(void)
 void UART4_IRQHandler(void)
 {
     uint8_t ucCh;
+
     if (USART_GetITStatus(UART4, USART_IT_RXNE) != RESET)
     {
         ucCh = USART_ReceiveData(UART4);
-        if(wifi3_frame_record.InfBit.FramLength < (RX_BUF_MAX_LEN - 1))
-            wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength++] = ucCh;
+
+        if (wifi3_frame_record.InfBit.FramLength <
+                (RX_BUF_MAX_LEN - 1))
+            wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength++]
+                = ucCh;
     }
-    
+
     if (USART_GetITStatus(UART4, USART_IT_IDLE) == SET)
     {
-        wifi3_frame_record.InfBit.FramFinishFlag = 1;
+        printf("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nbus idle!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+
+        if (++wifi3_frame_record.idle_time ==
+                wifi3_frame_record.idle_need)
+            wifi3_frame_record.InfBit.FramFinishFlag = 1;
+
         ucCh = USART_ReceiveData(UART4);
     }
 }
@@ -92,19 +119,25 @@ void UART4_IRQHandler(void)
 void UART5_IRQHandler(void)
 {
     uint8_t ucCh;
+
     if (USART_GetITStatus(UART5, USART_IT_RXNE) != RESET)
     {
         ucCh = USART_ReceiveData(UART5);
-        if(wifi4_frame_record.InfBit.FramLength < (RX_BUF_MAX_LEN - 1))
-            wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength++] = ucCh;
+
+        if (wifi4_frame_record.InfBit.FramLength <
+                (RX_BUF_MAX_LEN - 1))
+            wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength++]
+                = ucCh;
     }
-    
+
     if (USART_GetITStatus(UART5, USART_IT_IDLE) == SET)
     {
-        printf("\n\n\n\n\nbus idle!\n");
-        
-        if (++wifi4_frame_record.idle_time == wifi4_frame_record.idle_need)
+        printf("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nbus idle!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+
+        if (++wifi4_frame_record.idle_time ==
+                wifi4_frame_record.idle_need)
             wifi4_frame_record.InfBit.FramFinishFlag = 1;
+
         ucCh = USART_ReceiveData(UART5);
     }
 }

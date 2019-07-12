@@ -1,6 +1,6 @@
 #include "bsp_systick.h"
 
-void delay_hard(uint64_t time, uint32_t unit)
+static void delay_hard(uint64_t time, uint32_t unit)
 {
     uint32_t max = SysTick_LOAD_RELOAD_Msk / unit;
     uint32_t max_ticks = unit * max;
@@ -35,7 +35,7 @@ void delay_hard_ms(uint64_t ms)
 
 volatile uint64_t systick_int_times;
 
-void delay_int(uint64_t time, uint32_t unit)
+static void delay_int(uint64_t time, uint32_t unit)
 {
     uint32_t max = SysTick_LOAD_RELOAD_Msk / unit;
     uint32_t max_ticks = unit * max;

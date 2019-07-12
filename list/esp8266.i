@@ -15583,14 +15583,6 @@ void delay_int_ms(uint64_t ms);
 
 
 
- 
-
-
-
-
-
-
-
 
 
 
@@ -15612,6 +15604,21 @@ void delay_int_ms(uint64_t ms);
 
 
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
 
 
 
@@ -15675,21 +15682,21 @@ typedef struct
             volatile u16 FramFinishFlag   : 1;
         } InfBit;
     };
-    uint8_t idle_time;
-    uint8_t idle_need;
 }
 wifi_frame_record;
 
 extern wifi_frame_record  wifi1_frame_record,
        wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
 
-
+void init_wifi_power(void);
+void wifi_power_cut(void);
+void wifi_power_on(void);
 void wifi_init(wifi_t wifi);
 void wifi_reset(wifi_t wifi);
-char* exec_wifi_cmd(wifi_t wifi, char* cmd,
-                    uint8_t idle_need);
-void exec_all_wifi_cmd(char* cmd, uint8_t idle_need);
+char* exec_wifi_cmd(wifi_t wifi, char* cmd);
+void exec_all_wifi_cmd(char* cmd);
 void wait_at(wifi_t wifi);
+void mode_set(wifi_t wifi);
 
 
 
@@ -15703,6 +15710,32 @@ static void delay_s(uint64_t time)
 {
     for (; time > 0; time--);
 }
+
+
+
+void init_wifi_power(void)
+{
+    GPIO_InitTypeDef gpio_init_type;
+
+    RCC_APB2PeriphClockCmd(((uint32_t)0x00000080), ENABLE);
+    gpio_init_type.GPIO_Pin = ((uint16_t)0x0010);
+    gpio_init_type.GPIO_Mode = GPIO_Mode_Out_PP;
+    gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), &gpio_init_type);
+    wifi_power_cut();
+    wifi_power_on();
+}
+
+void wifi_power_cut(void)
+{
+    GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0010));
+}
+
+void wifi_power_on(void)
+{
+    GPIO_SetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0010));
+}
+
 
 
 static void init_wifi_en_rst(void (*en_fun)(uint32_t,
@@ -15756,6 +15789,22 @@ static void init_wifi_4_en_rst(void)
                      ((uint16_t)0x0008));
 }
 
+void wifi_first_read(USART_TypeDef* uart)
+{
+    int count = 0;
+    char rcv = USART_ReceiveData(uart);
+    if (count == 0 && rcv == 'r')
+        count++;
+    else if (count == 1 && rcv == 'e')
+        count++;
+    else if (count == 2 && rcv == 'a')
+        count++;
+    else if (count == 3 && rcv == 'd')
+        count++;
+    else if (count == 4 && rcv == 'e')
+        count++;
+}
+
 
 void wifi_init(wifi_t wifi)
 {
@@ -15767,9 +15816,8 @@ void wifi_init(wifi_t wifi)
                          ((uint16_t)0x0000), ((uint16_t)0x0000),
                          ((uint16_t)0x0004) | ((uint16_t)0x0008),
                          ((uint16_t)0x0000));
-        USART_ITConfig(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), ((uint16_t)0x0424), ENABLE);
         GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0400));
-        GPIO_ResetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0200));
+        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0200));
         break;
 
     case WIFI_2:
@@ -15778,9 +15826,8 @@ void wifi_init(wifi_t wifi)
                          ((uint16_t)0x0000), ((uint16_t)0x0000),
                          ((uint16_t)0x0004) | ((uint16_t)0x0008),
                          ((uint16_t)0x0000));
-        USART_ITConfig(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), ((uint16_t)0x0424), ENABLE);
         GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x4000));
-        GPIO_ResetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x2000));
+        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x2000));
         break;
 
     case WIFI_3:
@@ -15789,9 +15836,8 @@ void wifi_init(wifi_t wifi)
                          ((uint16_t)0x0000), ((uint16_t)0x0000),
                          ((uint16_t)0x0004) | ((uint16_t)0x0008),
                          ((uint16_t)0x0000));
-        USART_ITConfig(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), ((uint16_t)0x0424), ENABLE);
         GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0002));
-        GPIO_ResetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0001));
+        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0001));
         break;
 
     case WIFI_4:
@@ -15800,9 +15846,8 @@ void wifi_init(wifi_t wifi)
                          ((uint16_t)0x0000), ((uint16_t)0x0000),
                          ((uint16_t)0x0004) | ((uint16_t)0x0008),
                          ((uint16_t)0x0000));
-        USART_ITConfig(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), ((uint16_t)0x0424), ENABLE);
         GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0008));
-        GPIO_ResetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0004));
+        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0004));
         break;
     }
 }
@@ -15838,55 +15883,93 @@ void wifi_reset(wifi_t wifi)
 }
 
 static char* wifi_cmd(wifi_frame_record* record,
-                      USART_TypeDef* uart, char* cmd, uint8_t idle_need)
+                      USART_TypeDef* uart, char* cmd)
 {
-    record->InfBit.FramLength = 0;
     size_t cmd_len = strlen(cmd);
     char* to_send = malloc(cmd_len + 4);
     strcpy(to_send, cmd);
     strcat(to_send, "\r\n");
     record->InfBit.FramFinishFlag = 0;
+    record->InfBit.FramLength = 0;
 
     printf("send!\n");
-    record->idle_time = 0;
-    record->idle_need = idle_need;
     uart_send_string(uart, to_send);
     free(to_send);
-
+    
     while (!record->InfBit.FramFinishFlag);
-
+    
     printf("ok\n");
 
     record->Data_RX_BUF[record->InfBit.FramLength] = '\0';
     return record->Data_RX_BUF;
 }
 
-char* exec_wifi_cmd(wifi_t wifi, char* cmd,
-                    uint8_t idle_need)
+
+static char* wifi_cmd_by_time(wifi_frame_record* record,
+                      USART_TypeDef* uart, char* cmd, uint64_t time)
+{
+    size_t cmd_len = strlen(cmd);
+    char* to_send = malloc(cmd_len + 4);
+    strcpy(to_send, cmd);
+    strcat(to_send, "\r\n");
+    record->InfBit.FramFinishFlag = 0;
+    record->InfBit.FramLength = 0;
+
+    printf("send!\n");
+    uart_send_string(uart, to_send);
+    free(to_send);
+    
+    delay_hard_ms(time);
+    printf("ok\n");
+
+    record->Data_RX_BUF[record->InfBit.FramLength] = '\0';
+    return record->Data_RX_BUF;
+}
+
+
+char* exec_wifi_cmd(wifi_t wifi, char* cmd)
 {
     switch (wifi)
     {
     case WIFI_1:
-        return wifi_cmd(&wifi1_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), cmd,
-                        idle_need);
+        return wifi_cmd(&wifi1_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), cmd);
 
     case WIFI_2:
-        return wifi_cmd(&wifi2_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), cmd,
-                        idle_need);
+        return wifi_cmd(&wifi2_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), cmd);
 
     case WIFI_3:
-        return wifi_cmd(&wifi3_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), cmd,
-                        idle_need);
+        return wifi_cmd(&wifi3_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), cmd);
 
     case WIFI_4:
-        return wifi_cmd(&wifi4_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), cmd,
-                        idle_need);
+        return wifi_cmd(&wifi4_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), cmd);
     }
 
     return 0;
 }
 
-void exec_all_wifi_cmd(char* cmd, uint8_t idle_need)
+
+char* exec_wifi_cmd_by_time(wifi_t wifi, char* cmd, uint64_t time)
+{
+    switch (wifi)
+    {
+    case WIFI_1:
+        return wifi_cmd_by_time(&wifi1_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), cmd, time);
+
+    case WIFI_2:
+        return wifi_cmd_by_time(&wifi2_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), cmd, time);
+
+    case WIFI_3:
+        return wifi_cmd_by_time(&wifi3_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), cmd, time);
+
+    case WIFI_4:
+        return wifi_cmd_by_time(&wifi4_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), cmd, time);
+    }
+
+    return 0;
+}
+
+
+void exec_all_wifi_cmd(char* cmd)
 {
     wifi1_frame_record.InfBit.FramLength = 0;
     wifi2_frame_record.InfBit.FramLength = 0;
@@ -15902,14 +15985,6 @@ void exec_all_wifi_cmd(char* cmd, uint8_t idle_need)
     wifi4_frame_record.InfBit.FramFinishFlag = 0;
 
     printf("send!\n");
-    wifi1_frame_record.idle_time = 0;
-    wifi2_frame_record.idle_time = 0;
-    wifi3_frame_record.idle_time = 0;
-    wifi4_frame_record.idle_time = 0;
-    wifi1_frame_record.idle_need = idle_need;
-    wifi2_frame_record.idle_need = idle_need;
-    wifi3_frame_record.idle_need = idle_need;
-    wifi4_frame_record.idle_need = idle_need;
     uart_send_string(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), to_send);
     uart_send_string(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), to_send);
     uart_send_string(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), to_send);
@@ -15941,9 +16016,20 @@ void wait_at(wifi_t wifi)
 {
     while (1)
     {
-        if (strstr(exec_wifi_cmd(wifi, "AT", 1), "OK"))
+        char* ret = exec_wifi_cmd_by_time(wifi, "AT", 500);
+        printf("%s\n\n============\n", ret);
+        if (strstr(ret, "OK"))
             return;
 
-        wifi_reset(wifi);
+        
+    }
+}
+
+void mode_set(wifi_t wifi)
+{
+    while (1)
+    {
+        if (strstr(exec_wifi_cmd_by_time(wifi, "AT+CWMODE=1", 500), "OK"))
+            return;
     }
 }

@@ -129,7 +129,7 @@ static void e_reset(void)
     GPIO_ResetBits(LED_DIS_PORT, E_PIN);
 }
 
-void wait_bf(void)
+static void wait_bf(void)
 {
     while (read_status_byte() & BF_BIT);
 }
@@ -206,4 +206,18 @@ void write_data_byte(uint8_t data)
     e_reset();
     delay_s(0x10);
 }
+
+
+void lcd_print_line(char* string, int row, int col)
+{
+    if (row < 0 || row >= hrow_num || col < 0
+            || col >= hcol_num)
+        return;
+
+    int display_offset = row * 40 + col;
+    int display_num = hcol_num - col;
+
+
+}
+
 

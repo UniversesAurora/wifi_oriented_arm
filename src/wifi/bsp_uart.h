@@ -98,6 +98,11 @@
 #define  UART5_IRQ                UART5_IRQn
 
 
+#ifdef DEBUG
+#define debug_printf(fmt, ...)   printf(fmt, ##__VA_ARGS__)
+#else
+#define debug_printf(fmt, ...)
+#endif
 
 
 void uart1_init(uint32_t baudrate, uint16_t word_length,

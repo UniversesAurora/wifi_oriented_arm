@@ -6,6 +6,12 @@
 #include "bsp_uart.h"
 #include "../timers/bsp_systick.h"
 
+#define      WIFI_POWER_RST_APBxClock_FUN                 RCC_APB2PeriphClockCmd
+#define      WIFI_POWER_RST_CLK                           RCC_APB2Periph_GPIOF
+#define      WIFI_POWER_RST_PORT                          GPIOF
+#define      WIFI_POWER_RST_PIN                           GPIO_Pin_4
+
+
 #define      WIFI_1_UART                                  UART2
 #define      WIFI_2_UART                                  UART3
 #define      WIFI_3_UART                                  UART4
@@ -69,7 +75,6 @@
 #define      WIFI_4_RST_PORT                              GPIOF
 #define      WIFI_4_RST_PIN                               GPIO_Pin_3
 
-//#define INIT_WIFI_EN_RST(num) init_wifi_##num##_en_rst
 
 #define     WIFI_1_EN_ENABLE()                 GPIO_SetBits (WIFI_1_CH_PD_PORT, WIFI_1_CH_PD_PIN)
 #define     WIFI_1_EN_DISABLE()                GPIO_ResetBits (WIFI_1_CH_PD_PORT, WIFI_1_CH_PD_PIN)
@@ -95,8 +100,11 @@
 #define     WIFI_4_RST_HIGH_LEVEL()            GPIO_SetBits (WIFI_4_RST_PORT, WIFI_4_RST_PIN)
 #define     WIFI_4_RST_LOW_LEVEL()             GPIO_ResetBits (WIFI_4_RST_PORT, WIFI_4_RST_PIN)
 
-#define     RX_BUF_MAX_LEN                     4096
 
+
+
+
+#define     RX_BUF_MAX_LEN                     4096
 
 typedef enum
 {
@@ -120,8 +128,6 @@ typedef struct
             __IO u16 FramFinishFlag   : 1;
         } InfBit;
     };
-    uint8_t idle_time;
-    uint8_t idle_need;
 }
 wifi_frame_record;
 
@@ -129,12 +135,18 @@ extern wifi_frame_record  wifi1_frame_record,
        wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
 
 
+
+void init_wifi_power(void);
+void wifi_power_cut(void);
+void wifi_power_on(void);
 void wifi_init(wifi_t wifi);
 void wifi_reset(wifi_t wifi);
-char* exec_wifi_cmd(wifi_t wifi, char* cmd,
-                    uint8_t idle_need);
-void exec_all_wifi_cmd(char* cmd, uint8_t idle_need);
+char* exec_wifi_cmd(wifi_t wifi, char* cmd);
+char* exec_wifi_cmd_by_time(wifi_t wifi, char* cmd,
+                            uint64_t time);
+void exec_all_wifi_cmd(char* cmd);
 void wait_at(wifi_t wifi);
+void mode_set(wifi_t wifi);
 
 #endif
 

@@ -17,12 +17,14 @@ Section Cross References
     startup_stm32f10x_hd.o(.text) refers to system_stm32f10x.o(i.SystemInit) for SystemInit
     startup_stm32f10x_hd.o(.text) refers to entry.o(.ARM.Collect$$$$00000000) for __main
     main.o(i.main) refers to bsp_uart.o(i.uart1_init) for uart1_init
+    main.o(i.main) refers to esp8266.o(i.init_wifi_power) for init_wifi_power
     main.o(i.main) refers to esp8266.o(i.wifi_init) for wifi_init
     main.o(i.main) refers to printf2.o(i.__0printf$2) for __2printf
-    main.o(i.main) refers to esp8266.o(i.wifi_reset) for wifi_reset
     main.o(i.main) refers to esp8266.o(i.wait_at) for wait_at
-    main.o(i.main) refers to esp8266.o(i.exec_wifi_cmd) for exec_wifi_cmd
+    main.o(i.main) refers to esp8266.o(i.mode_set) for mode_set
+    main.o(i.main) refers to esp8266.o(i.exec_all_wifi_cmd) for exec_all_wifi_cmd
     main.o(i.main) refers to bsp_systick.o(i.delay_hard_ms) for delay_hard_ms
+    main.o(i.main) refers to esp8266.o(.bss) for wifi1_frame_record
     stm32f10x_it.o(i.SysTick_Handler) refers to bsp_systick.o(.data) for systick_int_times
     stm32f10x_it.o(i.TIM6_IRQHandler) refers to stm32f10x_tim.o(i.TIM_GetITStatus) for TIM_GetITStatus
     stm32f10x_it.o(i.TIM6_IRQHandler) refers to stm32f10x_tim.o(i.TIM_ClearITPendingBit) for TIM_ClearITPendingBit
@@ -32,24 +34,16 @@ Section Cross References
     stm32f10x_it.o(i.TIM7_IRQHandler) refers to base_timer.o(.data) for basic_tim2_int_times
     stm32f10x_it.o(i.UART4_IRQHandler) refers to stm32f10x_usart.o(i.USART_GetITStatus) for USART_GetITStatus
     stm32f10x_it.o(i.UART4_IRQHandler) refers to stm32f10x_usart.o(i.USART_ReceiveData) for USART_ReceiveData
-    stm32f10x_it.o(i.UART4_IRQHandler) refers to printf2.o(i.__0printf$2) for __2printf
     stm32f10x_it.o(i.UART4_IRQHandler) refers to esp8266.o(.bss) for wifi3_frame_record
-    stm32f10x_it.o(i.UART4_IRQHandler) refers to stm32f10x_it.o(.conststring) for .conststring
     stm32f10x_it.o(i.UART5_IRQHandler) refers to stm32f10x_usart.o(i.USART_GetITStatus) for USART_GetITStatus
     stm32f10x_it.o(i.UART5_IRQHandler) refers to stm32f10x_usart.o(i.USART_ReceiveData) for USART_ReceiveData
-    stm32f10x_it.o(i.UART5_IRQHandler) refers to printf2.o(i.__0printf$2) for __2printf
     stm32f10x_it.o(i.UART5_IRQHandler) refers to esp8266.o(.bss) for wifi4_frame_record
-    stm32f10x_it.o(i.UART5_IRQHandler) refers to stm32f10x_it.o(.conststring) for .conststring
     stm32f10x_it.o(i.USART2_IRQHandler) refers to stm32f10x_usart.o(i.USART_GetITStatus) for USART_GetITStatus
     stm32f10x_it.o(i.USART2_IRQHandler) refers to stm32f10x_usart.o(i.USART_ReceiveData) for USART_ReceiveData
-    stm32f10x_it.o(i.USART2_IRQHandler) refers to printf2.o(i.__0printf$2) for __2printf
     stm32f10x_it.o(i.USART2_IRQHandler) refers to esp8266.o(.bss) for wifi1_frame_record
-    stm32f10x_it.o(i.USART2_IRQHandler) refers to stm32f10x_it.o(.conststring) for .conststring
     stm32f10x_it.o(i.USART3_IRQHandler) refers to stm32f10x_usart.o(i.USART_GetITStatus) for USART_GetITStatus
     stm32f10x_it.o(i.USART3_IRQHandler) refers to stm32f10x_usart.o(i.USART_ReceiveData) for USART_ReceiveData
-    stm32f10x_it.o(i.USART3_IRQHandler) refers to printf2.o(i.__0printf$2) for __2printf
     stm32f10x_it.o(i.USART3_IRQHandler) refers to esp8266.o(.bss) for wifi2_frame_record
-    stm32f10x_it.o(i.USART3_IRQHandler) refers to stm32f10x_it.o(.conststring) for .conststring
     led_display.o(i.e_reset) refers to stm32f10x_gpio.o(i.GPIO_ResetBits) for GPIO_ResetBits
     led_display.o(i.e_set) refers to stm32f10x_gpio.o(i.GPIO_SetBits) for GPIO_SetBits
     led_display.o(i.init_led_display) refers to stm32f10x_rcc.o(i.RCC_APB2PeriphClockCmd) for RCC_APB2PeriphClockCmd
@@ -187,6 +181,8 @@ Section Cross References
     esp8266.o(i.exec_all_wifi_cmd) refers to esp8266.o(.bss) for wifi1_frame_record
     esp8266.o(i.exec_wifi_cmd) refers to esp8266.o(i.wifi_cmd) for wifi_cmd
     esp8266.o(i.exec_wifi_cmd) refers to esp8266.o(.bss) for wifi1_frame_record
+    esp8266.o(i.exec_wifi_cmd_by_time) refers to esp8266.o(i.wifi_cmd_by_time) for wifi_cmd_by_time
+    esp8266.o(i.exec_wifi_cmd_by_time) refers to esp8266.o(.bss) for wifi1_frame_record
     esp8266.o(i.init_wifi_1_en_rst) refers to esp8266.o(i.init_wifi_en_rst) for init_wifi_en_rst
     esp8266.o(i.init_wifi_1_en_rst) refers to stm32f10x_rcc.o(i.RCC_APB2PeriphClockCmd) for RCC_APB2PeriphClockCmd
     esp8266.o(i.init_wifi_2_en_rst) refers to esp8266.o(i.init_wifi_en_rst) for init_wifi_en_rst
@@ -196,9 +192,15 @@ Section Cross References
     esp8266.o(i.init_wifi_4_en_rst) refers to esp8266.o(i.init_wifi_en_rst) for init_wifi_en_rst
     esp8266.o(i.init_wifi_4_en_rst) refers to stm32f10x_rcc.o(i.RCC_APB2PeriphClockCmd) for RCC_APB2PeriphClockCmd
     esp8266.o(i.init_wifi_en_rst) refers to stm32f10x_gpio.o(i.GPIO_Init) for GPIO_Init
-    esp8266.o(i.wait_at) refers to esp8266.o(i.exec_wifi_cmd) for exec_wifi_cmd
+    esp8266.o(i.init_wifi_power) refers to stm32f10x_rcc.o(i.RCC_APB2PeriphClockCmd) for RCC_APB2PeriphClockCmd
+    esp8266.o(i.init_wifi_power) refers to stm32f10x_gpio.o(i.GPIO_Init) for GPIO_Init
+    esp8266.o(i.init_wifi_power) refers to esp8266.o(i.wifi_power_cut) for wifi_power_cut
+    esp8266.o(i.init_wifi_power) refers to esp8266.o(i.wifi_power_on) for wifi_power_on
+    esp8266.o(i.mode_set) refers to esp8266.o(i.exec_wifi_cmd_by_time) for exec_wifi_cmd_by_time
+    esp8266.o(i.mode_set) refers to strstr.o(.text) for strstr
+    esp8266.o(i.wait_at) refers to esp8266.o(i.exec_wifi_cmd_by_time) for exec_wifi_cmd_by_time
+    esp8266.o(i.wait_at) refers to printf2.o(i.__0printf$2) for __2printf
     esp8266.o(i.wait_at) refers to strstr.o(.text) for strstr
-    esp8266.o(i.wait_at) refers to esp8266.o(i.wifi_reset) for wifi_reset
     esp8266.o(i.wifi_cmd) refers to strlen.o(.text) for strlen
     esp8266.o(i.wifi_cmd) refers to malloc.o(i.malloc) for malloc
     esp8266.o(i.wifi_cmd) refers to strcpy.o(.text) for strcpy
@@ -206,17 +208,26 @@ Section Cross References
     esp8266.o(i.wifi_cmd) refers to printf2.o(i.__0printf$2) for __2printf
     esp8266.o(i.wifi_cmd) refers to bsp_uart.o(i.uart_send_string) for uart_send_string
     esp8266.o(i.wifi_cmd) refers to malloc.o(i.free) for free
+    esp8266.o(i.wifi_cmd_by_time) refers to strlen.o(.text) for strlen
+    esp8266.o(i.wifi_cmd_by_time) refers to malloc.o(i.malloc) for malloc
+    esp8266.o(i.wifi_cmd_by_time) refers to strcpy.o(.text) for strcpy
+    esp8266.o(i.wifi_cmd_by_time) refers to strcat.o(.text) for strcat
+    esp8266.o(i.wifi_cmd_by_time) refers to printf2.o(i.__0printf$2) for __2printf
+    esp8266.o(i.wifi_cmd_by_time) refers to bsp_uart.o(i.uart_send_string) for uart_send_string
+    esp8266.o(i.wifi_cmd_by_time) refers to malloc.o(i.free) for free
+    esp8266.o(i.wifi_cmd_by_time) refers to bsp_systick.o(i.delay_hard_ms) for delay_hard_ms
+    esp8266.o(i.wifi_first_read) refers to stm32f10x_usart.o(i.USART_ReceiveData) for USART_ReceiveData
     esp8266.o(i.wifi_init) refers to esp8266.o(i.init_wifi_1_en_rst) for init_wifi_1_en_rst
     esp8266.o(i.wifi_init) refers to bsp_uart.o(i.uart2_init) for uart2_init
-    esp8266.o(i.wifi_init) refers to stm32f10x_usart.o(i.USART_ITConfig) for USART_ITConfig
     esp8266.o(i.wifi_init) refers to stm32f10x_gpio.o(i.GPIO_SetBits) for GPIO_SetBits
-    esp8266.o(i.wifi_init) refers to stm32f10x_gpio.o(i.GPIO_ResetBits) for GPIO_ResetBits
     esp8266.o(i.wifi_init) refers to esp8266.o(i.init_wifi_2_en_rst) for init_wifi_2_en_rst
     esp8266.o(i.wifi_init) refers to bsp_uart.o(i.uart3_init) for uart3_init
     esp8266.o(i.wifi_init) refers to esp8266.o(i.init_wifi_3_en_rst) for init_wifi_3_en_rst
     esp8266.o(i.wifi_init) refers to bsp_uart.o(i.uart4_init) for uart4_init
     esp8266.o(i.wifi_init) refers to esp8266.o(i.init_wifi_4_en_rst) for init_wifi_4_en_rst
     esp8266.o(i.wifi_init) refers to bsp_uart.o(i.uart5_init) for uart5_init
+    esp8266.o(i.wifi_power_cut) refers to stm32f10x_gpio.o(i.GPIO_ResetBits) for GPIO_ResetBits
+    esp8266.o(i.wifi_power_on) refers to stm32f10x_gpio.o(i.GPIO_SetBits) for GPIO_SetBits
     esp8266.o(i.wifi_reset) refers to stm32f10x_gpio.o(i.GPIO_ResetBits) for GPIO_ResetBits
     esp8266.o(i.wifi_reset) refers to esp8266.o(i.delay_s) for delay_s
     esp8266.o(i.wifi_reset) refers to stm32f10x_gpio.o(i.GPIO_SetBits) for GPIO_SetBits
@@ -586,6 +597,7 @@ Removing Unused input sections from the image.
     Removing led_display.o(i.e_reset), (20 bytes).
     Removing led_display.o(i.e_set), (20 bytes).
     Removing led_display.o(i.init_led_display), (152 bytes).
+    Removing led_display.o(i.lcd_print_line), (38 bytes).
     Removing led_display.o(i.read_data), (24 bytes).
     Removing led_display.o(i.read_data_byte), (56 bytes).
     Removing led_display.o(i.read_status_byte), (52 bytes).
@@ -616,7 +628,11 @@ Removing Unused input sections from the image.
     Removing bsp_systick.o(i.delay_int_ms), (24 bytes).
     Removing bsp_systick.o(i.delay_int_us), (18 bytes).
     Removing bsp_uart.o(i.fgetc), (32 bytes).
-    Removing esp8266.o(i.exec_all_wifi_cmd), (388 bytes).
+    Removing esp8266.o(i.delay_s), (24 bytes).
+    Removing esp8266.o(i.exec_wifi_cmd), (108 bytes).
+    Removing esp8266.o(i.wifi_cmd), (148 bytes).
+    Removing esp8266.o(i.wifi_first_read), (72 bytes).
+    Removing esp8266.o(i.wifi_reset), (148 bytes).
     Removing misc.o(i.NVIC_PriorityGroupConfig), (20 bytes).
     Removing misc.o(i.NVIC_SetVectorTable), (20 bytes).
     Removing misc.o(i.NVIC_SystemLPConfig), (32 bytes).
@@ -1083,7 +1099,7 @@ Removing Unused input sections from the image.
     Removing cdrcmple.o(.text), (48 bytes).
     Removing depilogue.o(.text), (186 bytes).
 
-500 unused section(s) (total 21344 bytes) removed from the image.
+505 unused section(s) (total 21494 bytes) removed from the image.
 
 ==============================================================================
 
@@ -1093,44 +1109,44 @@ Image Symbol Table
 
     Symbol Name                              Value     Ov Type        Size  Object(Section)
 
-    ../clib/microlib/division.c              0x00000000   Number         0  uldiv.o ABSOLUTE
     ../clib/microlib/division.c              0x00000000   Number         0  uidiv.o ABSOLUTE
+    ../clib/microlib/division.c              0x00000000   Number         0  uldiv.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry2.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
-    ../clib/microlib/longlong.c              0x00000000   Number         0  llushr.o ABSOLUTE
-    ../clib/microlib/longlong.c              0x00000000   Number         0  llshl.o ABSOLUTE
     ../clib/microlib/longlong.c              0x00000000   Number         0  llsshr.o ABSOLUTE
-    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  malloca.o ABSOLUTE
+    ../clib/microlib/longlong.c              0x00000000   Number         0  llshl.o ABSOLUTE
+    ../clib/microlib/longlong.c              0x00000000   Number         0  llushr.o ABSOLUTE
+    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  mallocra.o ABSOLUTE
     ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  mallocr.o ABSOLUTE
     ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  malloc.o ABSOLUTE
-    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  mallocra.o ABSOLUTE
+    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  malloca.o ABSOLUTE
     ../clib/microlib/malloc/mvars.c          0x00000000   Number         0  mvars.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printfa.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf8.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf7.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf6.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf5.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf4.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf3.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf5.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf2.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf1.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf0.o ABSOLUTE
     ../clib/microlib/printf/printf.c         0x00000000   Number         0  printfb.o ABSOLUTE
-    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf2.o ABSOLUTE
+    ../clib/microlib/printf/printf.c         0x00000000   Number         0  printf6.o ABSOLUTE
     ../clib/microlib/printf/stubs.s          0x00000000   Number         0  stubs.o ABSOLUTE
     ../clib/microlib/stdio/streams.c         0x00000000   Number         0  stdout.o ABSOLUTE
-    ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpya.o ABSOLUTE
     ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpyb.o ABSOLUTE
+    ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpya.o ABSOLUTE
     ../clib/microlib/string/strcat.c         0x00000000   Number         0  strcat.o ABSOLUTE
     ../clib/microlib/string/strcpy.c         0x00000000   Number         0  strcpy.o ABSOLUTE
     ../clib/microlib/string/strlen.c         0x00000000   Number         0  strlen.o ABSOLUTE
@@ -1220,57 +1236,58 @@ Image Symbol Table
     i.TIM_ClearITPendingBit                  0x08000740   Section        0  stm32f10x_tim.o(i.TIM_ClearITPendingBit)
     i.TIM_GetITStatus                        0x08000746   Section        0  stm32f10x_tim.o(i.TIM_GetITStatus)
     i.UART4_IRQHandler                       0x08000768   Section        0  stm32f10x_it.o(i.UART4_IRQHandler)
-    i.UART5_IRQHandler                       0x080007f8   Section        0  stm32f10x_it.o(i.UART5_IRQHandler)
-    i.USART1_IRQHandler                      0x08000888   Section        0  stm32f10x_it.o(i.USART1_IRQHandler)
-    i.USART2_IRQHandler                      0x0800088c   Section        0  stm32f10x_it.o(i.USART2_IRQHandler)
-    i.USART3_IRQHandler                      0x0800091c   Section        0  stm32f10x_it.o(i.USART3_IRQHandler)
-    i.USART_Cmd                              0x080009ac   Section        0  stm32f10x_usart.o(i.USART_Cmd)
-    i.USART_GetFlagStatus                    0x080009c4   Section        0  stm32f10x_usart.o(i.USART_GetFlagStatus)
-    i.USART_GetITStatus                      0x080009de   Section        0  stm32f10x_usart.o(i.USART_GetITStatus)
-    i.USART_ITConfig                         0x08000a32   Section        0  stm32f10x_usart.o(i.USART_ITConfig)
-    i.USART_Init                             0x08000a7c   Section        0  stm32f10x_usart.o(i.USART_Init)
-    i.USART_ReceiveData                      0x08000b54   Section        0  stm32f10x_usart.o(i.USART_ReceiveData)
-    i.USART_SendData                         0x08000b5e   Section        0  stm32f10x_usart.o(i.USART_SendData)
-    i.__0printf$2                            0x08000b68   Section        0  printf2.o(i.__0printf$2)
-    i.__scatterload_copy                     0x08000b88   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x08000b96   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x08000b98   Section       14  handlers.o(i.__scatterload_zeroinit)
-    i._printf_core                           0x08000ba6   Section        0  printf2.o(i._printf_core)
-    _printf_core                             0x08000ba7   Thumb Code   214  printf2.o(i._printf_core)
-    i.delay_hard                             0x08000c7c   Section        0  bsp_systick.o(i.delay_hard)
-    i.delay_hard_ms                          0x08000d18   Section        0  bsp_systick.o(i.delay_hard_ms)
-    i.delay_s                                0x08000d30   Section        0  esp8266.o(i.delay_s)
-    delay_s                                  0x08000d31   Thumb Code    24  esp8266.o(i.delay_s)
-    i.exec_wifi_cmd                          0x08000d48   Section        0  esp8266.o(i.exec_wifi_cmd)
-    i.fputc                                  0x08000dbc   Section        0  bsp_uart.o(i.fputc)
-    i.free                                   0x08000de0   Section        0  malloc.o(i.free)
-    i.init_nvic                              0x08000e30   Section        0  bsp_uart.o(i.init_nvic)
-    init_nvic                                0x08000e31   Thumb Code    34  bsp_uart.o(i.init_nvic)
-    i.init_wifi_1_en_rst                     0x08000e54   Section        0  esp8266.o(i.init_wifi_1_en_rst)
-    init_wifi_1_en_rst                       0x08000e55   Thumb Code    32  esp8266.o(i.init_wifi_1_en_rst)
-    i.init_wifi_2_en_rst                     0x08000e7c   Section        0  esp8266.o(i.init_wifi_2_en_rst)
-    init_wifi_2_en_rst                       0x08000e7d   Thumb Code    32  esp8266.o(i.init_wifi_2_en_rst)
-    i.init_wifi_3_en_rst                     0x08000ea4   Section        0  esp8266.o(i.init_wifi_3_en_rst)
-    init_wifi_3_en_rst                       0x08000ea5   Thumb Code    30  esp8266.o(i.init_wifi_3_en_rst)
-    i.init_wifi_4_en_rst                     0x08000ecc   Section        0  esp8266.o(i.init_wifi_4_en_rst)
-    init_wifi_4_en_rst                       0x08000ecd   Thumb Code    30  esp8266.o(i.init_wifi_4_en_rst)
-    i.init_wifi_en_rst                       0x08000ef4   Section        0  esp8266.o(i.init_wifi_en_rst)
-    init_wifi_en_rst                         0x08000ef5   Thumb Code    72  esp8266.o(i.init_wifi_en_rst)
-    i.main                                   0x08000f3c   Section        0  main.o(i.main)
-    i.malloc                                 0x08000fb0   Section        0  malloc.o(i.malloc)
-    i.uart1_init                             0x0800101c   Section        0  bsp_uart.o(i.uart1_init)
-    i.uart2_init                             0x080010bc   Section        0  bsp_uart.o(i.uart2_init)
-    i.uart3_init                             0x08001158   Section        0  bsp_uart.o(i.uart3_init)
-    i.uart4_init                             0x080011f8   Section        0  bsp_uart.o(i.uart4_init)
-    i.uart5_init                             0x08001298   Section        0  bsp_uart.o(i.uart5_init)
-    i.uart_send_byte                         0x08001340   Section        0  bsp_uart.o(i.uart_send_byte)
-    i.uart_send_string                       0x0800135e   Section        0  bsp_uart.o(i.uart_send_string)
-    i.wait_at                                0x0800138c   Section        0  esp8266.o(i.wait_at)
-    i.wifi_cmd                               0x080013b8   Section        0  esp8266.o(i.wifi_cmd)
-    wifi_cmd                                 0x080013b9   Thumb Code   150  esp8266.o(i.wifi_cmd)
-    i.wifi_init                              0x08001460   Section        0  esp8266.o(i.wifi_init)
-    i.wifi_reset                             0x08001578   Section        0  esp8266.o(i.wifi_reset)
-    .conststring                             0x0800160c   Section       88  stm32f10x_it.o(.conststring)
+    i.UART5_IRQHandler                       0x08000800   Section        0  stm32f10x_it.o(i.UART5_IRQHandler)
+    i.USART1_IRQHandler                      0x08000898   Section        0  stm32f10x_it.o(i.USART1_IRQHandler)
+    i.USART2_IRQHandler                      0x0800089c   Section        0  stm32f10x_it.o(i.USART2_IRQHandler)
+    i.USART3_IRQHandler                      0x08000934   Section        0  stm32f10x_it.o(i.USART3_IRQHandler)
+    i.USART_Cmd                              0x080009cc   Section        0  stm32f10x_usart.o(i.USART_Cmd)
+    i.USART_GetFlagStatus                    0x080009e4   Section        0  stm32f10x_usart.o(i.USART_GetFlagStatus)
+    i.USART_GetITStatus                      0x080009fe   Section        0  stm32f10x_usart.o(i.USART_GetITStatus)
+    i.USART_ITConfig                         0x08000a52   Section        0  stm32f10x_usart.o(i.USART_ITConfig)
+    i.USART_Init                             0x08000a9c   Section        0  stm32f10x_usart.o(i.USART_Init)
+    i.USART_ReceiveData                      0x08000b74   Section        0  stm32f10x_usart.o(i.USART_ReceiveData)
+    i.USART_SendData                         0x08000b7e   Section        0  stm32f10x_usart.o(i.USART_SendData)
+    i.__0printf$2                            0x08000b88   Section        0  printf2.o(i.__0printf$2)
+    i.__scatterload_copy                     0x08000ba8   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x08000bb6   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x08000bb8   Section       14  handlers.o(i.__scatterload_zeroinit)
+    i._printf_core                           0x08000bc6   Section        0  printf2.o(i._printf_core)
+    _printf_core                             0x08000bc7   Thumb Code   214  printf2.o(i._printf_core)
+    i.delay_hard                             0x08000c9c   Section        0  bsp_systick.o(i.delay_hard)
+    i.delay_hard_ms                          0x08000d38   Section        0  bsp_systick.o(i.delay_hard_ms)
+    i.exec_all_wifi_cmd                      0x08000d50   Section        0  esp8266.o(i.exec_all_wifi_cmd)
+    i.exec_wifi_cmd_by_time                  0x08000eac   Section        0  esp8266.o(i.exec_wifi_cmd_by_time)
+    i.fputc                                  0x08000f30   Section        0  bsp_uart.o(i.fputc)
+    i.free                                   0x08000f54   Section        0  malloc.o(i.free)
+    i.init_nvic                              0x08000fa4   Section        0  bsp_uart.o(i.init_nvic)
+    init_nvic                                0x08000fa5   Thumb Code    34  bsp_uart.o(i.init_nvic)
+    i.init_wifi_1_en_rst                     0x08000fc8   Section        0  esp8266.o(i.init_wifi_1_en_rst)
+    init_wifi_1_en_rst                       0x08000fc9   Thumb Code    32  esp8266.o(i.init_wifi_1_en_rst)
+    i.init_wifi_2_en_rst                     0x08000ff0   Section        0  esp8266.o(i.init_wifi_2_en_rst)
+    init_wifi_2_en_rst                       0x08000ff1   Thumb Code    32  esp8266.o(i.init_wifi_2_en_rst)
+    i.init_wifi_3_en_rst                     0x08001018   Section        0  esp8266.o(i.init_wifi_3_en_rst)
+    init_wifi_3_en_rst                       0x08001019   Thumb Code    30  esp8266.o(i.init_wifi_3_en_rst)
+    i.init_wifi_4_en_rst                     0x08001040   Section        0  esp8266.o(i.init_wifi_4_en_rst)
+    init_wifi_4_en_rst                       0x08001041   Thumb Code    30  esp8266.o(i.init_wifi_4_en_rst)
+    i.init_wifi_en_rst                       0x08001068   Section        0  esp8266.o(i.init_wifi_en_rst)
+    init_wifi_en_rst                         0x08001069   Thumb Code    72  esp8266.o(i.init_wifi_en_rst)
+    i.init_wifi_power                        0x080010b0   Section        0  esp8266.o(i.init_wifi_power)
+    i.main                                   0x080010e0   Section        0  main.o(i.main)
+    i.malloc                                 0x08001208   Section        0  malloc.o(i.malloc)
+    i.mode_set                               0x08001274   Section        0  esp8266.o(i.mode_set)
+    i.uart1_init                             0x080012a8   Section        0  bsp_uart.o(i.uart1_init)
+    i.uart2_init                             0x08001348   Section        0  bsp_uart.o(i.uart2_init)
+    i.uart3_init                             0x080013e4   Section        0  bsp_uart.o(i.uart3_init)
+    i.uart4_init                             0x08001484   Section        0  bsp_uart.o(i.uart4_init)
+    i.uart5_init                             0x08001524   Section        0  bsp_uart.o(i.uart5_init)
+    i.uart_send_byte                         0x080015cc   Section        0  bsp_uart.o(i.uart_send_byte)
+    i.uart_send_string                       0x080015ea   Section        0  bsp_uart.o(i.uart_send_string)
+    i.wait_at                                0x08001618   Section        0  esp8266.o(i.wait_at)
+    i.wifi_cmd_by_time                       0x08001664   Section        0  esp8266.o(i.wifi_cmd_by_time)
+    wifi_cmd_by_time                         0x08001665   Thumb Code   130  esp8266.o(i.wifi_cmd_by_time)
+    i.wifi_init                              0x080016f8   Section        0  esp8266.o(i.wifi_init)
+    i.wifi_power_cut                         0x080017d0   Section        0  esp8266.o(i.wifi_power_cut)
+    i.wifi_power_on                          0x080017e0   Section        0  esp8266.o(i.wifi_power_on)
     .data                                    0x20000000   Section       16  base_timer.o(.data)
     .data                                    0x20000010   Section        8  bsp_systick.o(.data)
     .data                                    0x20000018   Section       20  stm32f10x_rcc.o(.data)
@@ -1279,9 +1296,9 @@ Image Symbol Table
     .data                                    0x2000002c   Section        4  stdout.o(.data)
     .data                                    0x20000030   Section        4  mvars.o(.data)
     .data                                    0x20000034   Section        4  mvars.o(.data)
-    .bss                                     0x20000038   Section    16400  esp8266.o(.bss)
-    HEAP                                     0x20004048   Section      512  startup_stm32f10x_hd.o(HEAP)
-    STACK                                    0x20004248   Section     1024  startup_stm32f10x_hd.o(STACK)
+    .bss                                     0x20000038   Section    16392  esp8266.o(.bss)
+    HEAP                                     0x20004040   Section      512  startup_stm32f10x_hd.o(HEAP)
+    STACK                                    0x20004240   Section     1024  startup_stm32f10x_hd.o(STACK)
 
     Global Symbols
 
@@ -1433,56 +1450,60 @@ Image Symbol Table
     TIM7_IRQHandler                          0x08000711   Thumb Code    40  stm32f10x_it.o(i.TIM7_IRQHandler)
     TIM_ClearITPendingBit                    0x08000741   Thumb Code     6  stm32f10x_tim.o(i.TIM_ClearITPendingBit)
     TIM_GetITStatus                          0x08000747   Thumb Code    34  stm32f10x_tim.o(i.TIM_GetITStatus)
-    UART4_IRQHandler                         0x08000769   Thumb Code   130  stm32f10x_it.o(i.UART4_IRQHandler)
-    UART5_IRQHandler                         0x080007f9   Thumb Code   130  stm32f10x_it.o(i.UART5_IRQHandler)
-    USART1_IRQHandler                        0x08000889   Thumb Code     2  stm32f10x_it.o(i.USART1_IRQHandler)
-    USART2_IRQHandler                        0x0800088d   Thumb Code   130  stm32f10x_it.o(i.USART2_IRQHandler)
-    USART3_IRQHandler                        0x0800091d   Thumb Code   130  stm32f10x_it.o(i.USART3_IRQHandler)
-    USART_Cmd                                0x080009ad   Thumb Code    24  stm32f10x_usart.o(i.USART_Cmd)
-    USART_GetFlagStatus                      0x080009c5   Thumb Code    26  stm32f10x_usart.o(i.USART_GetFlagStatus)
-    USART_GetITStatus                        0x080009df   Thumb Code    84  stm32f10x_usart.o(i.USART_GetITStatus)
-    USART_ITConfig                           0x08000a33   Thumb Code    74  stm32f10x_usart.o(i.USART_ITConfig)
-    USART_Init                               0x08000a7d   Thumb Code   210  stm32f10x_usart.o(i.USART_Init)
-    USART_ReceiveData                        0x08000b55   Thumb Code    10  stm32f10x_usart.o(i.USART_ReceiveData)
-    USART_SendData                           0x08000b5f   Thumb Code     8  stm32f10x_usart.o(i.USART_SendData)
-    __0printf$2                              0x08000b69   Thumb Code    22  printf2.o(i.__0printf$2)
-    __1printf$2                              0x08000b69   Thumb Code     0  printf2.o(i.__0printf$2)
-    __2printf                                0x08000b69   Thumb Code     0  printf2.o(i.__0printf$2)
-    __scatterload_copy                       0x08000b89   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x08000b97   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x08000b99   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    delay_hard                               0x08000c7d   Thumb Code   156  bsp_systick.o(i.delay_hard)
-    delay_hard_ms                            0x08000d19   Thumb Code    18  bsp_systick.o(i.delay_hard_ms)
-    exec_wifi_cmd                            0x08000d49   Thumb Code    84  esp8266.o(i.exec_wifi_cmd)
-    fputc                                    0x08000dbd   Thumb Code    32  bsp_uart.o(i.fputc)
-    free                                     0x08000de1   Thumb Code    76  malloc.o(i.free)
-    main                                     0x08000f3d   Thumb Code    90  main.o(i.main)
-    malloc                                   0x08000fb1   Thumb Code    92  malloc.o(i.malloc)
-    uart1_init                               0x0800101d   Thumb Code   150  bsp_uart.o(i.uart1_init)
-    uart2_init                               0x080010bd   Thumb Code   146  bsp_uart.o(i.uart2_init)
-    uart3_init                               0x08001159   Thumb Code   150  bsp_uart.o(i.uart3_init)
-    uart4_init                               0x080011f9   Thumb Code   150  bsp_uart.o(i.uart4_init)
-    uart5_init                               0x08001299   Thumb Code   154  bsp_uart.o(i.uart5_init)
-    uart_send_byte                           0x08001341   Thumb Code    30  bsp_uart.o(i.uart_send_byte)
-    uart_send_string                         0x0800135f   Thumb Code    46  bsp_uart.o(i.uart_send_string)
-    wait_at                                  0x0800138d   Thumb Code    36  esp8266.o(i.wait_at)
-    wifi_init                                0x08001461   Thumb Code   256  esp8266.o(i.wifi_init)
-    wifi_reset                               0x08001579   Thumb Code   136  esp8266.o(i.wifi_reset)
-    Region$$Table$$Base                      0x08001664   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08001684   Number         0  anon$$obj.o(Region$$Table)
+    UART4_IRQHandler                         0x08000769   Thumb Code   140  stm32f10x_it.o(i.UART4_IRQHandler)
+    UART5_IRQHandler                         0x08000801   Thumb Code   140  stm32f10x_it.o(i.UART5_IRQHandler)
+    USART1_IRQHandler                        0x08000899   Thumb Code     2  stm32f10x_it.o(i.USART1_IRQHandler)
+    USART2_IRQHandler                        0x0800089d   Thumb Code   140  stm32f10x_it.o(i.USART2_IRQHandler)
+    USART3_IRQHandler                        0x08000935   Thumb Code   140  stm32f10x_it.o(i.USART3_IRQHandler)
+    USART_Cmd                                0x080009cd   Thumb Code    24  stm32f10x_usart.o(i.USART_Cmd)
+    USART_GetFlagStatus                      0x080009e5   Thumb Code    26  stm32f10x_usart.o(i.USART_GetFlagStatus)
+    USART_GetITStatus                        0x080009ff   Thumb Code    84  stm32f10x_usart.o(i.USART_GetITStatus)
+    USART_ITConfig                           0x08000a53   Thumb Code    74  stm32f10x_usart.o(i.USART_ITConfig)
+    USART_Init                               0x08000a9d   Thumb Code   210  stm32f10x_usart.o(i.USART_Init)
+    USART_ReceiveData                        0x08000b75   Thumb Code    10  stm32f10x_usart.o(i.USART_ReceiveData)
+    USART_SendData                           0x08000b7f   Thumb Code     8  stm32f10x_usart.o(i.USART_SendData)
+    __0printf$2                              0x08000b89   Thumb Code    22  printf2.o(i.__0printf$2)
+    __1printf$2                              0x08000b89   Thumb Code     0  printf2.o(i.__0printf$2)
+    __2printf                                0x08000b89   Thumb Code     0  printf2.o(i.__0printf$2)
+    __scatterload_copy                       0x08000ba9   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x08000bb7   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x08000bb9   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    delay_hard                               0x08000c9d   Thumb Code   156  bsp_systick.o(i.delay_hard)
+    delay_hard_ms                            0x08000d39   Thumb Code    18  bsp_systick.o(i.delay_hard_ms)
+    exec_all_wifi_cmd                        0x08000d51   Thumb Code   282  esp8266.o(i.exec_all_wifi_cmd)
+    exec_wifi_cmd_by_time                    0x08000ead   Thumb Code    98  esp8266.o(i.exec_wifi_cmd_by_time)
+    fputc                                    0x08000f31   Thumb Code    32  bsp_uart.o(i.fputc)
+    free                                     0x08000f55   Thumb Code    76  malloc.o(i.free)
+    init_wifi_power                          0x080010b1   Thumb Code    44  esp8266.o(i.init_wifi_power)
+    main                                     0x080010e1   Thumb Code   200  main.o(i.main)
+    malloc                                   0x08001209   Thumb Code    92  malloc.o(i.malloc)
+    mode_set                                 0x08001275   Thumb Code    34  esp8266.o(i.mode_set)
+    uart1_init                               0x080012a9   Thumb Code   150  bsp_uart.o(i.uart1_init)
+    uart2_init                               0x08001349   Thumb Code   146  bsp_uart.o(i.uart2_init)
+    uart3_init                               0x080013e5   Thumb Code   150  bsp_uart.o(i.uart3_init)
+    uart4_init                               0x08001485   Thumb Code   150  bsp_uart.o(i.uart4_init)
+    uart5_init                               0x08001525   Thumb Code   154  bsp_uart.o(i.uart5_init)
+    uart_send_byte                           0x080015cd   Thumb Code    30  bsp_uart.o(i.uart_send_byte)
+    uart_send_string                         0x080015eb   Thumb Code    46  bsp_uart.o(i.uart_send_string)
+    wait_at                                  0x08001619   Thumb Code    46  esp8266.o(i.wait_at)
+    wifi_init                                0x080016f9   Thumb Code   208  esp8266.o(i.wifi_init)
+    wifi_power_cut                           0x080017d1   Thumb Code    12  esp8266.o(i.wifi_power_cut)
+    wifi_power_on                            0x080017e1   Thumb Code    12  esp8266.o(i.wifi_power_on)
+    Region$$Table$$Base                      0x080017f0   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08001810   Number         0  anon$$obj.o(Region$$Table)
     basic_tim1_int_times                     0x20000000   Data           8  base_timer.o(.data)
     basic_tim2_int_times                     0x20000008   Data           8  base_timer.o(.data)
     systick_int_times                        0x20000010   Data           8  bsp_systick.o(.data)
     __stdout                                 0x2000002c   Data           4  stdout.o(.data)
     __microlib_freelist                      0x20000030   Data           4  mvars.o(.data)
     __microlib_freelist_initialised          0x20000034   Data           4  mvars.o(.data)
-    wifi1_frame_record                       0x20000038   Data        4100  esp8266.o(.bss)
-    wifi2_frame_record                       0x2000103c   Data        4100  esp8266.o(.bss)
-    wifi3_frame_record                       0x20002040   Data        4100  esp8266.o(.bss)
-    wifi4_frame_record                       0x20003044   Data        4100  esp8266.o(.bss)
-    __heap_base                              0x20004048   Data           0  startup_stm32f10x_hd.o(HEAP)
-    __heap_limit                             0x20004248   Data           0  startup_stm32f10x_hd.o(HEAP)
-    __initial_sp                             0x20004648   Data           0  startup_stm32f10x_hd.o(STACK)
+    wifi1_frame_record                       0x20000038   Data        4098  esp8266.o(.bss)
+    wifi2_frame_record                       0x2000103a   Data        4098  esp8266.o(.bss)
+    wifi3_frame_record                       0x2000203c   Data        4098  esp8266.o(.bss)
+    wifi4_frame_record                       0x2000303e   Data        4098  esp8266.o(.bss)
+    __heap_base                              0x20004040   Data           0  startup_stm32f10x_hd.o(HEAP)
+    __heap_limit                             0x20004240   Data           0  startup_stm32f10x_hd.o(HEAP)
+    __initial_sp                             0x20004640   Data           0  startup_stm32f10x_hd.o(STACK)
 
 
 
@@ -1492,110 +1513,112 @@ Memory Map of the image
 
   Image Entry point : 0x08000131
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x000016bc, Max: 0x00080000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00001848, Max: 0x00080000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00001684, Max: 0x00080000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00001810, Max: 0x00080000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x08000000   0x08000000   0x00000130   Data   RO            3    RESET               startup_stm32f10x_hd.o
-    0x08000130   0x08000130   0x00000000   Code   RO         3621  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x08000130   0x08000130   0x00000004   Code   RO         3923    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x08000134   0x08000134   0x00000004   Code   RO         3926    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x08000138   0x08000138   0x00000000   Code   RO         3928    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x08000138   0x08000138   0x00000000   Code   RO         3930    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x08000138   0x08000138   0x00000008   Code   RO         3931    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x08000140   0x08000140   0x00000000   Code   RO         3933    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x08000140   0x08000140   0x00000000   Code   RO         3935    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x08000140   0x08000140   0x00000004   Code   RO         3924    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x08000130   0x08000130   0x00000000   Code   RO         3667  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x08000130   0x08000130   0x00000004   Code   RO         3969    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x08000134   0x08000134   0x00000004   Code   RO         3972    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x08000138   0x08000138   0x00000000   Code   RO         3974    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x08000138   0x08000138   0x00000000   Code   RO         3976    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x08000138   0x08000138   0x00000008   Code   RO         3977    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x08000140   0x08000140   0x00000000   Code   RO         3979    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x08000140   0x08000140   0x00000000   Code   RO         3981    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x08000140   0x08000140   0x00000004   Code   RO         3970    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
     0x08000144   0x08000144   0x00000024   Code   RO            4    .text               startup_stm32f10x_hd.o
-    0x08000168   0x08000168   0x00000062   Code   RO         3624    .text               mc_w.l(uldiv.o)
-    0x080001ca   0x080001ca   0x00000018   Code   RO         3626    .text               mc_w.l(strcat.o)
-    0x080001e2   0x080001e2   0x00000024   Code   RO         3628    .text               mc_w.l(strstr.o)
-    0x08000206   0x08000206   0x0000000e   Code   RO         3630    .text               mc_w.l(strlen.o)
-    0x08000214   0x08000214   0x00000012   Code   RO         3632    .text               mc_w.l(strcpy.o)
-    0x08000226   0x08000226   0x0000001e   Code   RO         3940    .text               mc_w.l(llshl.o)
-    0x08000244   0x08000244   0x00000020   Code   RO         3942    .text               mc_w.l(llushr.o)
-    0x08000264   0x08000264   0x00000024   Code   RO         3961    .text               mc_w.l(init.o)
-    0x08000288   0x08000288   0x00000116   Code   RO         1761    i.GPIO_Init         stm32f10x_gpio.o
-    0x0800039e   0x0800039e   0x00000004   Code   RO         1768    i.GPIO_ResetBits    stm32f10x_gpio.o
-    0x080003a2   0x080003a2   0x00000004   Code   RO         1769    i.GPIO_SetBits      stm32f10x_gpio.o
+    0x08000168   0x08000168   0x00000062   Code   RO         3670    .text               mc_w.l(uldiv.o)
+    0x080001ca   0x080001ca   0x00000018   Code   RO         3672    .text               mc_w.l(strcat.o)
+    0x080001e2   0x080001e2   0x00000024   Code   RO         3674    .text               mc_w.l(strstr.o)
+    0x08000206   0x08000206   0x0000000e   Code   RO         3676    .text               mc_w.l(strlen.o)
+    0x08000214   0x08000214   0x00000012   Code   RO         3678    .text               mc_w.l(strcpy.o)
+    0x08000226   0x08000226   0x0000001e   Code   RO         3986    .text               mc_w.l(llshl.o)
+    0x08000244   0x08000244   0x00000020   Code   RO         3988    .text               mc_w.l(llushr.o)
+    0x08000264   0x08000264   0x00000024   Code   RO         4007    .text               mc_w.l(init.o)
+    0x08000288   0x08000288   0x00000116   Code   RO         1807    i.GPIO_Init         stm32f10x_gpio.o
+    0x0800039e   0x0800039e   0x00000004   Code   RO         1814    i.GPIO_ResetBits    stm32f10x_gpio.o
+    0x080003a2   0x080003a2   0x00000004   Code   RO         1815    i.GPIO_SetBits      stm32f10x_gpio.o
     0x080003a6   0x080003a6   0x00000002   PAD
-    0x080003a8   0x080003a8   0x00000070   Code   RO          610    i.NVIC_Init         misc.o
-    0x08000418   0x08000418   0x00000020   Code   RO         2177    i.RCC_APB1PeriphClockCmd  stm32f10x_rcc.o
-    0x08000438   0x08000438   0x00000020   Code   RO         2179    i.RCC_APB2PeriphClockCmd  stm32f10x_rcc.o
-    0x08000458   0x08000458   0x000000d4   Code   RO         2187    i.RCC_GetClocksFreq  stm32f10x_rcc.o
-    0x0800052c   0x0800052c   0x00000008   Code   RO         3577    i.SetSysClock       system_stm32f10x.o
-    0x08000534   0x08000534   0x000000e0   Code   RO         3578    i.SetSysClockTo72   system_stm32f10x.o
-    0x08000614   0x08000614   0x00000054   Code   RO          385    i.SysTick_Config    bsp_systick.o
+    0x080003a8   0x080003a8   0x00000070   Code   RO          656    i.NVIC_Init         misc.o
+    0x08000418   0x08000418   0x00000020   Code   RO         2223    i.RCC_APB1PeriphClockCmd  stm32f10x_rcc.o
+    0x08000438   0x08000438   0x00000020   Code   RO         2225    i.RCC_APB2PeriphClockCmd  stm32f10x_rcc.o
+    0x08000458   0x08000458   0x000000d4   Code   RO         2233    i.RCC_GetClocksFreq  stm32f10x_rcc.o
+    0x0800052c   0x0800052c   0x00000008   Code   RO         3623    i.SetSysClock       system_stm32f10x.o
+    0x08000534   0x08000534   0x000000e0   Code   RO         3624    i.SetSysClockTo72   system_stm32f10x.o
+    0x08000614   0x08000614   0x00000054   Code   RO          390    i.SysTick_Config    bsp_systick.o
     0x08000668   0x08000668   0x00000018   Code   RO          129    i.SysTick_Handler   stm32f10x_it.o
-    0x08000680   0x08000680   0x00000060   Code   RO         3580    i.SystemInit        system_stm32f10x.o
+    0x08000680   0x08000680   0x00000060   Code   RO         3626    i.SystemInit        system_stm32f10x.o
     0x080006e0   0x080006e0   0x00000030   Code   RO          130    i.TIM6_IRQHandler   stm32f10x_it.o
     0x08000710   0x08000710   0x00000030   Code   RO          131    i.TIM7_IRQHandler   stm32f10x_it.o
-    0x08000740   0x08000740   0x00000006   Code   RO         2806    i.TIM_ClearITPendingBit  stm32f10x_tim.o
-    0x08000746   0x08000746   0x00000022   Code   RO         2832    i.TIM_GetITStatus   stm32f10x_tim.o
-    0x08000768   0x08000768   0x00000090   Code   RO          132    i.UART4_IRQHandler  stm32f10x_it.o
-    0x080007f8   0x080007f8   0x00000090   Code   RO          133    i.UART5_IRQHandler  stm32f10x_it.o
-    0x08000888   0x08000888   0x00000002   Code   RO          134    i.USART1_IRQHandler  stm32f10x_it.o
-    0x0800088a   0x0800088a   0x00000002   PAD
-    0x0800088c   0x0800088c   0x00000090   Code   RO          135    i.USART2_IRQHandler  stm32f10x_it.o
-    0x0800091c   0x0800091c   0x00000090   Code   RO          136    i.USART3_IRQHandler  stm32f10x_it.o
-    0x080009ac   0x080009ac   0x00000018   Code   RO         3347    i.USART_Cmd         stm32f10x_usart.o
-    0x080009c4   0x080009c4   0x0000001a   Code   RO         3350    i.USART_GetFlagStatus  stm32f10x_usart.o
-    0x080009de   0x080009de   0x00000054   Code   RO         3351    i.USART_GetITStatus  stm32f10x_usart.o
-    0x08000a32   0x08000a32   0x0000004a   Code   RO         3353    i.USART_ITConfig    stm32f10x_usart.o
-    0x08000a7c   0x08000a7c   0x000000d8   Code   RO         3354    i.USART_Init        stm32f10x_usart.o
-    0x08000b54   0x08000b54   0x0000000a   Code   RO         3361    i.USART_ReceiveData  stm32f10x_usart.o
-    0x08000b5e   0x08000b5e   0x00000008   Code   RO         3364    i.USART_SendData    stm32f10x_usart.o
-    0x08000b66   0x08000b66   0x00000002   PAD
-    0x08000b68   0x08000b68   0x00000020   Code   RO         3701    i.__0printf$2       mc_w.l(printf2.o)
-    0x08000b88   0x08000b88   0x0000000e   Code   RO         3969    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x08000b96   0x08000b96   0x00000002   Code   RO         3970    i.__scatterload_null  mc_w.l(handlers.o)
-    0x08000b98   0x08000b98   0x0000000e   Code   RO         3971    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x08000ba6   0x08000ba6   0x000000d6   Code   RO         3708    i._printf_core      mc_w.l(printf2.o)
-    0x08000c7c   0x08000c7c   0x0000009c   Code   RO          386    i.delay_hard        bsp_systick.o
-    0x08000d18   0x08000d18   0x00000018   Code   RO          387    i.delay_hard_ms     bsp_systick.o
-    0x08000d30   0x08000d30   0x00000018   Code   RO          526    i.delay_s           esp8266.o
-    0x08000d48   0x08000d48   0x00000074   Code   RO          528    i.exec_wifi_cmd     esp8266.o
-    0x08000dbc   0x08000dbc   0x00000024   Code   RO          455    i.fputc             bsp_uart.o
-    0x08000de0   0x08000de0   0x00000050   Code   RO         3895    i.free              mc_w.l(malloc.o)
-    0x08000e30   0x08000e30   0x00000022   Code   RO          456    i.init_nvic         bsp_uart.o
-    0x08000e52   0x08000e52   0x00000002   PAD
-    0x08000e54   0x08000e54   0x00000028   Code   RO          529    i.init_wifi_1_en_rst  esp8266.o
-    0x08000e7c   0x08000e7c   0x00000028   Code   RO          530    i.init_wifi_2_en_rst  esp8266.o
-    0x08000ea4   0x08000ea4   0x00000028   Code   RO          531    i.init_wifi_3_en_rst  esp8266.o
-    0x08000ecc   0x08000ecc   0x00000028   Code   RO          532    i.init_wifi_4_en_rst  esp8266.o
-    0x08000ef4   0x08000ef4   0x00000048   Code   RO          533    i.init_wifi_en_rst  esp8266.o
-    0x08000f3c   0x08000f3c   0x00000074   Code   RO           10    i.main              main.o
-    0x08000fb0   0x08000fb0   0x0000006c   Code   RO         3896    i.malloc            mc_w.l(malloc.o)
-    0x0800101c   0x0800101c   0x000000a0   Code   RO          457    i.uart1_init        bsp_uart.o
-    0x080010bc   0x080010bc   0x0000009c   Code   RO          458    i.uart2_init        bsp_uart.o
-    0x08001158   0x08001158   0x000000a0   Code   RO          459    i.uart3_init        bsp_uart.o
-    0x080011f8   0x080011f8   0x000000a0   Code   RO          460    i.uart4_init        bsp_uart.o
-    0x08001298   0x08001298   0x000000a8   Code   RO          461    i.uart5_init        bsp_uart.o
-    0x08001340   0x08001340   0x0000001e   Code   RO          462    i.uart_send_byte    bsp_uart.o
-    0x0800135e   0x0800135e   0x0000002e   Code   RO          463    i.uart_send_string  bsp_uart.o
-    0x0800138c   0x0800138c   0x0000002c   Code   RO          534    i.wait_at           esp8266.o
-    0x080013b8   0x080013b8   0x000000a8   Code   RO          535    i.wifi_cmd          esp8266.o
-    0x08001460   0x08001460   0x00000118   Code   RO          536    i.wifi_init         esp8266.o
-    0x08001578   0x08001578   0x00000094   Code   RO          537    i.wifi_reset        esp8266.o
-    0x0800160c   0x0800160c   0x00000058   Data   RO          137    .conststring        stm32f10x_it.o
-    0x08001664   0x08001664   0x00000020   Data   RO         3967    Region$$Table       anon$$obj.o
+    0x08000740   0x08000740   0x00000006   Code   RO         2852    i.TIM_ClearITPendingBit  stm32f10x_tim.o
+    0x08000746   0x08000746   0x00000022   Code   RO         2878    i.TIM_GetITStatus   stm32f10x_tim.o
+    0x08000768   0x08000768   0x00000098   Code   RO          132    i.UART4_IRQHandler  stm32f10x_it.o
+    0x08000800   0x08000800   0x00000098   Code   RO          133    i.UART5_IRQHandler  stm32f10x_it.o
+    0x08000898   0x08000898   0x00000002   Code   RO          134    i.USART1_IRQHandler  stm32f10x_it.o
+    0x0800089a   0x0800089a   0x00000002   PAD
+    0x0800089c   0x0800089c   0x00000098   Code   RO          135    i.USART2_IRQHandler  stm32f10x_it.o
+    0x08000934   0x08000934   0x00000098   Code   RO          136    i.USART3_IRQHandler  stm32f10x_it.o
+    0x080009cc   0x080009cc   0x00000018   Code   RO         3393    i.USART_Cmd         stm32f10x_usart.o
+    0x080009e4   0x080009e4   0x0000001a   Code   RO         3396    i.USART_GetFlagStatus  stm32f10x_usart.o
+    0x080009fe   0x080009fe   0x00000054   Code   RO         3397    i.USART_GetITStatus  stm32f10x_usart.o
+    0x08000a52   0x08000a52   0x0000004a   Code   RO         3399    i.USART_ITConfig    stm32f10x_usart.o
+    0x08000a9c   0x08000a9c   0x000000d8   Code   RO         3400    i.USART_Init        stm32f10x_usart.o
+    0x08000b74   0x08000b74   0x0000000a   Code   RO         3407    i.USART_ReceiveData  stm32f10x_usart.o
+    0x08000b7e   0x08000b7e   0x00000008   Code   RO         3410    i.USART_SendData    stm32f10x_usart.o
+    0x08000b86   0x08000b86   0x00000002   PAD
+    0x08000b88   0x08000b88   0x00000020   Code   RO         3747    i.__0printf$2       mc_w.l(printf2.o)
+    0x08000ba8   0x08000ba8   0x0000000e   Code   RO         4015    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x08000bb6   0x08000bb6   0x00000002   Code   RO         4016    i.__scatterload_null  mc_w.l(handlers.o)
+    0x08000bb8   0x08000bb8   0x0000000e   Code   RO         4017    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x08000bc6   0x08000bc6   0x000000d6   Code   RO         3754    i._printf_core      mc_w.l(printf2.o)
+    0x08000c9c   0x08000c9c   0x0000009c   Code   RO          391    i.delay_hard        bsp_systick.o
+    0x08000d38   0x08000d38   0x00000018   Code   RO          392    i.delay_hard_ms     bsp_systick.o
+    0x08000d50   0x08000d50   0x0000015c   Code   RO          532    i.exec_all_wifi_cmd  esp8266.o
+    0x08000eac   0x08000eac   0x00000084   Code   RO          534    i.exec_wifi_cmd_by_time  esp8266.o
+    0x08000f30   0x08000f30   0x00000024   Code   RO          460    i.fputc             bsp_uart.o
+    0x08000f54   0x08000f54   0x00000050   Code   RO         3941    i.free              mc_w.l(malloc.o)
+    0x08000fa4   0x08000fa4   0x00000022   Code   RO          461    i.init_nvic         bsp_uart.o
+    0x08000fc6   0x08000fc6   0x00000002   PAD
+    0x08000fc8   0x08000fc8   0x00000028   Code   RO          535    i.init_wifi_1_en_rst  esp8266.o
+    0x08000ff0   0x08000ff0   0x00000028   Code   RO          536    i.init_wifi_2_en_rst  esp8266.o
+    0x08001018   0x08001018   0x00000028   Code   RO          537    i.init_wifi_3_en_rst  esp8266.o
+    0x08001040   0x08001040   0x00000028   Code   RO          538    i.init_wifi_4_en_rst  esp8266.o
+    0x08001068   0x08001068   0x00000048   Code   RO          539    i.init_wifi_en_rst  esp8266.o
+    0x080010b0   0x080010b0   0x00000030   Code   RO          540    i.init_wifi_power   esp8266.o
+    0x080010e0   0x080010e0   0x00000128   Code   RO           10    i.main              main.o
+    0x08001208   0x08001208   0x0000006c   Code   RO         3942    i.malloc            mc_w.l(malloc.o)
+    0x08001274   0x08001274   0x00000034   Code   RO          541    i.mode_set          esp8266.o
+    0x080012a8   0x080012a8   0x000000a0   Code   RO          462    i.uart1_init        bsp_uart.o
+    0x08001348   0x08001348   0x0000009c   Code   RO          463    i.uart2_init        bsp_uart.o
+    0x080013e4   0x080013e4   0x000000a0   Code   RO          464    i.uart3_init        bsp_uart.o
+    0x08001484   0x08001484   0x000000a0   Code   RO          465    i.uart4_init        bsp_uart.o
+    0x08001524   0x08001524   0x000000a8   Code   RO          466    i.uart5_init        bsp_uart.o
+    0x080015cc   0x080015cc   0x0000001e   Code   RO          467    i.uart_send_byte    bsp_uart.o
+    0x080015ea   0x080015ea   0x0000002e   Code   RO          468    i.uart_send_string  bsp_uart.o
+    0x08001618   0x08001618   0x0000004c   Code   RO          542    i.wait_at           esp8266.o
+    0x08001664   0x08001664   0x00000094   Code   RO          544    i.wifi_cmd_by_time  esp8266.o
+    0x080016f8   0x080016f8   0x000000d8   Code   RO          546    i.wifi_init         esp8266.o
+    0x080017d0   0x080017d0   0x00000010   Code   RO          547    i.wifi_power_cut    esp8266.o
+    0x080017e0   0x080017e0   0x00000010   Code   RO          548    i.wifi_power_on     esp8266.o
+    0x080017f0   0x080017f0   0x00000020   Data   RO         4013    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08001684, Size: 0x00004648, Max: 0x00010000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08001810, Size: 0x00004640, Max: 0x00010000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08001684   0x00000010   Data   RW          325    .data               base_timer.o
-    0x20000010   0x08001694   0x00000008   Data   RW          392    .data               bsp_systick.o
-    0x20000018   0x0800169c   0x00000014   Data   RW         2207    .data               stm32f10x_rcc.o
-    0x2000002c   0x080016b0   0x00000004   Data   RW         3937    .data               mc_w.l(stdout.o)
-    0x20000030   0x080016b4   0x00000004   Data   RW         3948    .data               mc_w.l(mvars.o)
-    0x20000034   0x080016b8   0x00000004   Data   RW         3949    .data               mc_w.l(mvars.o)
-    0x20000038        -       0x00004010   Zero   RW          538    .bss                esp8266.o
-    0x20004048        -       0x00000200   Zero   RW            2    HEAP                startup_stm32f10x_hd.o
-    0x20004248        -       0x00000400   Zero   RW            1    STACK               startup_stm32f10x_hd.o
+    0x20000000   0x08001810   0x00000010   Data   RW          330    .data               base_timer.o
+    0x20000010   0x08001820   0x00000008   Data   RW          397    .data               bsp_systick.o
+    0x20000018   0x08001828   0x00000014   Data   RW         2253    .data               stm32f10x_rcc.o
+    0x2000002c   0x0800183c   0x00000004   Data   RW         3983    .data               mc_w.l(stdout.o)
+    0x20000030   0x08001840   0x00000004   Data   RW         3994    .data               mc_w.l(mvars.o)
+    0x20000034   0x08001844   0x00000004   Data   RW         3995    .data               mc_w.l(mvars.o)
+    0x20000038        -       0x00004008   Zero   RW          550    .bss                esp8266.o
+    0x20004040        -       0x00000200   Zero   RW            2    HEAP                startup_stm32f10x_hd.o
+    0x20004240        -       0x00000400   Zero   RW            1    STACK               startup_stm32f10x_hd.o
 
 
 ==============================================================================
@@ -1608,19 +1631,19 @@ Image component sizes
          0          0          0         16          0        708   base_timer.o
        264         14          0          8          0      17500   bsp_systick.o
        950         58          0          0          0       8197   bsp_uart.o
-      1012        130          0          0      16400       9857   esp8266.o
-       116         26          0          0          0     255067   main.o
+      1284        222          0          0      16392      11534   esp8266.o
+       296         96          0          0          0     255087   main.o
        112         12          0          0          0       1180   misc.o
         36          8        304          0       1536        904   startup_stm32f10x_hd.o
        286          0          0          0          0       3212   stm32f10x_gpio.o
-       698         76         88          0          0       3768   stm32f10x_it.o
+       730         68          0          0          0       3760   stm32f10x_it.o
        276         32          0         20          0       4610   stm32f10x_rcc.o
         40          0          0          0          0       1922   stm32f10x_tim.o
        442          6          0          0          0       6393   stm32f10x_usart.o
        328         28          0          0          0       2237   system_stm32f10x.o
 
     ----------------------------------------------------------------------
-      4568        390        424         44      17936     315555   Object Totals
+      5052        544        336         44      17928     317244   Object Totals
          0          0         32          0          0          0   (incl. Generated)
          8          0          0          0          0          0   (incl. Padding)
 
@@ -1670,15 +1693,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      5340        436        424         56      17936     313711   Grand Totals
-      5340        436        424         56      17936     313711   ELF Image Totals
-      5340        436        424         56          0          0   ROM Totals
+      5824        590        336         56      17928     315244   Grand Totals
+      5824        590        336         56      17928     315244   ELF Image Totals
+      5824        590        336         56          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 5764 (   5.63kB)
-    Total RW  Size (RW Data + ZI Data)             17992 (  17.57kB)
-    Total ROM Size (Code + RO Data + RW Data)       5820 (   5.68kB)
+    Total RO  Size (Code + RO Data)                 6160 (   6.02kB)
+    Total RW  Size (RW Data + ZI Data)             17984 (  17.56kB)
+    Total ROM Size (Code + RO Data + RW Data)       6216 (   6.07kB)
 
 ==============================================================================
 

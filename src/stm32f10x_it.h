@@ -30,6 +30,9 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
 #include "timers/base_timer.h"
+#include "wifi/bsp_uart.h"
+#include "wifi/esp8266.h"
+
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

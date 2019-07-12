@@ -15584,14 +15584,6 @@ void delay_int_ms(uint64_t ms);
 
 
 
- 
-
-
-
-
-
-
-
 
 
 
@@ -15613,6 +15605,21 @@ void delay_int_ms(uint64_t ms);
 
 
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
 
 
 
@@ -15676,21 +15683,21 @@ typedef struct
             volatile u16 FramFinishFlag   : 1;
         } InfBit;
     };
-    uint8_t idle_time;
-    uint8_t idle_need;
 }
 wifi_frame_record;
 
 extern wifi_frame_record  wifi1_frame_record,
        wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
 
-
+void init_wifi_power(void);
+void wifi_power_cut(void);
+void wifi_power_on(void);
 void wifi_init(wifi_t wifi);
 void wifi_reset(wifi_t wifi);
-char* exec_wifi_cmd(wifi_t wifi, char* cmd,
-                    uint8_t idle_need);
-void exec_all_wifi_cmd(char* cmd, uint8_t idle_need);
+char* exec_wifi_cmd(wifi_t wifi, char* cmd);
+void exec_all_wifi_cmd(char* cmd);
 void wait_at(wifi_t wifi);
+void mode_set(wifi_t wifi);
 
 
 
@@ -15703,16 +15710,51 @@ int main(void)
                ((uint16_t)0x0000), ((uint16_t)0x0000),
                ((uint16_t)0x0004) | ((uint16_t)0x0008),
                ((uint16_t)0x0000));
+    init_wifi_power();
+    wifi_init(WIFI_1);
+    wifi_init(WIFI_2);
+    wifi_init(WIFI_3);
     wifi_init(WIFI_4);
     
-    printf("hello\n");
-    wifi_reset(WIFI_4);
+    
+    printf("wait1\n");
+    wait_at(WIFI_1);
+    printf("wait2\n");
+    wait_at(WIFI_2);
+    printf("wait3\n");
+    wait_at(WIFI_3);
+    printf("wait4\n");
     wait_at(WIFI_4);
-    while (1)
-    {
-        printf("hello\n");
-        char* ret = exec_wifi_cmd(WIFI_4, "AT+CWLAP", 2);
-        printf("%s\n", ret);
-        delay_hard_ms(1000);
-    }
+    printf("set1\n");
+    mode_set(WIFI_1);
+    printf("set2\n");
+    mode_set(WIFI_2);
+    printf("set3\n");
+    mode_set(WIFI_3);
+    printf("set4\n");
+    mode_set(WIFI_4);
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+while(1){
+    exec_all_wifi_cmd("AT+CWLAP");
+    printf("%s\n", wifi1_frame_record.Data_RX_BUF);
+    printf("%s\n", wifi2_frame_record.Data_RX_BUF);
+    printf("%s\n", wifi3_frame_record.Data_RX_BUF);
+    printf("%s\n", wifi4_frame_record.Data_RX_BUF);
+    delay_hard_ms(1000);
+}
+    
 }

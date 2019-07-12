@@ -153,6 +153,41 @@
                   |L4.148|
                           DCD      0x40011800
 
+                          AREA ||i.lcd_print_line||, CODE, READONLY, ALIGN=1
+
+                  lcd_print_line PROC
+;;;210    
+;;;211    void lcd_print_line(char* string, int row, int col)
+000000  b530              PUSH     {r4,r5,lr}
+;;;212    {
+000002  4604              MOV      r4,r0
+;;;213        if (row < 0 || row >= hrow_num || col < 0 || col >= hcol_num)
+000004  2900              CMP      r1,#0
+000006  db05              BLT      |L5.20|
+000008  2902              CMP      r1,#2
+00000a  da03              BGE      |L5.20|
+00000c  2a00              CMP      r2,#0
+00000e  db01              BLT      |L5.20|
+000010  2a10              CMP      r2,#0x10
+000012  db00              BLT      |L5.22|
+                  |L5.20|
+;;;214            return;
+;;;215        int display_offset = row * 40 + col;
+;;;216        int display_num = hcol_num - col;
+;;;217        
+;;;218        
+;;;219    }
+000014  bd30              POP      {r4,r5,pc}
+                  |L5.22|
+000016  eb010581          ADD      r5,r1,r1,LSL #2       ;215
+00001a  eb0200c5          ADD      r0,r2,r5,LSL #3       ;215
+00001e  f1c20310          RSB      r3,r2,#0x10           ;216
+000022  bf00              NOP      
+000024  e7f6              B        |L5.20|
+;;;220    
+                          ENDP
+
+
                           AREA ||i.read_data||, CODE, READONLY, ALIGN=2
 
                   read_data PROC
@@ -163,7 +198,7 @@
 ;;;75         start_read_data();
 000002  f7fffffe          BL       start_read_data
 ;;;76         uint8_t data = (0xFF & GPIO_ReadInputData(LED_DIS_PORT));
-000006  4803              LDR      r0,|L5.20|
+000006  4803              LDR      r0,|L6.20|
 000008  f7fffffe          BL       GPIO_ReadInputData
 00000c  b2c4              UXTB     r4,r0
 ;;;77         return data;
@@ -174,7 +209,7 @@
                           ENDP
 
 000012  0000              DCW      0x0000
-                  |L5.20|
+                  |L6.20|
                           DCD      0x40011800
 
                           AREA ||i.read_data_byte||, CODE, READONLY, ALIGN=1
@@ -271,7 +306,7 @@
 ;;;108    {
 ;;;109        GPIO_ResetBits(LED_DIS_PORT, RS_PIN);
 000002  f44f7180          MOV      r1,#0x100
-000006  4802              LDR      r0,|L8.16|
+000006  4802              LDR      r0,|L9.16|
 000008  f7fffffe          BL       GPIO_ResetBits
 ;;;110    }
 00000c  bd10              POP      {r4,pc}
@@ -279,7 +314,7 @@
                           ENDP
 
 00000e  0000              DCW      0x0000
-                  |L8.16|
+                  |L9.16|
                           DCD      0x40011800
 
                           AREA ||i.rs_set||, CODE, READONLY, ALIGN=2
@@ -291,7 +326,7 @@
 ;;;103    {
 ;;;104        GPIO_SetBits(LED_DIS_PORT, RS_PIN);
 000002  f44f7180          MOV      r1,#0x100
-000006  4802              LDR      r0,|L9.16|
+000006  4802              LDR      r0,|L10.16|
 000008  f7fffffe          BL       GPIO_SetBits
 ;;;105    }
 00000c  bd10              POP      {r4,pc}
@@ -299,7 +334,7 @@
                           ENDP
 
 00000e  0000              DCW      0x0000
-                  |L9.16|
+                  |L10.16|
                           DCD      0x40011800
 
                           AREA ||i.rw_reset||, CODE, READONLY, ALIGN=2
@@ -311,7 +346,7 @@
 ;;;118    {
 ;;;119        GPIO_ResetBits(LED_DIS_PORT, RW_PIN);
 000002  f44f6100          MOV      r1,#0x800
-000006  4802              LDR      r0,|L10.16|
+000006  4802              LDR      r0,|L11.16|
 000008  f7fffffe          BL       GPIO_ResetBits
 ;;;120    }
 00000c  bd10              POP      {r4,pc}
@@ -319,7 +354,7 @@
                           ENDP
 
 00000e  0000              DCW      0x0000
-                  |L10.16|
+                  |L11.16|
                           DCD      0x40011800
 
                           AREA ||i.rw_set||, CODE, READONLY, ALIGN=2
@@ -331,7 +366,7 @@
 ;;;113    {
 ;;;114        GPIO_SetBits(LED_DIS_PORT, RW_PIN);
 000002  f44f6100          MOV      r1,#0x800
-000006  4802              LDR      r0,|L11.16|
+000006  4802              LDR      r0,|L12.16|
 000008  f7fffffe          BL       GPIO_SetBits
 ;;;115    }
 00000c  bd10              POP      {r4,pc}
@@ -339,7 +374,7 @@
                           ENDP
 
 00000e  0000              DCW      0x0000
-                  |L11.16|
+                  |L12.16|
                           DCD      0x40011800
 
                           AREA ||i.set_data_pin_gpio||, CODE, READONLY, ALIGN=2
@@ -356,56 +391,56 @@
 000006  8020              STRH     r0,[r4,#0]
 ;;;41         GPIO_Init(LED_DIS_PORT, gpio_init_type);
 000008  4621              MOV      r1,r4
-00000a  4817              LDR      r0,|L12.104|
+00000a  4817              LDR      r0,|L13.104|
 00000c  f7fffffe          BL       GPIO_Init
 ;;;42         gpio_init_type->GPIO_Pin =  D1_PIN;
 000010  2002              MOVS     r0,#2
 000012  8020              STRH     r0,[r4,#0]
 ;;;43         GPIO_Init(LED_DIS_PORT, gpio_init_type);
 000014  4621              MOV      r1,r4
-000016  4814              LDR      r0,|L12.104|
+000016  4814              LDR      r0,|L13.104|
 000018  f7fffffe          BL       GPIO_Init
 ;;;44         gpio_init_type->GPIO_Pin =  D2_PIN;
 00001c  2004              MOVS     r0,#4
 00001e  8020              STRH     r0,[r4,#0]
 ;;;45         GPIO_Init(LED_DIS_PORT, gpio_init_type);
 000020  4621              MOV      r1,r4
-000022  4811              LDR      r0,|L12.104|
+000022  4811              LDR      r0,|L13.104|
 000024  f7fffffe          BL       GPIO_Init
 ;;;46         gpio_init_type->GPIO_Pin =  D3_PIN;
 000028  2008              MOVS     r0,#8
 00002a  8020              STRH     r0,[r4,#0]
 ;;;47         GPIO_Init(LED_DIS_PORT, gpio_init_type);
 00002c  4621              MOV      r1,r4
-00002e  480e              LDR      r0,|L12.104|
+00002e  480e              LDR      r0,|L13.104|
 000030  f7fffffe          BL       GPIO_Init
 ;;;48         gpio_init_type->GPIO_Pin =  D4_PIN;
 000034  2010              MOVS     r0,#0x10
 000036  8020              STRH     r0,[r4,#0]
 ;;;49         GPIO_Init(LED_DIS_PORT, gpio_init_type);
 000038  4621              MOV      r1,r4
-00003a  480b              LDR      r0,|L12.104|
+00003a  480b              LDR      r0,|L13.104|
 00003c  f7fffffe          BL       GPIO_Init
 ;;;50         gpio_init_type->GPIO_Pin =  D5_PIN;
 000040  2020              MOVS     r0,#0x20
 000042  8020              STRH     r0,[r4,#0]
 ;;;51         GPIO_Init(LED_DIS_PORT, gpio_init_type);
 000044  4621              MOV      r1,r4
-000046  4808              LDR      r0,|L12.104|
+000046  4808              LDR      r0,|L13.104|
 000048  f7fffffe          BL       GPIO_Init
 ;;;52         gpio_init_type->GPIO_Pin =  D6_PIN;
 00004c  2040              MOVS     r0,#0x40
 00004e  8020              STRH     r0,[r4,#0]
 ;;;53         GPIO_Init(LED_DIS_PORT, gpio_init_type);
 000050  4621              MOV      r1,r4
-000052  4805              LDR      r0,|L12.104|
+000052  4805              LDR      r0,|L13.104|
 000054  f7fffffe          BL       GPIO_Init
 ;;;54         gpio_init_type->GPIO_Pin =  D7_PIN;
 000058  2080              MOVS     r0,#0x80
 00005a  8020              STRH     r0,[r4,#0]
 ;;;55         GPIO_Init(LED_DIS_PORT, gpio_init_type);
 00005c  4621              MOV      r1,r4
-00005e  4802              LDR      r0,|L12.104|
+00005e  4802              LDR      r0,|L13.104|
 000060  f7fffffe          BL       GPIO_Init
 ;;;56     }
 000064  bd10              POP      {r4,pc}
@@ -413,7 +448,7 @@
                           ENDP
 
 000066  0000              DCW      0x0000
-                  |L12.104|
+                  |L13.104|
                           DCD      0x40011800
 
                           AREA ||i.start_read_data||, CODE, READONLY, ALIGN=1
@@ -468,11 +503,11 @@
 ;;;133    {
 ;;;134        while (read_status_byte() & BF_BIT);
 000002  bf00              NOP      
-                  |L15.4|
+                  |L16.4|
 000004  f7fffffe          BL       read_status_byte
 000008  f0000080          AND      r0,r0,#0x80
 00000c  2800              CMP      r0,#0
-00000e  d1f9              BNE      |L15.4|
+00000e  d1f9              BNE      |L16.4|
 ;;;135    }
 000010  bd10              POP      {r4,pc}
 ;;;136    
@@ -569,16 +604,16 @@
 000008  2400              MOVS     r4,#0
 ;;;84     
 ;;;85         for (; time < 8; time++)
-00000a  e018              B        |L18.62|
-                  |L18.12|
+00000a  e018              B        |L19.62|
+                  |L19.12|
 ;;;86         {
 ;;;87             switch (data & 1)
 00000c  f0050001          AND      r0,r5,#1
-000010  b110              CBZ      r0,|L18.24|
+000010  b110              CBZ      r0,|L19.24|
 000012  2801              CMP      r0,#1
-000014  d110              BNE      |L18.56|
-000016  e007              B        |L18.40|
-                  |L18.24|
+000014  d110              BNE      |L19.56|
+000016  e007              B        |L19.40|
+                  |L19.24|
 ;;;88             {
 ;;;89             case 0:
 ;;;90                 GPIO_WriteBit(LED_DIS_PORT, 1 << time, Bit_RESET);
@@ -586,11 +621,11 @@
 00001a  40a0              LSLS     r0,r0,r4
 00001c  b281              UXTH     r1,r0
 00001e  2200              MOVS     r2,#0
-000020  4808              LDR      r0,|L18.68|
+000020  4808              LDR      r0,|L19.68|
 000022  f7fffffe          BL       GPIO_WriteBit
 ;;;91                 break;
-000026  e007              B        |L18.56|
-                  |L18.40|
+000026  e007              B        |L19.56|
+                  |L19.40|
 ;;;92     
 ;;;93             case 1:
 ;;;94                 GPIO_WriteBit(LED_DIS_PORT, 1 << time, Bit_SET);
@@ -598,27 +633,27 @@
 00002a  40a0              LSLS     r0,r0,r4
 00002c  b281              UXTH     r1,r0
 00002e  2201              MOVS     r2,#1
-000030  4804              LDR      r0,|L18.68|
+000030  4804              LDR      r0,|L19.68|
 000032  f7fffffe          BL       GPIO_WriteBit
 ;;;95                 break;
 000036  bf00              NOP      
-                  |L18.56|
+                  |L19.56|
 000038  bf00              NOP                            ;91
 ;;;96             }
 ;;;97     
 ;;;98             data >>= 1;
 00003a  106d              ASRS     r5,r5,#1
 00003c  1c64              ADDS     r4,r4,#1              ;85
-                  |L18.62|
+                  |L19.62|
 00003e  2c08              CMP      r4,#8                 ;85
-000040  dbe4              BLT      |L18.12|
+000040  dbe4              BLT      |L19.12|
 ;;;99         }
 ;;;100    }
 000042  bd70              POP      {r4-r6,pc}
 ;;;101    
                           ENDP
 
-                  |L18.68|
+                  |L19.68|
                           DCD      0x40011800
 
                           AREA ||i.write_data_byte||, CODE, READONLY, ALIGN=1

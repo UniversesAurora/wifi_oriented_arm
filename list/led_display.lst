@@ -29139,3 +29139,19 @@ N    e_reset();
 N    delay_s(0x10);
 N}
 N
+N
+Nvoid lcd_print_line(char* string, int row, int col)
+N{
+N    if (row < 0 || row >= hrow_num || col < 0 || col >= hcol_num)
+X    if (row < 0 || row >= 2 || col < 0 || col >= 16)
+N        return;
+N    int display_offset = row * 40 + col;
+N    int display_num = hcol_num - col;
+X    int display_num = 16 - col;
+N    
+N    
+W "..\src\display\led_display.c" 215 9 variable "display_offset"  was declared but never referenced
+W "..\src\display\led_display.c" 216 9 variable "display_num"  was declared but never referenced
+N}
+N
+N

@@ -31646,6 +31646,12 @@ N#endif
 N
 L 8 "..\src\wifi/esp8266.h" 2
 N
+N#define      WIFI_POWER_RST_APBxClock_FUN                 RCC_APB2PeriphClockCmd
+N#define      WIFI_POWER_RST_CLK                           RCC_APB2Periph_GPIOF
+N#define      WIFI_POWER_RST_PORT                          GPIOF
+N#define      WIFI_POWER_RST_PIN                           GPIO_Pin_4
+N
+N
 N#define      WIFI_1_UART                                  UART2
 N#define      WIFI_2_UART                                  UART3
 N#define      WIFI_3_UART                                  UART4
@@ -31709,6 +31715,7 @@ N#define      WIFI_4_RST_CLK                               RCC_APB2Periph_GPIOF
 N#define      WIFI_4_RST_PORT                              GPIOF
 N#define      WIFI_4_RST_PIN                               GPIO_Pin_3
 N
+N
 N//#define INIT_WIFI_EN_RST(num) init_wifi_##num##_en_rst
 N
 N#define     WIFI_1_EN_ENABLE()                 GPIO_SetBits (WIFI_1_CH_PD_PORT, WIFI_1_CH_PD_PIN)
@@ -31764,21 +31771,21 @@ N            __IO u16 FramFinishFlag   : 1;
 X            volatile u16 FramFinishFlag   : 1;
 N        } InfBit;
 N    };
-N    uint8_t idle_time;
-N    uint8_t idle_need;
 N}
 Nwifi_frame_record;
 N
 Nextern wifi_frame_record  wifi1_frame_record,
 N       wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
 N
-N
+Nvoid init_wifi_power(void);
+Nvoid wifi_power_cut(void);
+Nvoid wifi_power_on(void);
 Nvoid wifi_init(wifi_t wifi);
 Nvoid wifi_reset(wifi_t wifi);
-Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd,
-N                    uint8_t idle_need);
-Nvoid exec_all_wifi_cmd(char* cmd, uint8_t idle_need);
+Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd);
+Nvoid exec_all_wifi_cmd(char* cmd);
 Nvoid wait_at(wifi_t wifi);
+Nvoid mode_set(wifi_t wifi);
 N
 N#endif
 N
@@ -31795,16 +31802,51 @@ N               USART_Mode_Rx | USART_Mode_Tx,
 X               ((uint16_t)0x0004) | ((uint16_t)0x0008),
 N               USART_HardwareFlowControl_None);
 X               ((uint16_t)0x0000));
+N    init_wifi_power();
+N    wifi_init(WIFI_1);
+N    wifi_init(WIFI_2);
+N    wifi_init(WIFI_3);
 N    wifi_init(WIFI_4);
 N    
-N    printf("hello\n");
-N    wifi_reset(WIFI_4);
+N    
+N    printf("wait1\n");
+N    wait_at(WIFI_1);
+N    printf("wait2\n");
+N    wait_at(WIFI_2);
+N    printf("wait3\n");
+N    wait_at(WIFI_3);
+N    printf("wait4\n");
 N    wait_at(WIFI_4);
-N    while (1)
-N    {
-N        printf("hello\n");
-N        char* ret = exec_wifi_cmd(WIFI_4, "AT+CWLAP", 2);
-N        printf("%s\n", ret);
-N        delay_hard_ms(1000);
-N    }
+N    printf("set1\n");
+N    mode_set(WIFI_1);
+N    printf("set2\n");
+N    mode_set(WIFI_2);
+N    printf("set3\n");
+N    mode_set(WIFI_3);
+N    printf("set4\n");
+N    mode_set(WIFI_4);
+N    //while (1)
+N//    
+N//        printf("hello\n");
+N//        char* ret = exec_wifi_cmd(WIFI_4, "AT+CWLAP", 2);
+N//        printf("%s\n", ret);
+N//    
+N//    printf("hello\n");
+N//        ret = exec_wifi_cmd(WIFI_1, "AT+CWLAP", 2);
+N//        printf("%s\n", ret);
+N//    printf("hello\n");
+N//        ret = exec_wifi_cmd(WIFI_2, "AT+CWLAP", 2);
+N//        printf("%s\n", ret);
+N//    printf("hello\n");
+N//        ret = exec_wifi_cmd(WIFI_3, "AT+CWLAP", 2);
+N//        printf("%s\n", ret);
+Nwhile(1){
+N    exec_all_wifi_cmd("AT+CWLAP");
+N    printf("%s\n", wifi1_frame_record.Data_RX_BUF);
+N    printf("%s\n", wifi2_frame_record.Data_RX_BUF);
+N    printf("%s\n", wifi3_frame_record.Data_RX_BUF);
+N    printf("%s\n", wifi4_frame_record.Data_RX_BUF);
+N    delay_hard_ms(1000);
+N}
+N    
 N}

@@ -13593,3 +13593,15 @@ void write_data_byte(uint8_t data)
     delay_s(0x10);
 }
 
+
+void lcd_print_line(char* string, int row, int col)
+{
+    if (row < 0 || row >= 2 || col < 0 || col >= 16)
+        return;
+    int display_offset = row * 40 + col;
+    int display_num = 16 - col;
+    
+    
+}
+
+

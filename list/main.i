@@ -15681,12 +15681,15 @@ typedef struct
 }
 wifi_frame_record;
 
-extern wifi_frame_record  wifi1_frame_record, wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
+extern wifi_frame_record  wifi1_frame_record,
+       wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
 
 
 void wifi_init(wifi_t wifi);
-void wifi_reset (wifi_t wifi);
-char* exec_wifi_cmd(wifi_t wifi, char* cmd, uint8_t idle_need);
+void wifi_reset(wifi_t wifi);
+char* exec_wifi_cmd(wifi_t wifi, char* cmd,
+                    uint8_t idle_need);
+void exec_all_wifi_cmd(char* cmd, uint8_t idle_need);
 void wait_at(wifi_t wifi);
 
 

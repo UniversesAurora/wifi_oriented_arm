@@ -190,6 +190,57 @@ char* exec_wifi_cmd(wifi_t wifi, char* cmd,
     return NULL;
 }
 
+void exec_all_wifi_cmd(char* cmd, uint8_t idle_need)
+{
+    wifi1_frame_record.InfBit.FramLength = 0;
+    wifi2_frame_record.InfBit.FramLength = 0;
+    wifi3_frame_record.InfBit.FramLength = 0;
+    wifi4_frame_record.InfBit.FramLength = 0;
+    size_t cmd_len = strlen(cmd);
+    char* to_send = malloc(cmd_len + 4);
+    strcpy(to_send, cmd);
+    strcat(to_send, "\r\n");
+    wifi1_frame_record.InfBit.FramFinishFlag = 0;
+    wifi2_frame_record.InfBit.FramFinishFlag = 0;
+    wifi3_frame_record.InfBit.FramFinishFlag = 0;
+    wifi4_frame_record.InfBit.FramFinishFlag = 0;
+
+    printf("send!\n");
+    wifi1_frame_record.idle_time = 0;
+    wifi2_frame_record.idle_time = 0;
+    wifi3_frame_record.idle_time = 0;
+    wifi4_frame_record.idle_time = 0;
+    wifi1_frame_record.idle_need = idle_need;
+    wifi2_frame_record.idle_need = idle_need;
+    wifi3_frame_record.idle_need = idle_need;
+    wifi4_frame_record.idle_need = idle_need;
+    uart_send_string(WIFI_1_UART, to_send);
+    uart_send_string(WIFI_2_UART, to_send);
+    uart_send_string(WIFI_3_UART, to_send);
+    uart_send_string(WIFI_4_UART, to_send);
+    free(to_send);
+
+    while (!wifi1_frame_record.InfBit.FramFinishFlag);
+
+    while (!wifi2_frame_record.InfBit.FramFinishFlag);
+
+    while (!wifi3_frame_record.InfBit.FramFinishFlag);
+
+    while (!wifi4_frame_record.InfBit.FramFinishFlag);
+
+    printf("ok\n");
+
+    wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength]
+        = '\0';
+    wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength]
+        = '\0';
+    wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength]
+        = '\0';
+    wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength]
+        = '\0';
+    return;
+}
+
 void wait_at(wifi_t wifi)
 {
     while (1)

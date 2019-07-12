@@ -31768,12 +31768,15 @@ N    uint8_t idle_need;
 N}
 Nwifi_frame_record;
 N
-Nextern wifi_frame_record  wifi1_frame_record, wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
+Nextern wifi_frame_record  wifi1_frame_record,
+N       wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
 N
 N
 Nvoid wifi_init(wifi_t wifi);
-Nvoid wifi_reset (wifi_t wifi);
-Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd, uint8_t idle_need);
+Nvoid wifi_reset(wifi_t wifi);
+Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd,
+N                    uint8_t idle_need);
+Nvoid exec_all_wifi_cmd(char* cmd, uint8_t idle_need);
 Nvoid wait_at(wifi_t wifi);
 N
 N#endif
@@ -31983,45 +31986,104 @@ N    char* to_send = malloc(cmd_len + 4);
 N    strcpy(to_send, cmd);
 N    strcat(to_send, "\r\n");
 N    record->InfBit.FramFinishFlag = 0;
-N    
-N    
+N
 N    printf("send!\n");
 N    record->idle_time = 0;
 N    record->idle_need = idle_need;
 N    uart_send_string(uart, to_send);
 N    free(to_send);
 N
-N    //delay_hard_ms(5000);
-N    
 N    while (!record->InfBit.FramFinishFlag);
+N
 N    printf("ok\n");
-N    
+N
 N    record->Data_RX_BUF[record->InfBit.FramLength] = '\0';
 N    return record->Data_RX_BUF;
 N}
 N
-Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd, uint8_t idle_need)
+Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd,
+N                    uint8_t idle_need)
 N{
 N    switch (wifi)
 N    {
 N    case WIFI_1:
-N        return wifi_cmd(&wifi1_frame_record, WIFI_1_UART, cmd, idle_need);
-X        return wifi_cmd(&wifi1_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), cmd, idle_need);
+N        return wifi_cmd(&wifi1_frame_record, WIFI_1_UART, cmd,
+X        return wifi_cmd(&wifi1_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), cmd,
+N                        idle_need);
 N
 N    case WIFI_2:
-N        return wifi_cmd(&wifi2_frame_record, WIFI_2_UART, cmd, idle_need);
-X        return wifi_cmd(&wifi2_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), cmd, idle_need);
+N        return wifi_cmd(&wifi2_frame_record, WIFI_2_UART, cmd,
+X        return wifi_cmd(&wifi2_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), cmd,
+N                        idle_need);
 N
 N    case WIFI_3:
-N        return wifi_cmd(&wifi3_frame_record, WIFI_3_UART, cmd, idle_need);
-X        return wifi_cmd(&wifi3_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), cmd, idle_need);
+N        return wifi_cmd(&wifi3_frame_record, WIFI_3_UART, cmd,
+X        return wifi_cmd(&wifi3_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), cmd,
+N                        idle_need);
 N
 N    case WIFI_4:
-N        return wifi_cmd(&wifi4_frame_record, WIFI_4_UART, cmd, idle_need);
-X        return wifi_cmd(&wifi4_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), cmd, idle_need);
+N        return wifi_cmd(&wifi4_frame_record, WIFI_4_UART, cmd,
+X        return wifi_cmd(&wifi4_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), cmd,
+N                        idle_need);
 N    }
+N
 N    return NULL;
 X    return 0;
+N}
+N
+Nvoid exec_all_wifi_cmd(char* cmd, uint8_t idle_need)
+N{
+N    wifi1_frame_record.InfBit.FramLength = 0;
+N    wifi2_frame_record.InfBit.FramLength = 0;
+N    wifi3_frame_record.InfBit.FramLength = 0;
+N    wifi4_frame_record.InfBit.FramLength = 0;
+N    size_t cmd_len = strlen(cmd);
+N    char* to_send = malloc(cmd_len + 4);
+N    strcpy(to_send, cmd);
+N    strcat(to_send, "\r\n");
+N    wifi1_frame_record.InfBit.FramFinishFlag = 0;
+N    wifi2_frame_record.InfBit.FramFinishFlag = 0;
+N    wifi3_frame_record.InfBit.FramFinishFlag = 0;
+N    wifi4_frame_record.InfBit.FramFinishFlag = 0;
+N
+N    printf("send!\n");
+N    wifi1_frame_record.idle_time = 0;
+N    wifi2_frame_record.idle_time = 0;
+N    wifi3_frame_record.idle_time = 0;
+N    wifi4_frame_record.idle_time = 0;
+N    wifi1_frame_record.idle_need = idle_need;
+N    wifi2_frame_record.idle_need = idle_need;
+N    wifi3_frame_record.idle_need = idle_need;
+N    wifi4_frame_record.idle_need = idle_need;
+N    uart_send_string(WIFI_1_UART, to_send);
+X    uart_send_string(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), to_send);
+N    uart_send_string(WIFI_2_UART, to_send);
+X    uart_send_string(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), to_send);
+N    uart_send_string(WIFI_3_UART, to_send);
+X    uart_send_string(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), to_send);
+N    uart_send_string(WIFI_4_UART, to_send);
+X    uart_send_string(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), to_send);
+N    free(to_send);
+N
+N    while (!wifi1_frame_record.InfBit.FramFinishFlag);
+N
+N    while (!wifi2_frame_record.InfBit.FramFinishFlag);
+N
+N    while (!wifi3_frame_record.InfBit.FramFinishFlag);
+N
+N    while (!wifi4_frame_record.InfBit.FramFinishFlag);
+N
+N    printf("ok\n");
+N
+N    wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength]
+N        = '\0';
+N    wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength]
+N        = '\0';
+N    wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength]
+N        = '\0';
+N    wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength]
+N        = '\0';
+N    return;
 N}
 N
 Nvoid wait_at(wifi_t wifi)
@@ -32030,6 +32092,7 @@ N    while (1)
 N    {
 N        if (strstr(exec_wifi_cmd(wifi, "AT", 1), "OK"))
 N            return;
+N
 N        wifi_reset(wifi);
 N    }
 N}

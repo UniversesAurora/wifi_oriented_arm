@@ -31769,12 +31769,15 @@ N    uint8_t idle_need;
 N}
 Nwifi_frame_record;
 N
-Nextern wifi_frame_record  wifi1_frame_record, wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
+Nextern wifi_frame_record  wifi1_frame_record,
+N       wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
 N
 N
 Nvoid wifi_init(wifi_t wifi);
-Nvoid wifi_reset (wifi_t wifi);
-Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd, uint8_t idle_need);
+Nvoid wifi_reset(wifi_t wifi);
+Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd,
+N                    uint8_t idle_need);
+Nvoid exec_all_wifi_cmd(char* cmd, uint8_t idle_need);
 Nvoid wait_at(wifi_t wifi);
 N
 N#endif

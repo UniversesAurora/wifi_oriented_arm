@@ -48,13 +48,11 @@ int main(void)
 //        printf("%s\n", ret);
     while (1)
     {
-        exec_all_wifi_cmd("AT+CWLAP");
+        exec_all_wifi_cmd("AT+CWLAP", 2000);
         printf("%s\n", wifi1_frame_record.Data_RX_BUF);
         printf("%s\n", wifi2_frame_record.Data_RX_BUF);
         printf("%s\n", wifi3_frame_record.Data_RX_BUF);
         printf("%s\n", wifi4_frame_record.Data_RX_BUF);
-        delay_hard_ms(1000);
+        systick_delay(1000);
     }
-
-    return 0;
 }

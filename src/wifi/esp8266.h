@@ -141,10 +141,8 @@ void wifi_power_cut(void);
 void wifi_power_on(void);
 void wifi_init(wifi_t wifi);
 void wifi_reset(wifi_t wifi);
-char* exec_wifi_cmd(wifi_t wifi, char* cmd);
-char* exec_wifi_cmd_by_time(wifi_t wifi, char* cmd,
-                            uint64_t time);
-void exec_all_wifi_cmd(char* cmd);
+char* exec_wifi_cmd(wifi_t wifi, char* cmd, uint64_t timeout);
+void exec_all_wifi_cmd(char* cmd, uint64_t timeout);
 void wait_at(wifi_t wifi);
 void mode_set(wifi_t wifi);
 

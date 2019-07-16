@@ -13425,7 +13425,7 @@ void base_timer_2_init(void)
 
 volatile uint64_t basic_tim1_int_times;
 
-void delay_base_timer_1(uint64_t time, uint32_t unit)
+static void delay_base_timer_1(uint64_t time, uint32_t unit)
 {
     uint32_t max = (65535 + 1) / unit;
     uint32_t max_ticks = unit * max - 1;
@@ -13462,7 +13462,7 @@ void delay_base_timer_1_ms(uint64_t ms)
 
 volatile uint64_t basic_tim2_int_times;
 
-void delay_base_timer_2(uint64_t time, uint32_t unit)
+static void delay_base_timer_2(uint64_t time, uint32_t unit)
 {
     uint32_t max = (65535 + 1) / unit;
     uint32_t max_ticks = unit * max - 1;

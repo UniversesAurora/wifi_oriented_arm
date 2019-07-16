@@ -13360,18 +13360,607 @@ void SysTick_CLKSourceConfig(uint32_t SysTick_CLKSource);
  
 # 5 "..\\src\\timers\\bsp_systick.h"
 # 6 "..\\src\\timers\\bsp_systick.h"
+# 1 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+ 
+ 
+ 
+ 
 
 
+
+
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+# 38 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+
+
+  
+
+
+
+    typedef unsigned int size_t;    
+# 54 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+
+
+
+
+extern __declspec(__nothrow) void *memcpy(void * __restrict  ,
+                    const void * __restrict  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) void *memmove(void *  ,
+                    const void *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) char *strcpy(char * __restrict  , const char * __restrict  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) char *strncpy(char * __restrict  , const char * __restrict  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) char *strcat(char * __restrict  , const char * __restrict  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) char *strncat(char * __restrict  , const char * __restrict  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) int memcmp(const void *  , const void *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int strcmp(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) int strncmp(const char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int strcasecmp(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int strncasecmp(const char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int strcoll(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strxfrm(char * __restrict  , const char * __restrict  , size_t  ) __attribute__((__nonnull__(2)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+# 193 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) void *memchr(const void *  , int  , size_t  ) __attribute__((__nonnull__(1)));
+
+   
+
+
+
+
+
+ 
+
+# 209 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) char *strchr(const char *  , int  ) __attribute__((__nonnull__(1)));
+
+   
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strcspn(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+
+# 232 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) char *strpbrk(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+
+   
+
+
+
+
+ 
+
+# 247 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) char *strrchr(const char *  , int  ) __attribute__((__nonnull__(1)));
+
+   
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strspn(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+ 
+
+# 270 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) char *strstr(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+
+   
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) char *strtok(char * __restrict  , const char * __restrict  ) __attribute__((__nonnull__(2)));
+extern __declspec(__nothrow) char *_strtok_r(char *  , const char *  , char **  ) __attribute__((__nonnull__(2,3)));
+
+extern __declspec(__nothrow) char *strtok_r(char *  , const char *  , char **  ) __attribute__((__nonnull__(2,3)));
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) void *memset(void *  , int  , size_t  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+ 
+extern __declspec(__nothrow) char *strerror(int  );
+   
+
+
+
+
+
+ 
+extern __declspec(__nothrow) size_t strlen(const char *  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strlcpy(char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strlcat(char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) void _membitcpybl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpybb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpyhl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpyhb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpywl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpywb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovebl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovebb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovehl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovehb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovewl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovewb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+# 502 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+
+
+
+ 
+
+# 7 "..\\src\\timers\\bsp_systick.h"
+
+
+
+
+
+typedef struct
+{
+    uint8_t exist;
+    uint64_t time;
+    uint64_t next_remain_time;
+    void (* reg_func)(uint64_t reg_identifier, void* message);
+    void* message;
+}
+tick_wait_unit;
+
+typedef struct
+{
+    uint64_t reg_num;
+    tick_wait_unit queue[100];
+}
+tick_wait_queue;
+
+typedef struct
+{
+    uint8_t exist;
+    uint64_t reg_identifier;
+    uint8_t finnish;
+}
+delay_unit;
+
+typedef struct
+{
+    uint64_t delay_queue_num;
+    delay_unit queue[50];
+}
+delay_queue;
+
+
+uint64_t tick_reg(uint64_t time,
+                  void (* reg_func)(uint64_t reg_identifier, void* message),
+                  void* message);
+int tick_unreg(uint64_t reg_identifier);
+int systick_delay(uint64_t time);
+void timeout_handler(uint64_t reg_identifier, void* flag);
+
+ 
 void delay_hard_us(uint64_t us);
 void delay_hard_ms(uint64_t ms);
-void delay_int_us(uint64_t us);
-void delay_int_ms(uint64_t ms);
 
 
 
 # 2 "..\\src\\timers\\bsp_systick.c"
 
-void delay_hard(uint64_t time, uint32_t unit)
+delay_queue delay_record;
+tick_wait_queue tick_wait_record;
+
+
+
+uint64_t tick_reg(uint64_t time,
+                  void (* reg_func)(uint64_t reg_identifier, void* message),
+                  void* message)
+{
+    tick_wait_unit* new_unit;
+    uint64_t count;
+
+    for (count = 0; count < 100; count++)
+    {
+        if (!tick_wait_record.queue[count].exist)
+            break;
+    }
+
+    if (count >= 100)
+        return 100;
+
+    new_unit = &tick_wait_record.queue[count];
+
+    new_unit->time = time;
+    new_unit->next_remain_time = time;
+    new_unit->reg_func = reg_func;
+    new_unit->message = message;
+    tick_wait_record.reg_num++;
+    new_unit->exist = 1;
+
+    if (tick_wait_record.reg_num == 1)
+        SysTick_Config(72000);
+
+    return count;
+}
+
+int tick_unreg(uint64_t reg_identifier)
+{
+    if (reg_identifier >= 100)
+        return -1;
+
+    if (!tick_wait_record.queue[reg_identifier].exist)
+        return 0;
+
+    memset(&tick_wait_record.queue[reg_identifier], 0,
+           sizeof(tick_wait_unit));
+    tick_wait_record.reg_num--;
+
+    if (tick_wait_record.reg_num == 0)
+        ((SysTick_Type *) ((0xE000E000) + 0x0010))->CTRL &= ~(1ul << 0);
+
+    return 0;
+}
+
+
+static void delay_timer_handler(uint64_t reg_identifier,
+                                void* message)
+{
+    if (reg_identifier >= 100)
+        return;
+
+    uint64_t i, counted = 0;
+
+    for (i = 0; i < 50; i++)
+    {
+        if (delay_record.queue[i].exist)
+        {
+            counted++;
+
+            if (delay_record.queue[i].reg_identifier == reg_identifier)
+            {
+                delay_record.queue[i].finnish = 1;
+                tick_unreg(delay_record.queue[i].reg_identifier);
+                delay_record.delay_queue_num--;
+                return;
+            }
+
+            if (counted == delay_record.delay_queue_num)
+                return;
+        }
+    }
+}
+
+
+int systick_delay(uint64_t time)
+{
+    uint64_t i;
+
+    for (i = 0; i < 50; i++)
+    {
+        if (!delay_record.queue[i].exist)
+            break;
+    }
+
+    if (i >= 50)
+        return -1;
+
+    delay_record.queue[i].finnish = 0;
+    uint64_t reg_identifier = tick_reg(time,
+                                       delay_timer_handler, 0);
+
+    if (reg_identifier == 100)
+        return -1;
+
+    delay_record.delay_queue_num++;
+    delay_record.queue[i].reg_identifier = reg_identifier;
+    delay_record.queue[i].exist = 1;
+
+    while (!delay_record.queue[i].finnish);
+
+    memset(&delay_record.queue[i], 0, sizeof(delay_unit));
+
+    return 0;
+}
+
+void timeout_handler(uint64_t reg_identifier, void* flag)
+{
+    *(uint8_t*)flag = 1;
+    tick_unreg(reg_identifier);
+}
+
+
+ 
+
+static void delay_hard(uint64_t time, uint32_t unit)
 {
     uint32_t max = (0xFFFFFFul << 0) / unit;
     uint32_t max_ticks = unit * max;
@@ -13403,39 +13992,4 @@ void delay_hard_ms(uint64_t ms)
 }
 
 
-
-volatile uint64_t systick_int_times;
-
-void delay_int(uint64_t time, uint32_t unit)
-{
-    uint32_t max = (0xFFFFFFul << 0) / unit;
-    uint32_t max_ticks = unit * max;
-    uint64_t times = time / max;
-    uint64_t remain = time % max;
-
-    systick_int_times = times;
-    SysTick_Config(max_ticks);
-
-    while (systick_int_times);
-
-    ((SysTick_Type *) ((0xE000E000) + 0x0010))->CTRL &= ~(1ul << 0);
-
-
-    systick_int_times = 1;
-    SysTick_Config(remain * unit);
-
-    while (systick_int_times);
-
-    ((SysTick_Type *) ((0xE000E000) + 0x0010))->CTRL &= ~(1ul << 0);
-}
-
-void delay_int_us(uint64_t us)
-{
-    delay_int(us, 72);
-}
-
-void delay_int_ms(uint64_t ms)
-{
-    delay_int(ms, 72000);
-}
 

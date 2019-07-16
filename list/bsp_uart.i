@@ -14356,6 +14356,11 @@ extern __declspec(__nothrow) void __use_no_semihosting(void);
 
 
 
+
+
+
+
+
 void uart1_init(uint32_t baudrate, uint16_t word_length,
                 uint16_t stopbits, uint16_t parity, uint16_t mode,
                 uint16_t flow);

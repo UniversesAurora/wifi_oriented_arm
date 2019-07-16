@@ -29,3 +29,4 @@
 ..\out\bsp_systick.o: ..\lib\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h
 ..\out\bsp_systick.o: ..\lib\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 ..\out\bsp_systick.o: ..\lib\STM32F10x_StdPeriph_Driver\inc\misc.h
+..\out\bsp_systick.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

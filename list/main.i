@@ -15522,6 +15522,11 @@ extern __declspec(__nothrow) void __use_no_semihosting(void);
 
 
 
+
+
+
+
+
 void uart1_init(uint32_t baudrate, uint16_t word_length,
                 uint16_t stopbits, uint16_t parity, uint16_t mode,
                 uint16_t flow);
@@ -15551,12 +15556,55 @@ void uart_send_string(USART_TypeDef* pUSARTx, char* str);
 
 # 5 "..\\src\\wifi/../timers/bsp_systick.h"
 # 6 "..\\src\\wifi/../timers/bsp_systick.h"
+# 7 "..\\src\\wifi/../timers/bsp_systick.h"
 
 
+
+
+
+typedef struct
+{
+    uint8_t exist;
+    uint64_t time;
+    uint64_t next_remain_time;
+    void (* reg_func)(uint64_t reg_identifier, void* message);
+    void* message;
+}
+tick_wait_unit;
+
+typedef struct
+{
+    uint64_t reg_num;
+    tick_wait_unit queue[100];
+}
+tick_wait_queue;
+
+typedef struct
+{
+    uint8_t exist;
+    uint64_t reg_identifier;
+    uint8_t finnish;
+}
+delay_unit;
+
+typedef struct
+{
+    uint64_t delay_queue_num;
+    delay_unit queue[50];
+}
+delay_queue;
+
+
+uint64_t tick_reg(uint64_t time,
+                  void (* reg_func)(uint64_t reg_identifier, void* message),
+                  void* message);
+int tick_unreg(uint64_t reg_identifier);
+int systick_delay(uint64_t time);
+void timeout_handler(uint64_t reg_identifier, void* flag);
+
+ 
 void delay_hard_us(uint64_t us);
 void delay_hard_ms(uint64_t ms);
-void delay_int_us(uint64_t us);
-void delay_int_ms(uint64_t ms);
 
 
 
@@ -15661,6 +15709,7 @@ void delay_int_ms(uint64_t ms);
 
 
 
+
 typedef enum
 {
     WIFI_1,
@@ -15689,13 +15738,15 @@ wifi_frame_record;
 extern wifi_frame_record  wifi1_frame_record,
        wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
 
+
+
 void init_wifi_power(void);
 void wifi_power_cut(void);
 void wifi_power_on(void);
 void wifi_init(wifi_t wifi);
 void wifi_reset(wifi_t wifi);
-char* exec_wifi_cmd(wifi_t wifi, char* cmd);
-void exec_all_wifi_cmd(char* cmd);
+char* exec_wifi_cmd(wifi_t wifi, char* cmd, uint64_t timeout);
+void exec_all_wifi_cmd(char* cmd, uint64_t timeout);
 void wait_at(wifi_t wifi);
 void mode_set(wifi_t wifi);
 
@@ -15715,8 +15766,8 @@ int main(void)
     wifi_init(WIFI_2);
     wifi_init(WIFI_3);
     wifi_init(WIFI_4);
-    
-    
+
+
     printf("wait1\n");
     wait_at(WIFI_1);
     printf("wait2\n");
@@ -15733,7 +15784,6 @@ int main(void)
     mode_set(WIFI_3);
     printf("set4\n");
     mode_set(WIFI_4);
-    
 
 
 
@@ -15748,13 +15798,15 @@ int main(void)
 
 
 
-while(1){
-    exec_all_wifi_cmd("AT+CWLAP");
-    printf("%s\n", wifi1_frame_record.Data_RX_BUF);
-    printf("%s\n", wifi2_frame_record.Data_RX_BUF);
-    printf("%s\n", wifi3_frame_record.Data_RX_BUF);
-    printf("%s\n", wifi4_frame_record.Data_RX_BUF);
-    delay_hard_ms(1000);
-}
-    
+
+
+    while (1)
+    {
+        exec_all_wifi_cmd("AT+CWLAP", 2000);
+        printf("%s\n", wifi1_frame_record.Data_RX_BUF);
+        printf("%s\n", wifi2_frame_record.Data_RX_BUF);
+        printf("%s\n", wifi3_frame_record.Data_RX_BUF);
+        printf("%s\n", wifi4_frame_record.Data_RX_BUF);
+        systick_delay(1000);
+    }
 }

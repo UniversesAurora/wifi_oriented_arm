@@ -13410,7 +13410,13 @@ void delay_base_timer_2_ms(uint64_t ms);
 
 
 # 33 "..\\src\\stm32f10x_it.h"
+# 1 "..\\src\\timers/bsp_systick.h"
 
+
+
+# 5 "..\\src\\timers/bsp_systick.h"
+# 6 "..\\src\\timers/bsp_systick.h"
+# 1 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
  
  
  
@@ -13419,12 +13425,472 @@ void delay_base_timer_2_ms(uint64_t ms);
 
 
 
+ 
+
+
+
+
 
 
 
 
  
-# 2 "..\\src\\stm32f10x_it.c"
+
+
+
+
+
+
+
+
+
+
+
+
+# 38 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+
+
+  
+
+
+
+    typedef unsigned int size_t;    
+# 54 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+
+
+
+
+extern __declspec(__nothrow) void *memcpy(void * __restrict  ,
+                    const void * __restrict  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) void *memmove(void *  ,
+                    const void *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) char *strcpy(char * __restrict  , const char * __restrict  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) char *strncpy(char * __restrict  , const char * __restrict  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) char *strcat(char * __restrict  , const char * __restrict  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) char *strncat(char * __restrict  , const char * __restrict  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) int memcmp(const void *  , const void *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int strcmp(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+extern __declspec(__nothrow) int strncmp(const char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int strcasecmp(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int strncasecmp(const char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+ 
+extern __declspec(__nothrow) int strcoll(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strxfrm(char * __restrict  , const char * __restrict  , size_t  ) __attribute__((__nonnull__(2)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+# 193 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) void *memchr(const void *  , int  , size_t  ) __attribute__((__nonnull__(1)));
+
+   
+
+
+
+
+
+ 
+
+# 209 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) char *strchr(const char *  , int  ) __attribute__((__nonnull__(1)));
+
+   
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strcspn(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+ 
+
+# 232 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) char *strpbrk(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+
+   
+
+
+
+
+ 
+
+# 247 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) char *strrchr(const char *  , int  ) __attribute__((__nonnull__(1)));
+
+   
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strspn(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+ 
+
+# 270 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+extern __declspec(__nothrow) char *strstr(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
+
+   
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) char *strtok(char * __restrict  , const char * __restrict  ) __attribute__((__nonnull__(2)));
+extern __declspec(__nothrow) char *_strtok_r(char *  , const char *  , char **  ) __attribute__((__nonnull__(2,3)));
+
+extern __declspec(__nothrow) char *strtok_r(char *  , const char *  , char **  ) __attribute__((__nonnull__(2,3)));
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) void *memset(void *  , int  , size_t  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+ 
+extern __declspec(__nothrow) char *strerror(int  );
+   
+
+
+
+
+
+ 
+extern __declspec(__nothrow) size_t strlen(const char *  ) __attribute__((__nonnull__(1)));
+   
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strlcpy(char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) size_t strlcat(char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+extern __declspec(__nothrow) void _membitcpybl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpybb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpyhl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpyhb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpywl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitcpywb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovebl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovebb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovehl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovehb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovewl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+extern __declspec(__nothrow) void _membitmovewb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+# 502 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
+
+
+
+ 
+
+# 7 "..\\src\\timers/bsp_systick.h"
+
+
+
+
+
+typedef struct
+{
+    uint8_t exist;
+    uint64_t time;
+    uint64_t next_remain_time;
+    void (* reg_func)(uint64_t reg_identifier, void* message);
+    void* message;
+}
+tick_wait_unit;
+
+typedef struct
+{
+    uint64_t reg_num;
+    tick_wait_unit queue[100];
+}
+tick_wait_queue;
+
+typedef struct
+{
+    uint8_t exist;
+    uint64_t reg_identifier;
+    uint8_t finnish;
+}
+delay_unit;
+
+typedef struct
+{
+    uint64_t delay_queue_num;
+    delay_unit queue[50];
+}
+delay_queue;
+
+
+uint64_t tick_reg(uint64_t time,
+                  void (* reg_func)(uint64_t reg_identifier, void* message),
+                  void* message);
+int tick_unreg(uint64_t reg_identifier);
+int systick_delay(uint64_t time);
+void timeout_handler(uint64_t reg_identifier, void* flag);
+
+ 
+void delay_hard_us(uint64_t us);
+void delay_hard_ms(uint64_t ms);
+
+
+
+# 34 "..\\src\\stm32f10x_it.h"
 # 1 "..\\src\\wifi/bsp_uart.h"
 
 
@@ -14427,6 +14893,11 @@ extern __declspec(__nothrow) void __use_no_semihosting(void);
 
 
 
+
+
+
+
+
 void uart1_init(uint32_t baudrate, uint16_t word_length,
                 uint16_t stopbits, uint16_t parity, uint16_t mode,
                 uint16_t flow);
@@ -14449,7 +14920,7 @@ void uart_send_string(USART_TypeDef* pUSARTx, char* str);
 
 
 
-# 3 "..\\src\\stm32f10x_it.c"
+# 35 "..\\src\\stm32f10x_it.h"
 # 1 "..\\src\\wifi/esp8266.h"
 
 
@@ -15192,445 +15663,8 @@ extern __declspec(__nothrow) int __C_library_version_number(void);
 
  
 # 5 "..\\src\\wifi/esp8266.h"
-# 1 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
- 
- 
- 
- 
-
-
-
-
- 
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-# 38 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
-
-
-  
-
-
-
-    typedef unsigned int size_t;    
-# 54 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
-
-
-
-
-extern __declspec(__nothrow) void *memcpy(void * __restrict  ,
-                    const void * __restrict  , size_t  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
- 
-extern __declspec(__nothrow) void *memmove(void *  ,
-                    const void *  , size_t  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
-
-
-
- 
-extern __declspec(__nothrow) char *strcpy(char * __restrict  , const char * __restrict  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
- 
-extern __declspec(__nothrow) char *strncpy(char * __restrict  , const char * __restrict  , size_t  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
-
- 
-
-extern __declspec(__nothrow) char *strcat(char * __restrict  , const char * __restrict  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
- 
-extern __declspec(__nothrow) char *strncat(char * __restrict  , const char * __restrict  , size_t  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
-
-
- 
-
-
-
-
-
-
- 
-
-extern __declspec(__nothrow) int memcmp(const void *  , const void *  , size_t  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
-
- 
-extern __declspec(__nothrow) int strcmp(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
- 
-extern __declspec(__nothrow) int strncmp(const char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
-
-
- 
-extern __declspec(__nothrow) int strcasecmp(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
-
- 
-extern __declspec(__nothrow) int strncasecmp(const char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
-
-
- 
-extern __declspec(__nothrow) int strcoll(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
-
-
-
- 
-
-extern __declspec(__nothrow) size_t strxfrm(char * __restrict  , const char * __restrict  , size_t  ) __attribute__((__nonnull__(2)));
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-# 193 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
-extern __declspec(__nothrow) void *memchr(const void *  , int  , size_t  ) __attribute__((__nonnull__(1)));
-
-   
-
-
-
-
-
- 
-
-# 209 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
-extern __declspec(__nothrow) char *strchr(const char *  , int  ) __attribute__((__nonnull__(1)));
-
-   
-
-
-
-
- 
-
-extern __declspec(__nothrow) size_t strcspn(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
- 
-
-# 232 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
-extern __declspec(__nothrow) char *strpbrk(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
-
-   
-
-
-
-
- 
-
-# 247 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
-extern __declspec(__nothrow) char *strrchr(const char *  , int  ) __attribute__((__nonnull__(1)));
-
-   
-
-
-
-
-
- 
-
-extern __declspec(__nothrow) size_t strspn(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
- 
-
-# 270 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
-extern __declspec(__nothrow) char *strstr(const char *  , const char *  ) __attribute__((__nonnull__(1,2)));
-
-   
-
-
-
-
-
- 
-
-extern __declspec(__nothrow) char *strtok(char * __restrict  , const char * __restrict  ) __attribute__((__nonnull__(2)));
-extern __declspec(__nothrow) char *_strtok_r(char *  , const char *  , char **  ) __attribute__((__nonnull__(2,3)));
-
-extern __declspec(__nothrow) char *strtok_r(char *  , const char *  , char **  ) __attribute__((__nonnull__(2,3)));
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-extern __declspec(__nothrow) void *memset(void *  , int  , size_t  ) __attribute__((__nonnull__(1)));
-   
-
-
-
- 
-extern __declspec(__nothrow) char *strerror(int  );
-   
-
-
-
-
-
- 
-extern __declspec(__nothrow) size_t strlen(const char *  ) __attribute__((__nonnull__(1)));
-   
-
-
-
- 
-
-extern __declspec(__nothrow) size_t strlcpy(char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-extern __declspec(__nothrow) size_t strlcat(char *  , const char *  , size_t  ) __attribute__((__nonnull__(1,2)));
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-extern __declspec(__nothrow) void _membitcpybl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
-extern __declspec(__nothrow) void _membitcpybb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
-extern __declspec(__nothrow) void _membitcpyhl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
-extern __declspec(__nothrow) void _membitcpyhb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
-extern __declspec(__nothrow) void _membitcpywl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
-extern __declspec(__nothrow) void _membitcpywb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
-extern __declspec(__nothrow) void _membitmovebl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
-extern __declspec(__nothrow) void _membitmovebb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
-extern __declspec(__nothrow) void _membitmovehl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
-extern __declspec(__nothrow) void _membitmovehb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
-extern __declspec(__nothrow) void _membitmovewl(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
-extern __declspec(__nothrow) void _membitmovewb(void *  , const void *  , int  , int  , size_t  ) __attribute__((__nonnull__(1,2)));
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-# 502 "C:\\Keil_v5\\ARM\\ARMCC\\Bin\\..\\include\\string.h"
-
-
-
- 
-
 # 6 "..\\src\\wifi/esp8266.h"
 # 7 "..\\src\\wifi/esp8266.h"
-# 1 "..\\src\\wifi/../timers/bsp_systick.h"
-
-
-
-# 5 "..\\src\\wifi/../timers/bsp_systick.h"
-# 6 "..\\src\\wifi/../timers/bsp_systick.h"
-
-
-void delay_hard_us(uint64_t us);
-void delay_hard_ms(uint64_t ms);
-void delay_int_us(uint64_t us);
-void delay_int_ms(uint64_t ms);
-
-
-
 # 8 "..\\src\\wifi/esp8266.h"
 
 
@@ -15732,6 +15766,7 @@ void delay_int_ms(uint64_t ms);
 
 
 
+
 typedef enum
 {
     WIFI_1,
@@ -15760,26 +15795,65 @@ wifi_frame_record;
 extern wifi_frame_record  wifi1_frame_record,
        wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
 
+
+
 void init_wifi_power(void);
 void wifi_power_cut(void);
 void wifi_power_on(void);
 void wifi_init(wifi_t wifi);
 void wifi_reset(wifi_t wifi);
-char* exec_wifi_cmd(wifi_t wifi, char* cmd);
-void exec_all_wifi_cmd(char* cmd);
+char* exec_wifi_cmd(wifi_t wifi, char* cmd, uint64_t timeout);
+void exec_all_wifi_cmd(char* cmd, uint64_t timeout);
 void wait_at(wifi_t wifi);
 void mode_set(wifi_t wifi);
 
 
 
 
-# 4 "..\\src\\stm32f10x_it.c"
+# 36 "..\\src\\stm32f10x_it.h"
 
-extern volatile uint64_t systick_int_times;
+
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+ 
+# 2 "..\\src\\stm32f10x_it.c"
+
+extern tick_wait_queue tick_wait_record;
 
 void SysTick_Handler(void)
 {
-    systick_int_times--;
+    uint64_t i;
+    uint64_t counted = 0;
+
+    for (i = 0; i < 100; i++)
+    {
+        if (tick_wait_record.queue[i].exist)
+        {
+            tick_wait_record.queue[i].next_remain_time--;
+            counted++;
+
+            if (tick_wait_record.queue[i].next_remain_time == 0)
+            {
+                tick_wait_record.queue[i].next_remain_time =
+                    tick_wait_record.queue[i].time;
+                tick_wait_record.queue[i].reg_func(i,
+                                                   tick_wait_record.queue[i].message);
+            }
+        }
+
+        if (counted == tick_wait_record.reg_num)
+            break;
+    }
 }
 
 extern volatile uint64_t basic_tim1_int_times;
@@ -15822,11 +15896,14 @@ void USART2_IRQHandler(void)
                 (4096 - 1))
             wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength++]
                 = ucCh;
-        
+
         if (ucCh == 0x0a
-                && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength- 2] == 0x0d
-                && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength- 3] == 'K'
-                && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength- 4] == 'O')
+                && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength
+                        - 2] == 0x0d
+                && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength
+                        - 3] == 'K'
+                && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength
+                        - 4] == 'O')
             wifi1_frame_record.InfBit.FramFinishFlag = 1;
     }
 }
@@ -15845,11 +15922,14 @@ void USART3_IRQHandler(void)
                 = ucCh;
 
         if (ucCh == 0x0a
-                && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength- 2] == 0x0d
-                && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength- 3] == 'K'
-                && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength- 4] == 'O')
+                && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength
+                        - 2] == 0x0d
+                && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength
+                        - 3] == 'K'
+                && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength
+                        - 4] == 'O')
             wifi2_frame_record.InfBit.FramFinishFlag = 1;
-        }
+    }
 }
 
 void UART4_IRQHandler(void)
@@ -15864,11 +15944,14 @@ void UART4_IRQHandler(void)
                 (4096 - 1))
             wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength++]
                 = ucCh;
-        
+
         if (ucCh == 0x0a
-                && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength- 2] == 0x0d
-                && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength- 3] == 'K'
-                && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength- 4] == 'O')
+                && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength
+                        - 2] == 0x0d
+                && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength
+                        - 3] == 'K'
+                && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength
+                        - 4] == 'O')
             wifi3_frame_record.InfBit.FramFinishFlag = 1;
     }
 }
@@ -15886,11 +15969,14 @@ void UART5_IRQHandler(void)
                 (4096 - 1))
             wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength++]
                 = ucCh;
-        
+
         if (ucCh == 0x0a
-                && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength- 2] == 0x0d
-                && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength- 3] == 'K'
-                && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength- 4] == 'O')
+                && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength
+                        - 2] == 0x0d
+                && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength
+                        - 3] == 'K'
+                && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength
+                        - 4] == 'O')
             wifi4_frame_record.InfBit.FramFinishFlag = 1;
     }
 }

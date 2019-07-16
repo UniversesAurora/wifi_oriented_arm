@@ -13380,6 +13380,7 @@ uint8_t read_data_byte(void);
 void write_cmd_byte(uint8_t data);
 void write_cmd_byte_no_wait(uint8_t data);
 void write_data_byte(uint8_t data);
+void lcd_print_line(char* string, int row, int col);
 
 
 
@@ -13515,7 +13516,7 @@ static void e_reset(void)
     GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x1000));
 }
 
-void wait_bf(void)
+static void wait_bf(void)
 {
     while (read_status_byte() & 0b10000000);
 }
@@ -13596,12 +13597,14 @@ void write_data_byte(uint8_t data)
 
 void lcd_print_line(char* string, int row, int col)
 {
-    if (row < 0 || row >= 2 || col < 0 || col >= 16)
+    if (row < 0 || row >= 2 || col < 0
+            || col >= 16)
         return;
+
     int display_offset = row * 40 + col;
     int display_num = 16 - col;
-    
-    
+
+
 }
 
 

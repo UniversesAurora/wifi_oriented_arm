@@ -1,10 +1,31 @@
 #include "stm32f10x_it.h"
 
-extern volatile uint64_t systick_int_times;
+extern tick_wait_queue tick_wait_record;
 
 void SysTick_Handler(void)
 {
-    systick_int_times--;
+    uint64_t i;
+    uint64_t counted = 0;
+
+    for (i = 0; i < MAX_TICK_WAIT_QUEUE_LEN; i++)
+    {
+        if (tick_wait_record.queue[i].exist)
+        {
+            tick_wait_record.queue[i].next_remain_time--;
+            counted++;
+
+            if (tick_wait_record.queue[i].next_remain_time == 0)
+            {
+                tick_wait_record.queue[i].next_remain_time =
+                    tick_wait_record.queue[i].time;
+                tick_wait_record.queue[i].reg_func(i,
+                                                   tick_wait_record.queue[i].message);
+            }
+        }
+
+        if (counted == tick_wait_record.reg_num)
+            break;
+    }
 }
 
 extern volatile uint64_t basic_tim1_int_times;

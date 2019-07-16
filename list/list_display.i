@@ -13385,6 +13385,7 @@ uint8_t read_data_byte(void);
 void write_cmd_byte(uint8_t data);
 void write_cmd_byte_no_wait(uint8_t data);
 void write_data_byte(uint8_t data);
+void lcd_print_line(char* string, int row, int col);
 
 
 

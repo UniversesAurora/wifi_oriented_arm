@@ -11053,7 +11053,7 @@ N  #include "stm32f10x_conf.h"
 L 1 "..\src\stm32f10x_conf.h" 1
 N/**
 N  ******************************************************************************
-N  * @file    Project/STM32F10x_StdPeriph_Template/stm32f10x_conf.h 
+N  * @file    Project/STM32F10x_StdPeriph_Template/stm32f10x_conf.h
 N  * @author  MCD Application Team
 N  * @version V3.5.0
 N  * @date    08-April-2011
@@ -28792,7 +28792,7 @@ L 51 "..\src\stm32f10x_conf.h" 2
 N
 N/* Exported types ------------------------------------------------------------*/
 N/* Exported constants --------------------------------------------------------*/
-N/* Uncomment the line below to expanse the "assert_param" macro in the 
+N/* Uncomment the line below to expanse the "assert_param" macro in the
 N   Standard Peripheral Library drivers code */
 N/* #define USE_FULL_ASSERT    1 */
 N
@@ -28801,16 +28801,16 @@ N#ifdef  USE_FULL_ASSERT
 S
 S/**
 S  * @brief  The assert_param macro is used for function's parameters check.
-S  * @param  expr: If expr is false, it calls assert_failed function which reports 
-S  *         the name of the source file and the source line number of the call 
+S  * @param  expr: If expr is false, it calls assert_failed function which reports
+S  *         the name of the source file and the source line number of the call
 S  *         that failed. If expr is true, it returns no value.
 S  * @retval None
 S  */
-S  #define assert_param(expr) ((expr) ? (void)0 : assert_failed((uint8_t *)__FILE__, __LINE__))
+S#define assert_param(expr) ((expr) ? (void)0 : assert_failed((uint8_t *)__FILE__, __LINE__))
 S/* Exported functions ------------------------------------------------------- */
-S  void assert_failed(uint8_t* file, uint32_t line);
+Svoid assert_failed(uint8_t* file, uint32_t line);
 N#else
-N  #define assert_param(expr) ((void)0)
+N#define assert_param(expr) ((void)0)
 N#endif /* USE_FULL_ASSERT */
 N
 N#endif /* __STM32F10x_CONF_H */
@@ -31603,6 +31603,11 @@ N
 N#define  UART5_IRQ                UART5_IRQn
 N
 N
+N#ifdef DEBUG
+N#define debug_printf(fmt, ...)   printf(fmt, ##__VA_ARGS__)
+N#else
+S#define debug_printf(fmt, ...)
+N#endif
 N
 N
 Nvoid uart1_init(uint32_t baudrate, uint16_t word_length,
@@ -31635,12 +31640,57 @@ N#define __BSP_SYSTICK_H
 N
 N#include <stm32f10x.h>
 N#include <core_cm3.h>
+N#include <string.h>
 N
 N
+N#define MAX_TICK_WAIT_QUEUE_LEN 100
+N#define MAX_DELAY_QUEUE_LEN     50
+N
+Ntypedef struct
+N{
+N    uint8_t exist;
+N    uint64_t time;
+N    uint64_t next_remain_time;
+N    void (* reg_func)(uint64_t reg_identifier, void* message);
+N    void* message;
+N}
+Ntick_wait_unit;
+N
+Ntypedef struct
+N{
+N    uint64_t reg_num;
+N    tick_wait_unit queue[MAX_TICK_WAIT_QUEUE_LEN];
+X    tick_wait_unit queue[100];
+N}
+Ntick_wait_queue;
+N
+Ntypedef struct
+N{
+N    uint8_t exist;
+N    uint64_t reg_identifier;
+N    uint8_t finnish;
+N}
+Ndelay_unit;
+N
+Ntypedef struct
+N{
+N    uint64_t delay_queue_num;
+N    delay_unit queue[MAX_DELAY_QUEUE_LEN];
+X    delay_unit queue[50];
+N}
+Ndelay_queue;
+N
+N
+Nuint64_t tick_reg(uint64_t time,
+N                  void (* reg_func)(uint64_t reg_identifier, void* message),
+N                  void* message);
+Nint tick_unreg(uint64_t reg_identifier);
+Nint systick_delay(uint64_t time);
+Nvoid timeout_handler(uint64_t reg_identifier, void* flag);
+N
+N/* Better not to use these functions */
 Nvoid delay_hard_us(uint64_t us);
 Nvoid delay_hard_ms(uint64_t ms);
-Nvoid delay_int_us(uint64_t us);
-Nvoid delay_int_ms(uint64_t ms);
 N
 N#endif
 N
@@ -31716,8 +31766,6 @@ N#define      WIFI_4_RST_PORT                              GPIOF
 N#define      WIFI_4_RST_PIN                               GPIO_Pin_3
 N
 N
-N//#define INIT_WIFI_EN_RST(num) init_wifi_##num##_en_rst
-N
 N#define     WIFI_1_EN_ENABLE()                 GPIO_SetBits (WIFI_1_CH_PD_PORT, WIFI_1_CH_PD_PIN)
 N#define     WIFI_1_EN_DISABLE()                GPIO_ResetBits (WIFI_1_CH_PD_PORT, WIFI_1_CH_PD_PIN)
 N
@@ -31742,8 +31790,11 @@ N
 N#define     WIFI_4_RST_HIGH_LEVEL()            GPIO_SetBits (WIFI_4_RST_PORT, WIFI_4_RST_PIN)
 N#define     WIFI_4_RST_LOW_LEVEL()             GPIO_ResetBits (WIFI_4_RST_PORT, WIFI_4_RST_PIN)
 N
-N#define     RX_BUF_MAX_LEN                     4096
 N
+N
+N
+N
+N#define     RX_BUF_MAX_LEN                     4096
 N
 Ntypedef enum
 N{
@@ -31777,13 +31828,15 @@ N
 Nextern wifi_frame_record  wifi1_frame_record,
 N       wifi2_frame_record, wifi3_frame_record, wifi4_frame_record;
 N
+N
+N
 Nvoid init_wifi_power(void);
 Nvoid wifi_power_cut(void);
 Nvoid wifi_power_on(void);
 Nvoid wifi_init(wifi_t wifi);
 Nvoid wifi_reset(wifi_t wifi);
-Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd);
-Nvoid exec_all_wifi_cmd(char* cmd);
+Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd, uint64_t timeout);
+Nvoid exec_all_wifi_cmd(char* cmd, uint64_t timeout);
 Nvoid wait_at(wifi_t wifi);
 Nvoid mode_set(wifi_t wifi);
 N
@@ -31807,8 +31860,8 @@ N    wifi_init(WIFI_1);
 N    wifi_init(WIFI_2);
 N    wifi_init(WIFI_3);
 N    wifi_init(WIFI_4);
-N    
-N    
+N
+N
 N    printf("wait1\n");
 N    wait_at(WIFI_1);
 N    printf("wait2\n");
@@ -31825,12 +31878,13 @@ N    printf("set3\n");
 N    mode_set(WIFI_3);
 N    printf("set4\n");
 N    mode_set(WIFI_4);
-N    //while (1)
-N//    
+N
+N//while (1)
+N//
 N//        printf("hello\n");
 N//        char* ret = exec_wifi_cmd(WIFI_4, "AT+CWLAP", 2);
 N//        printf("%s\n", ret);
-N//    
+N//
 N//    printf("hello\n");
 N//        ret = exec_wifi_cmd(WIFI_1, "AT+CWLAP", 2);
 N//        printf("%s\n", ret);
@@ -31840,13 +31894,13 @@ N//        printf("%s\n", ret);
 N//    printf("hello\n");
 N//        ret = exec_wifi_cmd(WIFI_3, "AT+CWLAP", 2);
 N//        printf("%s\n", ret);
-Nwhile(1){
-N    exec_all_wifi_cmd("AT+CWLAP");
-N    printf("%s\n", wifi1_frame_record.Data_RX_BUF);
-N    printf("%s\n", wifi2_frame_record.Data_RX_BUF);
-N    printf("%s\n", wifi3_frame_record.Data_RX_BUF);
-N    printf("%s\n", wifi4_frame_record.Data_RX_BUF);
-N    delay_hard_ms(1000);
-N}
-N    
+N    while (1)
+N    {
+N        exec_all_wifi_cmd("AT+CWLAP", 2000);
+N        printf("%s\n", wifi1_frame_record.Data_RX_BUF);
+N        printf("%s\n", wifi2_frame_record.Data_RX_BUF);
+N        printf("%s\n", wifi3_frame_record.Data_RX_BUF);
+N        printf("%s\n", wifi4_frame_record.Data_RX_BUF);
+N        systick_delay(1000);
+N    }
 N}

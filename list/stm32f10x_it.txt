@@ -182,193 +182,55 @@
                           AREA ||i.UART4_IRQHandler||, CODE, READONLY, ALIGN=2
 
                   UART4_IRQHandler PROC
-;;;106    
-;;;107    void UART4_IRQHandler(void)
+;;;70     
+;;;71     void UART4_IRQHandler(void)
 000000  b510              PUSH     {r4,lr}
-;;;108    {
-;;;109        uint8_t ucCh;
-;;;110    
-;;;111        if (USART_GetITStatus(UART4, USART_IT_RXNE) != RESET)
+;;;72     {
+;;;73         if (USART_GetITStatus(UART4, USART_IT_RXNE) != RESET)
 000002  f2405125          MOV      r1,#0x525
-000006  4821              LDR      r0,|L4.140|
+000006  4804              LDR      r0,|L4.24|
 000008  f7fffffe          BL       USART_GetITStatus
-00000c  2800              CMP      r0,#0
-00000e  d03c              BEQ      |L4.138|
-;;;112        {
-;;;113            ucCh = USART_ReceiveData(UART4);
-000010  481e              LDR      r0,|L4.140|
-000012  f7fffffe          BL       USART_ReceiveData
-000016  b2c4              UXTB     r4,r0
-;;;114    
-;;;115            if (wifi3_frame_record.InfBit.FramLength <
-000018  481d              LDR      r0,|L4.144|
-00001a  8800              LDRH     r0,[r0,#0]  ; wifi3_frame_record
-00001c  f3c0000e          UBFX     r0,r0,#0,#15
-000020  f64071ff          MOV      r1,#0xfff
-000024  4288              CMP      r0,r1
-000026  da0d              BGE      |L4.68|
-;;;116                    (RX_BUF_MAX_LEN - 1))
-;;;117                wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength++]
-000028  4919              LDR      r1,|L4.144|
-00002a  8809              LDRH     r1,[r1,#0]  ; wifi3_frame_record
-00002c  f3c1000e          UBFX     r0,r1,#0,#15
-000030  1c41              ADDS     r1,r0,#1
-000032  4a17              LDR      r2,|L4.144|
-000034  8812              LDRH     r2,[r2,#0]  ; wifi3_frame_record
-000036  f361020e          BFI      r2,r1,#0,#15
-00003a  4915              LDR      r1,|L4.144|
-00003c  800a              STRH     r2,[r1,#0]
-00003e  f5a15180          SUB      r1,r1,#0x1000
-000042  540c              STRB     r4,[r1,r0]
-                  |L4.68|
-;;;118                    = ucCh;
-;;;119    
-;;;120            if (ucCh == 0x0a
-000044  2c0a              CMP      r4,#0xa
-000046  d120              BNE      |L4.138|
-;;;121                    && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength
-000048  4811              LDR      r0,|L4.144|
-00004a  8800              LDRH     r0,[r0,#0]  ; wifi3_frame_record
-00004c  f3c0000e          UBFX     r0,r0,#0,#15
-000050  1e80              SUBS     r0,r0,#2
-000052  4910              LDR      r1,|L4.148|
-000054  5c08              LDRB     r0,[r1,r0]
-000056  280d              CMP      r0,#0xd
-000058  d117              BNE      |L4.138|
-;;;122                            - 2] == 0x0d
-;;;123                    && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength
-00005a  480d              LDR      r0,|L4.144|
-00005c  8800              LDRH     r0,[r0,#0]  ; wifi3_frame_record
-00005e  f3c0000e          UBFX     r0,r0,#0,#15
-000062  1ec0              SUBS     r0,r0,#3
-000064  5c08              LDRB     r0,[r1,r0]
-000066  284b              CMP      r0,#0x4b
-000068  d10f              BNE      |L4.138|
-;;;124                            - 3] == 'K'
-;;;125                    && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength
-00006a  4809              LDR      r0,|L4.144|
-00006c  8800              LDRH     r0,[r0,#0]  ; wifi3_frame_record
-00006e  f3c0000e          UBFX     r0,r0,#0,#15
-000072  1f00              SUBS     r0,r0,#4
-000074  5c08              LDRB     r0,[r1,r0]
-000076  284f              CMP      r0,#0x4f
-000078  d107              BNE      |L4.138|
-;;;126                            - 4] == 'O')
-;;;127                wifi3_frame_record.InfBit.FramFinishFlag = 1;
-00007a  4805              LDR      r0,|L4.144|
-00007c  8800              LDRH     r0,[r0,#0]  ; wifi3_frame_record
-00007e  f4204000          BIC      r0,r0,#0x8000
-000082  f5004000          ADD      r0,r0,#0x8000
-000086  4902              LDR      r1,|L4.144|
-000088  8008              STRH     r0,[r1,#0]
-                  |L4.138|
-;;;128        }
-;;;129    }
-00008a  bd10              POP      {r4,pc}
-;;;130    
+00000c  b118              CBZ      r0,|L4.22|
+;;;74             wifi_interrupt_handler(UART4, &wifi3_frame_record);
+00000e  4903              LDR      r1,|L4.28|
+000010  4801              LDR      r0,|L4.24|
+000012  f7fffffe          BL       wifi_interrupt_handler
+                  |L4.22|
+;;;75     }
+000016  bd10              POP      {r4,pc}
+;;;76     
                           ENDP
 
-                  |L4.140|
+                  |L4.24|
                           DCD      0x40004c00
-                  |L4.144|
-                          DCD      wifi3_frame_record+0x1000
-                  |L4.148|
+                  |L4.28|
                           DCD      wifi3_frame_record
 
                           AREA ||i.UART5_IRQHandler||, CODE, READONLY, ALIGN=2
 
                   UART5_IRQHandler PROC
-;;;131    
-;;;132    void UART5_IRQHandler(void)
+;;;77     
+;;;78     void UART5_IRQHandler(void)
 000000  b510              PUSH     {r4,lr}
-;;;133    {
-;;;134        uint8_t ucCh;
-;;;135    
-;;;136        if (USART_GetITStatus(UART5, USART_IT_RXNE) != RESET)
+;;;79     {
+;;;80         if (USART_GetITStatus(UART5, USART_IT_RXNE) != RESET)
 000002  f2405125          MOV      r1,#0x525
-000006  4821              LDR      r0,|L5.140|
+000006  4804              LDR      r0,|L5.24|
 000008  f7fffffe          BL       USART_GetITStatus
-00000c  2800              CMP      r0,#0
-00000e  d03c              BEQ      |L5.138|
-;;;137        {
-;;;138            ucCh = USART_ReceiveData(UART5);
-000010  481e              LDR      r0,|L5.140|
-000012  f7fffffe          BL       USART_ReceiveData
-000016  b2c4              UXTB     r4,r0
-;;;139    
-;;;140            if (wifi4_frame_record.InfBit.FramLength <
-000018  481d              LDR      r0,|L5.144|
-00001a  8800              LDRH     r0,[r0,#0]  ; wifi4_frame_record
-00001c  f3c0000e          UBFX     r0,r0,#0,#15
-000020  f64071ff          MOV      r1,#0xfff
-000024  4288              CMP      r0,r1
-000026  da0d              BGE      |L5.68|
-;;;141                    (RX_BUF_MAX_LEN - 1))
-;;;142                wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength++]
-000028  4919              LDR      r1,|L5.144|
-00002a  8809              LDRH     r1,[r1,#0]  ; wifi4_frame_record
-00002c  f3c1000e          UBFX     r0,r1,#0,#15
-000030  1c41              ADDS     r1,r0,#1
-000032  4a17              LDR      r2,|L5.144|
-000034  8812              LDRH     r2,[r2,#0]  ; wifi4_frame_record
-000036  f361020e          BFI      r2,r1,#0,#15
-00003a  4915              LDR      r1,|L5.144|
-00003c  800a              STRH     r2,[r1,#0]
-00003e  f5a15180          SUB      r1,r1,#0x1000
-000042  540c              STRB     r4,[r1,r0]
-                  |L5.68|
-;;;143                    = ucCh;
-;;;144    
-;;;145            if (ucCh == 0x0a
-000044  2c0a              CMP      r4,#0xa
-000046  d120              BNE      |L5.138|
-;;;146                    && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength
-000048  4811              LDR      r0,|L5.144|
-00004a  8800              LDRH     r0,[r0,#0]  ; wifi4_frame_record
-00004c  f3c0000e          UBFX     r0,r0,#0,#15
-000050  1e80              SUBS     r0,r0,#2
-000052  4910              LDR      r1,|L5.148|
-000054  5c08              LDRB     r0,[r1,r0]
-000056  280d              CMP      r0,#0xd
-000058  d117              BNE      |L5.138|
-;;;147                            - 2] == 0x0d
-;;;148                    && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength
-00005a  480d              LDR      r0,|L5.144|
-00005c  8800              LDRH     r0,[r0,#0]  ; wifi4_frame_record
-00005e  f3c0000e          UBFX     r0,r0,#0,#15
-000062  1ec0              SUBS     r0,r0,#3
-000064  5c08              LDRB     r0,[r1,r0]
-000066  284b              CMP      r0,#0x4b
-000068  d10f              BNE      |L5.138|
-;;;149                            - 3] == 'K'
-;;;150                    && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength
-00006a  4809              LDR      r0,|L5.144|
-00006c  8800              LDRH     r0,[r0,#0]  ; wifi4_frame_record
-00006e  f3c0000e          UBFX     r0,r0,#0,#15
-000072  1f00              SUBS     r0,r0,#4
-000074  5c08              LDRB     r0,[r1,r0]
-000076  284f              CMP      r0,#0x4f
-000078  d107              BNE      |L5.138|
-;;;151                            - 4] == 'O')
-;;;152                wifi4_frame_record.InfBit.FramFinishFlag = 1;
-00007a  4805              LDR      r0,|L5.144|
-00007c  8800              LDRH     r0,[r0,#0]  ; wifi4_frame_record
-00007e  f4204000          BIC      r0,r0,#0x8000
-000082  f5004000          ADD      r0,r0,#0x8000
-000086  4902              LDR      r1,|L5.144|
-000088  8008              STRH     r0,[r1,#0]
-                  |L5.138|
-;;;153        }
-;;;154    }
-00008a  bd10              POP      {r4,pc}
-;;;155    
+00000c  b118              CBZ      r0,|L5.22|
+;;;81             wifi_interrupt_handler(UART5, &wifi4_frame_record);
+00000e  4903              LDR      r1,|L5.28|
+000010  4801              LDR      r0,|L5.24|
+000012  f7fffffe          BL       wifi_interrupt_handler
+                  |L5.22|
+;;;82     }
+000016  bd10              POP      {r4,pc}
+;;;83     
                           ENDP
 
-                  |L5.140|
+                  |L5.24|
                           DCD      0x40005000
-                  |L5.144|
-                          DCD      wifi4_frame_record+0x1000
-                  |L5.148|
+                  |L5.28|
                           DCD      wifi4_frame_record
 
                           AREA ||i.USART1_IRQHandler||, CODE, READONLY, ALIGN=1
@@ -391,187 +253,49 @@
 ;;;59     void UART2_IRQHandler(void)
 000000  b510              PUSH     {r4,lr}
 ;;;60     {
-;;;61         uint8_t ucCh;
-;;;62     
-;;;63         if (USART_GetITStatus(UART2, USART_IT_RXNE) != RESET)
+;;;61         if (USART_GetITStatus(UART2, USART_IT_RXNE) != RESET)
 000002  f2405125          MOV      r1,#0x525
-000006  4821              LDR      r0,|L7.140|
+000006  4804              LDR      r0,|L7.24|
 000008  f7fffffe          BL       USART_GetITStatus
-00000c  2800              CMP      r0,#0
-00000e  d03c              BEQ      |L7.138|
-;;;64         {
-;;;65             ucCh = USART_ReceiveData(UART2);
-000010  481e              LDR      r0,|L7.140|
-000012  f7fffffe          BL       USART_ReceiveData
-000016  b2c4              UXTB     r4,r0
-;;;66     
-;;;67             if (wifi1_frame_record.InfBit.FramLength <
-000018  481d              LDR      r0,|L7.144|
-00001a  8800              LDRH     r0,[r0,#0]  ; wifi1_frame_record
-00001c  f3c0000e          UBFX     r0,r0,#0,#15
-000020  f64071ff          MOV      r1,#0xfff
-000024  4288              CMP      r0,r1
-000026  da0d              BGE      |L7.68|
-;;;68                     (RX_BUF_MAX_LEN - 1))
-;;;69                 wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength++]
-000028  4919              LDR      r1,|L7.144|
-00002a  8809              LDRH     r1,[r1,#0]  ; wifi1_frame_record
-00002c  f3c1000e          UBFX     r0,r1,#0,#15
-000030  1c41              ADDS     r1,r0,#1
-000032  4a17              LDR      r2,|L7.144|
-000034  8812              LDRH     r2,[r2,#0]  ; wifi1_frame_record
-000036  f361020e          BFI      r2,r1,#0,#15
-00003a  4915              LDR      r1,|L7.144|
-00003c  800a              STRH     r2,[r1,#0]
-00003e  f5a15180          SUB      r1,r1,#0x1000
-000042  540c              STRB     r4,[r1,r0]
-                  |L7.68|
-;;;70                     = ucCh;
-;;;71     
-;;;72             if (ucCh == 0x0a
-000044  2c0a              CMP      r4,#0xa
-000046  d120              BNE      |L7.138|
-;;;73                     && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength
-000048  4811              LDR      r0,|L7.144|
-00004a  8800              LDRH     r0,[r0,#0]  ; wifi1_frame_record
-00004c  f3c0000e          UBFX     r0,r0,#0,#15
-000050  1e80              SUBS     r0,r0,#2
-000052  4910              LDR      r1,|L7.148|
-000054  5c08              LDRB     r0,[r1,r0]
-000056  280d              CMP      r0,#0xd
-000058  d117              BNE      |L7.138|
-;;;74                             - 2] == 0x0d
-;;;75                     && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength
-00005a  480d              LDR      r0,|L7.144|
-00005c  8800              LDRH     r0,[r0,#0]  ; wifi1_frame_record
-00005e  f3c0000e          UBFX     r0,r0,#0,#15
-000062  1ec0              SUBS     r0,r0,#3
-000064  5c08              LDRB     r0,[r1,r0]
-000066  284b              CMP      r0,#0x4b
-000068  d10f              BNE      |L7.138|
-;;;76                             - 3] == 'K'
-;;;77                     && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength
-00006a  4809              LDR      r0,|L7.144|
-00006c  8800              LDRH     r0,[r0,#0]  ; wifi1_frame_record
-00006e  f3c0000e          UBFX     r0,r0,#0,#15
-000072  1f00              SUBS     r0,r0,#4
-000074  5c08              LDRB     r0,[r1,r0]
-000076  284f              CMP      r0,#0x4f
-000078  d107              BNE      |L7.138|
-;;;78                             - 4] == 'O')
-;;;79                 wifi1_frame_record.InfBit.FramFinishFlag = 1;
-00007a  4805              LDR      r0,|L7.144|
-00007c  8800              LDRH     r0,[r0,#0]  ; wifi1_frame_record
-00007e  f4204000          BIC      r0,r0,#0x8000
-000082  f5004000          ADD      r0,r0,#0x8000
-000086  4902              LDR      r1,|L7.144|
-000088  8008              STRH     r0,[r1,#0]
-                  |L7.138|
-;;;80         }
-;;;81     }
-00008a  bd10              POP      {r4,pc}
-;;;82     
+00000c  b118              CBZ      r0,|L7.22|
+;;;62             wifi_interrupt_handler(UART2, &wifi1_frame_record);
+00000e  4903              LDR      r1,|L7.28|
+000010  4801              LDR      r0,|L7.24|
+000012  f7fffffe          BL       wifi_interrupt_handler
+                  |L7.22|
+;;;63     }
+000016  bd10              POP      {r4,pc}
+;;;64     
                           ENDP
 
-                  |L7.140|
+                  |L7.24|
                           DCD      0x40004400
-                  |L7.144|
-                          DCD      wifi1_frame_record+0x1000
-                  |L7.148|
+                  |L7.28|
                           DCD      wifi1_frame_record
 
                           AREA ||i.USART3_IRQHandler||, CODE, READONLY, ALIGN=2
 
                   USART3_IRQHandler PROC
-;;;82     
-;;;83     void UART3_IRQHandler(void)
+;;;64     
+;;;65     void UART3_IRQHandler(void)
 000000  b510              PUSH     {r4,lr}
-;;;84     {
-;;;85         uint8_t ucCh;
-;;;86     
-;;;87         if (USART_GetITStatus(UART3, USART_IT_RXNE) != RESET)
+;;;66     {
+;;;67         if (USART_GetITStatus(UART3, USART_IT_RXNE) != RESET)
 000002  f2405125          MOV      r1,#0x525
-000006  4821              LDR      r0,|L8.140|
+000006  4804              LDR      r0,|L8.24|
 000008  f7fffffe          BL       USART_GetITStatus
-00000c  2800              CMP      r0,#0
-00000e  d03c              BEQ      |L8.138|
-;;;88         {
-;;;89             ucCh = USART_ReceiveData(UART3);
-000010  481e              LDR      r0,|L8.140|
-000012  f7fffffe          BL       USART_ReceiveData
-000016  b2c4              UXTB     r4,r0
-;;;90     
-;;;91             if (wifi2_frame_record.InfBit.FramLength <
-000018  481d              LDR      r0,|L8.144|
-00001a  8800              LDRH     r0,[r0,#0]  ; wifi2_frame_record
-00001c  f3c0000e          UBFX     r0,r0,#0,#15
-000020  f64071ff          MOV      r1,#0xfff
-000024  4288              CMP      r0,r1
-000026  da0d              BGE      |L8.68|
-;;;92                     (RX_BUF_MAX_LEN - 1))
-;;;93                 wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength++]
-000028  4919              LDR      r1,|L8.144|
-00002a  8809              LDRH     r1,[r1,#0]  ; wifi2_frame_record
-00002c  f3c1000e          UBFX     r0,r1,#0,#15
-000030  1c41              ADDS     r1,r0,#1
-000032  4a17              LDR      r2,|L8.144|
-000034  8812              LDRH     r2,[r2,#0]  ; wifi2_frame_record
-000036  f361020e          BFI      r2,r1,#0,#15
-00003a  4915              LDR      r1,|L8.144|
-00003c  800a              STRH     r2,[r1,#0]
-00003e  f5a15180          SUB      r1,r1,#0x1000
-000042  540c              STRB     r4,[r1,r0]
-                  |L8.68|
-;;;94                     = ucCh;
-;;;95     
-;;;96             if (ucCh == 0x0a
-000044  2c0a              CMP      r4,#0xa
-000046  d120              BNE      |L8.138|
-;;;97                     && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength
-000048  4811              LDR      r0,|L8.144|
-00004a  8800              LDRH     r0,[r0,#0]  ; wifi2_frame_record
-00004c  f3c0000e          UBFX     r0,r0,#0,#15
-000050  1e80              SUBS     r0,r0,#2
-000052  4910              LDR      r1,|L8.148|
-000054  5c08              LDRB     r0,[r1,r0]
-000056  280d              CMP      r0,#0xd
-000058  d117              BNE      |L8.138|
-;;;98                             - 2] == 0x0d
-;;;99                     && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength
-00005a  480d              LDR      r0,|L8.144|
-00005c  8800              LDRH     r0,[r0,#0]  ; wifi2_frame_record
-00005e  f3c0000e          UBFX     r0,r0,#0,#15
-000062  1ec0              SUBS     r0,r0,#3
-000064  5c08              LDRB     r0,[r1,r0]
-000066  284b              CMP      r0,#0x4b
-000068  d10f              BNE      |L8.138|
-;;;100                            - 3] == 'K'
-;;;101                    && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength
-00006a  4809              LDR      r0,|L8.144|
-00006c  8800              LDRH     r0,[r0,#0]  ; wifi2_frame_record
-00006e  f3c0000e          UBFX     r0,r0,#0,#15
-000072  1f00              SUBS     r0,r0,#4
-000074  5c08              LDRB     r0,[r1,r0]
-000076  284f              CMP      r0,#0x4f
-000078  d107              BNE      |L8.138|
-;;;102                            - 4] == 'O')
-;;;103                wifi2_frame_record.InfBit.FramFinishFlag = 1;
-00007a  4805              LDR      r0,|L8.144|
-00007c  8800              LDRH     r0,[r0,#0]  ; wifi2_frame_record
-00007e  f4204000          BIC      r0,r0,#0x8000
-000082  f5004000          ADD      r0,r0,#0x8000
-000086  4902              LDR      r1,|L8.144|
-000088  8008              STRH     r0,[r1,#0]
-                  |L8.138|
-;;;104        }
-;;;105    }
-00008a  bd10              POP      {r4,pc}
-;;;106    
+00000c  b118              CBZ      r0,|L8.22|
+;;;68             wifi_interrupt_handler(UART3, &wifi2_frame_record);
+00000e  4903              LDR      r1,|L8.28|
+000010  4801              LDR      r0,|L8.24|
+000012  f7fffffe          BL       wifi_interrupt_handler
+                  |L8.22|
+;;;69     }
+000016  bd10              POP      {r4,pc}
+;;;70     
                           ENDP
 
-                  |L8.140|
+                  |L8.24|
                           DCD      0x40004800
-                  |L8.144|
-                          DCD      wifi2_frame_record+0x1000
-                  |L8.148|
+                  |L8.28|
                           DCD      wifi2_frame_record

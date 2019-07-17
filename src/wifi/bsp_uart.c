@@ -144,8 +144,6 @@ void uart5_init(uint32_t baudrate, uint16_t word_length,
 
 
 
-
-
 void uart_send_byte(USART_TypeDef* pUSARTx, uint8_t ch)
 {
     USART_SendData(pUSARTx, ch);

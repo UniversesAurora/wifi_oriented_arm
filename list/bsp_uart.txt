@@ -5,12 +5,12 @@
                           AREA ||i.fgetc||, CODE, READONLY, ALIGN=2
 
                   fgetc PROC
-;;;263    
-;;;264    int fgetc(FILE* f)
+;;;182    
+;;;183    int fgetc(FILE* f)
 000000  b510              PUSH     {r4,lr}
-;;;265    {
+;;;184    {
 000002  4604              MOV      r4,r0
-;;;266        while (USART_GetFlagStatus(DEBUG_UART,
+;;;185        while (USART_GetFlagStatus(DEBUG_UART,
 000004  bf00              NOP      
                   |L1.6|
 000006  2120              MOVS     r1,#0x20
@@ -18,14 +18,14 @@
 00000a  f7fffffe          BL       USART_GetFlagStatus
 00000e  2800              CMP      r0,#0
 000010  d0f9              BEQ      |L1.6|
-;;;267                                   USART_FLAG_RXNE) == RESET);
-;;;268    
-;;;269        return (int)USART_ReceiveData(DEBUG_UART);
+;;;186                                   USART_FLAG_RXNE) == RESET);
+;;;187    
+;;;188        return (int)USART_ReceiveData(DEBUG_UART);
 000012  4802              LDR      r0,|L1.28|
 000014  f7fffffe          BL       USART_ReceiveData
-;;;270    }
+;;;189    }
 000018  bd10              POP      {r4,pc}
-;;;271    
+;;;190    
                           ENDP
 
 00001a  0000              DCW      0x0000
@@ -35,18 +35,18 @@
                           AREA ||i.fputc||, CODE, READONLY, ALIGN=2
 
                   fputc PROC
-;;;253    
-;;;254    int fputc(int ch, FILE* f)
+;;;172    
+;;;173    int fputc(int ch, FILE* f)
 000000  b570              PUSH     {r4-r6,lr}
-;;;255    {
+;;;174    {
 000002  4604              MOV      r4,r0
 000004  460d              MOV      r5,r1
-;;;256        USART_SendData(DEBUG_UART, (uint8_t) ch);
+;;;175        USART_SendData(DEBUG_UART, (uint8_t) ch);
 000006  b2e1              UXTB     r1,r4
 000008  4805              LDR      r0,|L2.32|
 00000a  f7fffffe          BL       USART_SendData
-;;;257    
-;;;258        while (USART_GetFlagStatus(DEBUG_UART,
+;;;176    
+;;;177        while (USART_GetFlagStatus(DEBUG_UART,
 00000e  bf00              NOP      
                   |L2.16|
 000010  2180              MOVS     r1,#0x80
@@ -54,13 +54,13 @@
 000014  f7fffffe          BL       USART_GetFlagStatus
 000018  2800              CMP      r0,#0
 00001a  d0f9              BEQ      |L2.16|
-;;;259                                   USART_FLAG_TXE) == RESET);
-;;;260    
-;;;261        return (ch);
+;;;178                                   USART_FLAG_TXE) == RESET);
+;;;179    
+;;;180        return (ch);
 00001c  4620              MOV      r0,r4
-;;;262    }
+;;;181    }
 00001e  bd70              POP      {r4-r6,pc}
-;;;263    
+;;;182    
                           ENDP
 
                   |L2.32|
@@ -101,597 +101,478 @@
                           AREA ||i.uart1_init||, CODE, READONLY, ALIGN=2
 
                   uart1_init PROC
-;;;15     
-;;;16     void uart1_init(uint32_t baudrate, uint16_t word_length,
+;;;59     
+;;;60     void uart1_init(uint32_t baudrate, uint16_t word_length,
 000000  e92d43f0          PUSH     {r4-r9,lr}
-;;;17                     uint16_t stopbits, uint16_t parity, uint16_t mode,
-;;;18                     uint16_t flow)
-;;;19     {
-000004  b085              SUB      sp,sp,#0x14
+;;;61                     uint16_t stopbits, uint16_t parity, uint16_t mode,
+;;;62                     uint16_t flow)
+;;;63     {
+000004  b08f              SUB      sp,sp,#0x3c
 000006  4604              MOV      r4,r0
 000008  460d              MOV      r5,r1
 00000a  4616              MOV      r6,r2
 00000c  461f              MOV      r7,r3
-00000e  e9dd890c          LDRD     r8,r9,[sp,#0x30]
-;;;20         GPIO_InitTypeDef gpio_init_type;
-;;;21         USART_InitTypeDef uart_init_type;
-;;;22     
-;;;23         UART1_GPIO_APBxClkCmd(UART1_GPIO_CLK, ENABLE);
-000012  2101              MOVS     r1,#1
-000014  2004              MOVS     r0,#4
-000016  f7fffffe          BL       RCC_APB2PeriphClockCmd
-;;;24     
-;;;25         gpio_init_type.GPIO_Pin = UART1_TX_GPIO_PIN;
-00001a  f44f7000          MOV      r0,#0x200
-00001e  f8ad0010          STRH     r0,[sp,#0x10]
-;;;26         gpio_init_type.GPIO_Mode = GPIO_Mode_AF_PP;
-000022  2018              MOVS     r0,#0x18
-000024  f88d0013          STRB     r0,[sp,#0x13]
-;;;27         gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
-000028  2003              MOVS     r0,#3
-00002a  f88d0012          STRB     r0,[sp,#0x12]
-;;;28         GPIO_Init(UART1_TX_GPIO_PORT, &gpio_init_type);
-00002e  a904              ADD      r1,sp,#0x10
-000030  4819              LDR      r0,|L4.152|
-000032  f7fffffe          BL       GPIO_Init
-;;;29     
-;;;30         gpio_init_type.GPIO_Pin = UART1_RX_GPIO_PIN;
-000036  f44f6080          MOV      r0,#0x400
-00003a  f8ad0010          STRH     r0,[sp,#0x10]
-;;;31         gpio_init_type.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-00003e  2004              MOVS     r0,#4
-000040  f88d0013          STRB     r0,[sp,#0x13]
-;;;32         GPIO_Init(UART1_RX_GPIO_PORT, &gpio_init_type);
-000044  a904              ADD      r1,sp,#0x10
-000046  4814              LDR      r0,|L4.152|
-000048  f7fffffe          BL       GPIO_Init
-;;;33     
-;;;34         UART1_APBxClkCmd(UART1_CLK, ENABLE);
-00004c  2101              MOVS     r1,#1
-00004e  0388              LSLS     r0,r1,#14
-000050  f7fffffe          BL       RCC_APB2PeriphClockCmd
-;;;35     
-;;;36         uart_init_type.USART_BaudRate = baudrate;
-000054  9400              STR      r4,[sp,#0]
-;;;37     
-;;;38         uart_init_type.USART_WordLength = word_length;
-000056  f8ad5004          STRH     r5,[sp,#4]
-;;;39     
-;;;40         uart_init_type.USART_StopBits = stopbits;
-00005a  f8ad6006          STRH     r6,[sp,#6]
-;;;41     
-;;;42         uart_init_type.USART_Parity = parity;
-00005e  f8ad7008          STRH     r7,[sp,#8]
-;;;43     
-;;;44         uart_init_type.USART_HardwareFlowControl = flow;
-000062  f8ad900c          STRH     r9,[sp,#0xc]
-;;;45     
-;;;46         uart_init_type.USART_Mode = mode;
-000066  f8ad800a          STRH     r8,[sp,#0xa]
-;;;47     
-;;;48         USART_Init(UART1, &uart_init_type);
-00006a  4669              MOV      r1,sp
-00006c  480b              LDR      r0,|L4.156|
-00006e  f7fffffe          BL       USART_Init
-;;;49     
-;;;50         init_nvic(UART1_IRQ, 1, 1);
-000072  2201              MOVS     r2,#1
-000074  4611              MOV      r1,r2
-000076  2025              MOVS     r0,#0x25
-000078  f7fffffe          BL       init_nvic
-;;;51     
-;;;52         USART_ITConfig(UART1, USART_IT_RXNE, ENABLE);
-00007c  2201              MOVS     r2,#1
-00007e  f2405125          MOV      r1,#0x525
-000082  4806              LDR      r0,|L4.156|
-000084  f7fffffe          BL       USART_ITConfig
-;;;53     
-;;;54         USART_Cmd(UART1, ENABLE);
-000088  2101              MOVS     r1,#1
-00008a  4804              LDR      r0,|L4.156|
-00008c  f7fffffe          BL       USART_Cmd
-;;;55     }
-000090  b005              ADD      sp,sp,#0x14
-000092  e8bd83f0          POP      {r4-r9,pc}
-;;;56     
+00000e  e9dd8916          LDRD     r8,r9,[sp,#0x58]
+;;;64         uart_init(
+000012  2001              MOVS     r0,#1
+000014  9006              STR      r0,[sp,#0x18]
+000016  e9cd890c          STRD     r8,r9,[sp,#0x30]
+00001a  e9cd670a          STRD     r6,r7,[sp,#0x28]
+00001e  e9cd4508          STRD     r4,r5,[sp,#0x20]
+000022  9007              STR      r0,[sp,#0x1c]
+000024  2025              MOVS     r0,#0x25
+000026  f44f6180          MOV      r1,#0x400
+00002a  4a09              LDR      r2,|L4.80|
+00002c  104b              ASRS     r3,r1,#1
+00002e  e9cd3202          STRD     r3,r2,[sp,#8]
+000032  e9cd1004          STRD     r1,r0,[sp,#0x10]
+000036  0109              LSLS     r1,r1,#4
+000038  2304              MOVS     r3,#4
+00003a  e9cd1200          STRD     r1,r2,[sp,#0]
+00003e  4a05              LDR      r2,|L4.84|
+000040  4611              MOV      r1,r2
+000042  4805              LDR      r0,|L4.88|
+000044  f7fffffe          BL       uart_init
+;;;65             UART1,
+;;;66             UART1_GPIO_APBxClkCmd,
+;;;67             UART1_APBxClkCmd,
+;;;68             UART1_GPIO_CLK, UART1_CLK,
+;;;69             UART1_TX_GPIO_PORT, UART1_TX_GPIO_PIN,
+;;;70             UART1_RX_GPIO_PORT, UART1_RX_GPIO_PIN,
+;;;71             UART1_IRQ, 1, 1,
+;;;72             baudrate, word_length,
+;;;73             stopbits, parity, mode, flow);
+;;;74     }
+000048  b00f              ADD      sp,sp,#0x3c
+00004a  e8bd83f0          POP      {r4-r9,pc}
+;;;75     
                           ENDP
 
-000096  0000              DCW      0x0000
-                  |L4.152|
+00004e  0000              DCW      0x0000
+                  |L4.80|
                           DCD      0x40010800
-                  |L4.156|
+                  |L4.84|
+                          DCD      RCC_APB2PeriphClockCmd
+                  |L4.88|
                           DCD      0x40013800
 
                           AREA ||i.uart2_init||, CODE, READONLY, ALIGN=2
 
                   uart2_init PROC
-;;;56     
-;;;57     void uart2_init(uint32_t baudrate, uint16_t word_length,
+;;;75     
+;;;76     void uart2_init(uint32_t baudrate, uint16_t word_length,
 000000  e92d43f0          PUSH     {r4-r9,lr}
-;;;58                     uint16_t stopbits, uint16_t parity, uint16_t mode,
-;;;59                     uint16_t flow)
-;;;60     {
-000004  b085              SUB      sp,sp,#0x14
+;;;77                     uint16_t stopbits, uint16_t parity, uint16_t mode,
+;;;78                     uint16_t flow)
+;;;79     {
+000004  b08f              SUB      sp,sp,#0x3c
 000006  4604              MOV      r4,r0
 000008  460d              MOV      r5,r1
 00000a  4616              MOV      r6,r2
 00000c  461f              MOV      r7,r3
-00000e  e9dd890c          LDRD     r8,r9,[sp,#0x30]
-;;;61         GPIO_InitTypeDef gpio_init_type;
-;;;62         USART_InitTypeDef uart_init_type;
-;;;63     
-;;;64         UART2_GPIO_APBxClkCmd(UART2_GPIO_CLK, ENABLE);
-000012  2101              MOVS     r1,#1
-000014  2004              MOVS     r0,#4
-000016  f7fffffe          BL       RCC_APB2PeriphClockCmd
-;;;65     
-;;;66         gpio_init_type.GPIO_Pin = UART2_TX_GPIO_PIN;
-00001a  2004              MOVS     r0,#4
-00001c  f8ad0010          STRH     r0,[sp,#0x10]
-;;;67         gpio_init_type.GPIO_Mode = GPIO_Mode_AF_PP;
-000020  2018              MOVS     r0,#0x18
-000022  f88d0013          STRB     r0,[sp,#0x13]
-;;;68         gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
-000026  2003              MOVS     r0,#3
-000028  f88d0012          STRB     r0,[sp,#0x12]
-;;;69         GPIO_Init(UART2_TX_GPIO_PORT, &gpio_init_type);
-00002c  a904              ADD      r1,sp,#0x10
-00002e  4819              LDR      r0,|L5.148|
-000030  f7fffffe          BL       GPIO_Init
-;;;70     
-;;;71         gpio_init_type.GPIO_Pin = UART2_RX_GPIO_PIN;
-000034  2008              MOVS     r0,#8
-000036  f8ad0010          STRH     r0,[sp,#0x10]
-;;;72         gpio_init_type.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-00003a  2004              MOVS     r0,#4
-00003c  f88d0013          STRB     r0,[sp,#0x13]
-;;;73         GPIO_Init(UART2_RX_GPIO_PORT, &gpio_init_type);
-000040  a904              ADD      r1,sp,#0x10
-000042  4814              LDR      r0,|L5.148|
-000044  f7fffffe          BL       GPIO_Init
-;;;74     
-;;;75         UART2_APBxClkCmd(UART2_CLK, ENABLE);
-000048  2101              MOVS     r1,#1
-00004a  0448              LSLS     r0,r1,#17
-00004c  f7fffffe          BL       RCC_APB1PeriphClockCmd
-;;;76     
-;;;77         uart_init_type.USART_BaudRate = baudrate;
-000050  9400              STR      r4,[sp,#0]
-;;;78     
-;;;79         uart_init_type.USART_WordLength = word_length;
-000052  f8ad5004          STRH     r5,[sp,#4]
-;;;80     
-;;;81         uart_init_type.USART_StopBits = stopbits;
-000056  f8ad6006          STRH     r6,[sp,#6]
-;;;82     
-;;;83         uart_init_type.USART_Parity = parity;
-00005a  f8ad7008          STRH     r7,[sp,#8]
-;;;84     
-;;;85         uart_init_type.USART_HardwareFlowControl = flow;
-00005e  f8ad900c          STRH     r9,[sp,#0xc]
-;;;86     
-;;;87         uart_init_type.USART_Mode = mode;
-000062  f8ad800a          STRH     r8,[sp,#0xa]
-;;;88     
-;;;89         USART_Init(UART2, &uart_init_type);
-000066  4669              MOV      r1,sp
-000068  480b              LDR      r0,|L5.152|
-00006a  f7fffffe          BL       USART_Init
-;;;90     
-;;;91         init_nvic(UART2_IRQ, 1, 2);
-00006e  2202              MOVS     r2,#2
-000070  2101              MOVS     r1,#1
-000072  2026              MOVS     r0,#0x26
-000074  f7fffffe          BL       init_nvic
-;;;92     
-;;;93         USART_ITConfig(UART2, USART_IT_RXNE, ENABLE);
-000078  2201              MOVS     r2,#1
-00007a  f2405125          MOV      r1,#0x525
-00007e  4806              LDR      r0,|L5.152|
-000080  f7fffffe          BL       USART_ITConfig
-;;;94     
-;;;95         USART_Cmd(UART2, ENABLE);
-000084  2101              MOVS     r1,#1
-000086  4804              LDR      r0,|L5.152|
-000088  f7fffffe          BL       USART_Cmd
-;;;96     }
-00008c  b005              ADD      sp,sp,#0x14
-00008e  e8bd83f0          POP      {r4-r9,pc}
-;;;97     
+00000e  e9dd8916          LDRD     r8,r9,[sp,#0x58]
+;;;80         uart_init(
+000012  2002              MOVS     r0,#2
+000014  2101              MOVS     r1,#1
+000016  e9cd890c          STRD     r8,r9,[sp,#0x30]
+00001a  e9cd670a          STRD     r6,r7,[sp,#0x28]
+00001e  e9cd4508          STRD     r4,r5,[sp,#0x20]
+000022  e9cd1006          STRD     r1,r0,[sp,#0x18]
+000026  2026              MOVS     r0,#0x26
+000028  2108              MOVS     r1,#8
+00002a  4a08              LDR      r2,|L5.76|
+00002c  2304              MOVS     r3,#4
+00002e  e9cd3202          STRD     r3,r2,[sp,#8]
+000032  e9cd1004          STRD     r1,r0,[sp,#0x10]
+000036  0389              LSLS     r1,r1,#14
+000038  e9cd1200          STRD     r1,r2,[sp,#0]
+00003c  4a04              LDR      r2,|L5.80|
+00003e  4905              LDR      r1,|L5.84|
+000040  4805              LDR      r0,|L5.88|
+000042  f7fffffe          BL       uart_init
+;;;81             UART2,
+;;;82             UART2_GPIO_APBxClkCmd,
+;;;83             UART2_APBxClkCmd,
+;;;84             UART2_GPIO_CLK, UART2_CLK,
+;;;85             UART2_TX_GPIO_PORT, UART2_TX_GPIO_PIN,
+;;;86             UART2_RX_GPIO_PORT, UART2_RX_GPIO_PIN,
+;;;87             UART2_IRQ, 1, 2,
+;;;88             baudrate, word_length,
+;;;89             stopbits, parity, mode, flow);
+;;;90     }
+000046  b00f              ADD      sp,sp,#0x3c
+000048  e8bd83f0          POP      {r4-r9,pc}
+;;;91     
                           ENDP
 
-000092  0000              DCW      0x0000
-                  |L5.148|
+                  |L5.76|
                           DCD      0x40010800
-                  |L5.152|
+                  |L5.80|
+                          DCD      RCC_APB1PeriphClockCmd
+                  |L5.84|
+                          DCD      RCC_APB2PeriphClockCmd
+                  |L5.88|
                           DCD      0x40004400
 
                           AREA ||i.uart3_init||, CODE, READONLY, ALIGN=2
 
                   uart3_init PROC
-;;;98     
-;;;99     void uart3_init(uint32_t baudrate, uint16_t word_length,
+;;;92     
+;;;93     void uart3_init(uint32_t baudrate, uint16_t word_length,
 000000  e92d43f0          PUSH     {r4-r9,lr}
-;;;100                    uint16_t stopbits, uint16_t parity, uint16_t mode,
-;;;101                    uint16_t flow)
-;;;102    {
-000004  b085              SUB      sp,sp,#0x14
+;;;94                     uint16_t stopbits, uint16_t parity, uint16_t mode,
+;;;95                     uint16_t flow)
+;;;96     {
+000004  b08f              SUB      sp,sp,#0x3c
 000006  4604              MOV      r4,r0
 000008  460d              MOV      r5,r1
 00000a  4616              MOV      r6,r2
 00000c  461f              MOV      r7,r3
-00000e  e9dd890c          LDRD     r8,r9,[sp,#0x30]
-;;;103        GPIO_InitTypeDef gpio_init_type;
-;;;104        USART_InitTypeDef uart_init_type;
-;;;105    
-;;;106        UART3_GPIO_APBxClkCmd(UART3_GPIO_CLK, ENABLE);
-000012  2101              MOVS     r1,#1
-000014  2008              MOVS     r0,#8
-000016  f7fffffe          BL       RCC_APB2PeriphClockCmd
-;;;107    
-;;;108        gpio_init_type.GPIO_Pin = UART3_TX_GPIO_PIN;
-00001a  f44f6080          MOV      r0,#0x400
-00001e  f8ad0010          STRH     r0,[sp,#0x10]
-;;;109        gpio_init_type.GPIO_Mode = GPIO_Mode_AF_PP;
-000022  2018              MOVS     r0,#0x18
-000024  f88d0013          STRB     r0,[sp,#0x13]
-;;;110        gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
-000028  2003              MOVS     r0,#3
-00002a  f88d0012          STRB     r0,[sp,#0x12]
-;;;111        GPIO_Init(UART3_TX_GPIO_PORT, &gpio_init_type);
-00002e  a904              ADD      r1,sp,#0x10
-000030  4819              LDR      r0,|L6.152|
-000032  f7fffffe          BL       GPIO_Init
-;;;112    
-;;;113        gpio_init_type.GPIO_Pin = UART3_RX_GPIO_PIN;
-000036  f44f6000          MOV      r0,#0x800
-00003a  f8ad0010          STRH     r0,[sp,#0x10]
-;;;114        gpio_init_type.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-00003e  2004              MOVS     r0,#4
-000040  f88d0013          STRB     r0,[sp,#0x13]
-;;;115        GPIO_Init(UART3_RX_GPIO_PORT, &gpio_init_type);
-000044  a904              ADD      r1,sp,#0x10
-000046  4814              LDR      r0,|L6.152|
-000048  f7fffffe          BL       GPIO_Init
-;;;116    
-;;;117        UART3_APBxClkCmd(UART3_CLK, ENABLE);
-00004c  2101              MOVS     r1,#1
-00004e  0488              LSLS     r0,r1,#18
-000050  f7fffffe          BL       RCC_APB1PeriphClockCmd
-;;;118    
-;;;119        uart_init_type.USART_BaudRate = baudrate;
-000054  9400              STR      r4,[sp,#0]
-;;;120    
-;;;121        uart_init_type.USART_WordLength = word_length;
-000056  f8ad5004          STRH     r5,[sp,#4]
-;;;122    
-;;;123        uart_init_type.USART_StopBits = stopbits;
-00005a  f8ad6006          STRH     r6,[sp,#6]
-;;;124    
-;;;125        uart_init_type.USART_Parity = parity;
-00005e  f8ad7008          STRH     r7,[sp,#8]
-;;;126    
-;;;127        uart_init_type.USART_HardwareFlowControl = flow;
-000062  f8ad900c          STRH     r9,[sp,#0xc]
-;;;128    
-;;;129        uart_init_type.USART_Mode = mode;
-000066  f8ad800a          STRH     r8,[sp,#0xa]
-;;;130    
-;;;131        USART_Init(UART3, &uart_init_type);
-00006a  4669              MOV      r1,sp
-00006c  480b              LDR      r0,|L6.156|
-00006e  f7fffffe          BL       USART_Init
-;;;132    
-;;;133        init_nvic(UART3_IRQ, 1, 3);
-000072  2203              MOVS     r2,#3
-000074  2101              MOVS     r1,#1
-000076  2027              MOVS     r0,#0x27
-000078  f7fffffe          BL       init_nvic
-;;;134    
-;;;135        USART_ITConfig(UART3, USART_IT_RXNE, ENABLE);
-00007c  2201              MOVS     r2,#1
-00007e  f2405125          MOV      r1,#0x525
-000082  4806              LDR      r0,|L6.156|
-000084  f7fffffe          BL       USART_ITConfig
-;;;136    
-;;;137        USART_Cmd(UART3, ENABLE);
-000088  2101              MOVS     r1,#1
-00008a  4804              LDR      r0,|L6.156|
-00008c  f7fffffe          BL       USART_Cmd
-;;;138    }
-000090  b005              ADD      sp,sp,#0x14
-000092  e8bd83f0          POP      {r4-r9,pc}
-;;;139    
+00000e  e9dd8916          LDRD     r8,r9,[sp,#0x58]
+;;;97         uart_init(
+000012  2003              MOVS     r0,#3
+000014  2101              MOVS     r1,#1
+000016  e9cd890c          STRD     r8,r9,[sp,#0x30]
+00001a  e9cd670a          STRD     r6,r7,[sp,#0x28]
+00001e  e9cd4508          STRD     r4,r5,[sp,#0x20]
+000022  e9cd1006          STRD     r1,r0,[sp,#0x18]
+000026  2027              MOVS     r0,#0x27
+000028  02c9              LSLS     r1,r1,#11
+00002a  4a09              LDR      r2,|L6.80|
+00002c  104b              ASRS     r3,r1,#1
+00002e  e9cd3202          STRD     r3,r2,[sp,#8]
+000032  e9cd1004          STRD     r1,r0,[sp,#0x10]
+000036  01c9              LSLS     r1,r1,#7
+000038  2308              MOVS     r3,#8
+00003a  e9cd1200          STRD     r1,r2,[sp,#0]
+00003e  4a05              LDR      r2,|L6.84|
+000040  4905              LDR      r1,|L6.88|
+000042  4806              LDR      r0,|L6.92|
+000044  f7fffffe          BL       uart_init
+;;;98             UART3,
+;;;99             UART3_GPIO_APBxClkCmd,
+;;;100            UART3_APBxClkCmd,
+;;;101            UART3_GPIO_CLK, UART3_CLK,
+;;;102            UART3_TX_GPIO_PORT, UART3_TX_GPIO_PIN,
+;;;103            UART3_RX_GPIO_PORT, UART3_RX_GPIO_PIN,
+;;;104            UART3_IRQ, 1, 3,
+;;;105            baudrate, word_length,
+;;;106            stopbits, parity, mode, flow);
+;;;107    }
+000048  b00f              ADD      sp,sp,#0x3c
+00004a  e8bd83f0          POP      {r4-r9,pc}
+;;;108    
                           ENDP
 
-000096  0000              DCW      0x0000
-                  |L6.152|
+00004e  0000              DCW      0x0000
+                  |L6.80|
                           DCD      0x40010c00
-                  |L6.156|
+                  |L6.84|
+                          DCD      RCC_APB1PeriphClockCmd
+                  |L6.88|
+                          DCD      RCC_APB2PeriphClockCmd
+                  |L6.92|
                           DCD      0x40004800
 
                           AREA ||i.uart4_init||, CODE, READONLY, ALIGN=2
 
                   uart4_init PROC
-;;;140    
-;;;141    void uart4_init(uint32_t baudrate, uint16_t word_length,
+;;;109    
+;;;110    void uart4_init(uint32_t baudrate, uint16_t word_length,
 000000  e92d43f0          PUSH     {r4-r9,lr}
-;;;142                    uint16_t stopbits, uint16_t parity, uint16_t mode,
-;;;143                    uint16_t flow)
-;;;144    {
-000004  b085              SUB      sp,sp,#0x14
+;;;111                    uint16_t stopbits, uint16_t parity, uint16_t mode,
+;;;112                    uint16_t flow)
+;;;113    {
+000004  b08f              SUB      sp,sp,#0x3c
 000006  4604              MOV      r4,r0
 000008  460d              MOV      r5,r1
 00000a  4616              MOV      r6,r2
 00000c  461f              MOV      r7,r3
-00000e  e9dd890c          LDRD     r8,r9,[sp,#0x30]
-;;;145        GPIO_InitTypeDef gpio_init_type;
-;;;146        USART_InitTypeDef uart_init_type;
-;;;147    
-;;;148        UART4_GPIO_APBxClkCmd(UART4_GPIO_CLK, ENABLE);
-000012  2101              MOVS     r1,#1
-000014  2010              MOVS     r0,#0x10
-000016  f7fffffe          BL       RCC_APB2PeriphClockCmd
-;;;149    
-;;;150        gpio_init_type.GPIO_Pin = UART4_TX_GPIO_PIN;
-00001a  f44f6080          MOV      r0,#0x400
-00001e  f8ad0010          STRH     r0,[sp,#0x10]
-;;;151        gpio_init_type.GPIO_Mode = GPIO_Mode_AF_PP;
-000022  2018              MOVS     r0,#0x18
-000024  f88d0013          STRB     r0,[sp,#0x13]
-;;;152        gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
-000028  2003              MOVS     r0,#3
-00002a  f88d0012          STRB     r0,[sp,#0x12]
-;;;153        GPIO_Init(UART4_TX_GPIO_PORT, &gpio_init_type);
-00002e  a904              ADD      r1,sp,#0x10
-000030  4819              LDR      r0,|L7.152|
-000032  f7fffffe          BL       GPIO_Init
-;;;154    
-;;;155        gpio_init_type.GPIO_Pin = UART4_RX_GPIO_PIN;
-000036  f44f6000          MOV      r0,#0x800
-00003a  f8ad0010          STRH     r0,[sp,#0x10]
-;;;156        gpio_init_type.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-00003e  2004              MOVS     r0,#4
-000040  f88d0013          STRB     r0,[sp,#0x13]
-;;;157        GPIO_Init(UART4_RX_GPIO_PORT, &gpio_init_type);
-000044  a904              ADD      r1,sp,#0x10
-000046  4814              LDR      r0,|L7.152|
-000048  f7fffffe          BL       GPIO_Init
-;;;158    
-;;;159        UART4_APBxClkCmd(UART4_CLK, ENABLE);
-00004c  2101              MOVS     r1,#1
-00004e  04c8              LSLS     r0,r1,#19
-000050  f7fffffe          BL       RCC_APB1PeriphClockCmd
-;;;160    
-;;;161        uart_init_type.USART_BaudRate = baudrate;
-000054  9400              STR      r4,[sp,#0]
-;;;162    
-;;;163        uart_init_type.USART_WordLength = word_length;
-000056  f8ad5004          STRH     r5,[sp,#4]
-;;;164    
-;;;165        uart_init_type.USART_StopBits = stopbits;
-00005a  f8ad6006          STRH     r6,[sp,#6]
-;;;166    
-;;;167        uart_init_type.USART_Parity = parity;
-00005e  f8ad7008          STRH     r7,[sp,#8]
-;;;168    
-;;;169        uart_init_type.USART_HardwareFlowControl = flow;
-000062  f8ad900c          STRH     r9,[sp,#0xc]
-;;;170    
-;;;171        uart_init_type.USART_Mode = mode;
-000066  f8ad800a          STRH     r8,[sp,#0xa]
-;;;172    
-;;;173        USART_Init(UART4, &uart_init_type);
-00006a  4669              MOV      r1,sp
-00006c  480b              LDR      r0,|L7.156|
-00006e  f7fffffe          BL       USART_Init
-;;;174    
-;;;175        init_nvic(UART4_IRQ, 1, 4);
-000072  2204              MOVS     r2,#4
-000074  2101              MOVS     r1,#1
-000076  2034              MOVS     r0,#0x34
-000078  f7fffffe          BL       init_nvic
-;;;176    
-;;;177        USART_ITConfig(UART4, USART_IT_RXNE, ENABLE);
-00007c  2201              MOVS     r2,#1
-00007e  f2405125          MOV      r1,#0x525
-000082  4806              LDR      r0,|L7.156|
-000084  f7fffffe          BL       USART_ITConfig
-;;;178    
-;;;179        USART_Cmd(UART4, ENABLE);
-000088  2101              MOVS     r1,#1
-00008a  4804              LDR      r0,|L7.156|
-00008c  f7fffffe          BL       USART_Cmd
-;;;180    }
-000090  b005              ADD      sp,sp,#0x14
-000092  e8bd83f0          POP      {r4-r9,pc}
-;;;181    
+00000e  e9dd8916          LDRD     r8,r9,[sp,#0x58]
+;;;114        uart_init(
+000012  2004              MOVS     r0,#4
+000014  2101              MOVS     r1,#1
+000016  e9cd890c          STRD     r8,r9,[sp,#0x30]
+00001a  e9cd670a          STRD     r6,r7,[sp,#0x28]
+00001e  e9cd4508          STRD     r4,r5,[sp,#0x20]
+000022  e9cd1006          STRD     r1,r0,[sp,#0x18]
+000026  2034              MOVS     r0,#0x34
+000028  02c9              LSLS     r1,r1,#11
+00002a  4a09              LDR      r2,|L7.80|
+00002c  104b              ASRS     r3,r1,#1
+00002e  e9cd3202          STRD     r3,r2,[sp,#8]
+000032  e9cd1004          STRD     r1,r0,[sp,#0x10]
+000036  0209              LSLS     r1,r1,#8
+000038  2310              MOVS     r3,#0x10
+00003a  e9cd1200          STRD     r1,r2,[sp,#0]
+00003e  4a05              LDR      r2,|L7.84|
+000040  4905              LDR      r1,|L7.88|
+000042  4806              LDR      r0,|L7.92|
+000044  f7fffffe          BL       uart_init
+;;;115            UART4,
+;;;116            UART4_GPIO_APBxClkCmd,
+;;;117            UART4_APBxClkCmd,
+;;;118            UART4_GPIO_CLK, UART4_CLK,
+;;;119            UART4_TX_GPIO_PORT, UART4_TX_GPIO_PIN,
+;;;120            UART4_RX_GPIO_PORT, UART4_RX_GPIO_PIN,
+;;;121            UART4_IRQ, 1, 4,
+;;;122            baudrate, word_length,
+;;;123            stopbits, parity, mode, flow);
+;;;124    }
+000048  b00f              ADD      sp,sp,#0x3c
+00004a  e8bd83f0          POP      {r4-r9,pc}
+;;;125    
                           ENDP
 
-000096  0000              DCW      0x0000
-                  |L7.152|
+00004e  0000              DCW      0x0000
+                  |L7.80|
                           DCD      0x40011000
-                  |L7.156|
+                  |L7.84|
+                          DCD      RCC_APB1PeriphClockCmd
+                  |L7.88|
+                          DCD      RCC_APB2PeriphClockCmd
+                  |L7.92|
                           DCD      0x40004c00
 
                           AREA ||i.uart5_init||, CODE, READONLY, ALIGN=2
 
                   uart5_init PROC
-;;;182    
-;;;183    void uart5_init(uint32_t baudrate, uint16_t word_length,
+;;;126    
+;;;127    void uart5_init(uint32_t baudrate, uint16_t word_length,
 000000  e92d43f0          PUSH     {r4-r9,lr}
-;;;184                    uint16_t stopbits, uint16_t parity, uint16_t mode,
-;;;185                    uint16_t flow)
-;;;186    {
-000004  b085              SUB      sp,sp,#0x14
+;;;128                    uint16_t stopbits, uint16_t parity, uint16_t mode,
+;;;129                    uint16_t flow)
+;;;130    {
+000004  b08f              SUB      sp,sp,#0x3c
 000006  4604              MOV      r4,r0
 000008  460d              MOV      r5,r1
 00000a  4616              MOV      r6,r2
 00000c  461f              MOV      r7,r3
-00000e  e9dd890c          LDRD     r8,r9,[sp,#0x30]
-;;;187        GPIO_InitTypeDef gpio_init_type;
-;;;188        USART_InitTypeDef uart_init_type;
-;;;189    
-;;;190        UART5_GPIO_APBxClkCmd(UART5_GPIO_CLK1, ENABLE);
+00000e  e9dd8916          LDRD     r8,r9,[sp,#0x58]
+;;;131        UART5_GPIO_APBxClkCmd(UART5_GPIO_CLK1, ENABLE);
 000012  2101              MOVS     r1,#1
 000014  2010              MOVS     r0,#0x10
 000016  f7fffffe          BL       RCC_APB2PeriphClockCmd
-;;;191        UART5_GPIO_APBxClkCmd(UART5_GPIO_CLK2, ENABLE);
-00001a  2101              MOVS     r1,#1
-00001c  2020              MOVS     r0,#0x20
-00001e  f7fffffe          BL       RCC_APB2PeriphClockCmd
-;;;192    
-;;;193        gpio_init_type.GPIO_Pin = UART5_TX_GPIO_PIN;
-000022  f44f5080          MOV      r0,#0x1000
-000026  f8ad0010          STRH     r0,[sp,#0x10]
-;;;194        gpio_init_type.GPIO_Mode = GPIO_Mode_AF_PP;
-00002a  2018              MOVS     r0,#0x18
-00002c  f88d0013          STRB     r0,[sp,#0x13]
-;;;195        gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
-000030  2003              MOVS     r0,#3
-000032  f88d0012          STRB     r0,[sp,#0x12]
-;;;196        GPIO_Init(UART5_TX_GPIO_PORT, &gpio_init_type);
-000036  a904              ADD      r1,sp,#0x10
-000038  4818              LDR      r0,|L8.156|
-00003a  f7fffffe          BL       GPIO_Init
-;;;197    
-;;;198        gpio_init_type.GPIO_Pin = UART5_RX_GPIO_PIN;
-00003e  2004              MOVS     r0,#4
-000040  f8ad0010          STRH     r0,[sp,#0x10]
-;;;199        gpio_init_type.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-000044  f88d0013          STRB     r0,[sp,#0x13]
-;;;200        GPIO_Init(UART5_RX_GPIO_PORT, &gpio_init_type);
-000048  a904              ADD      r1,sp,#0x10
-00004a  4815              LDR      r0,|L8.160|
-00004c  f7fffffe          BL       GPIO_Init
-;;;201    
-;;;202        UART5_APBxClkCmd(UART5_CLK, ENABLE);
-000050  2101              MOVS     r1,#1
-000052  0508              LSLS     r0,r1,#20
-000054  f7fffffe          BL       RCC_APB1PeriphClockCmd
-;;;203    
-;;;204        uart_init_type.USART_BaudRate = baudrate;
-000058  9400              STR      r4,[sp,#0]
-;;;205    
-;;;206        uart_init_type.USART_WordLength = word_length;
-00005a  f8ad5004          STRH     r5,[sp,#4]
-;;;207    
-;;;208        uart_init_type.USART_StopBits = stopbits;
-00005e  f8ad6006          STRH     r6,[sp,#6]
-;;;209    
-;;;210        uart_init_type.USART_Parity = parity;
-000062  f8ad7008          STRH     r7,[sp,#8]
-;;;211    
-;;;212        uart_init_type.USART_HardwareFlowControl = flow;
-000066  f8ad900c          STRH     r9,[sp,#0xc]
-;;;213    
-;;;214        uart_init_type.USART_Mode = mode;
-00006a  f8ad800a          STRH     r8,[sp,#0xa]
-;;;215    
-;;;216        USART_Init(UART5, &uart_init_type);
-00006e  4669              MOV      r1,sp
-000070  480c              LDR      r0,|L8.164|
-000072  f7fffffe          BL       USART_Init
-;;;217    
-;;;218        init_nvic(UART5_IRQ, 1, 5);
-000076  2205              MOVS     r2,#5
-000078  2101              MOVS     r1,#1
-00007a  2035              MOVS     r0,#0x35
-00007c  f7fffffe          BL       init_nvic
-;;;219    
-;;;220        USART_ITConfig(UART5, USART_IT_RXNE, ENABLE);
-000080  2201              MOVS     r2,#1
-000082  f2405125          MOV      r1,#0x525
-000086  4807              LDR      r0,|L8.164|
-000088  f7fffffe          BL       USART_ITConfig
-;;;221    
-;;;222        USART_Cmd(UART5, ENABLE);
-00008c  2101              MOVS     r1,#1
-00008e  4805              LDR      r0,|L8.164|
-000090  f7fffffe          BL       USART_Cmd
-;;;223    }
-000094  b005              ADD      sp,sp,#0x14
-000096  e8bd83f0          POP      {r4-r9,pc}
-;;;224    
+;;;132        uart_init(
+00001a  2005              MOVS     r0,#5
+00001c  2101              MOVS     r1,#1
+00001e  aa07              ADD      r2,sp,#0x1c
+000020  e8a203f1          STM      r2!,{r0,r4-r9}
+000024  9106              STR      r1,[sp,#0x18]
+000026  2035              MOVS     r0,#0x35
+000028  2104              MOVS     r1,#4
+00002a  4a09              LDR      r2,|L8.80|
+00002c  028b              LSLS     r3,r1,#10
+00002e  e9cd3202          STRD     r3,r2,[sp,#8]
+000032  e9cd1004          STRD     r1,r0,[sp,#0x10]
+000036  4807              LDR      r0,|L8.84|
+000038  0489              LSLS     r1,r1,#18
+00003a  2320              MOVS     r3,#0x20
+00003c  4a06              LDR      r2,|L8.88|
+00003e  e9cd1000          STRD     r1,r0,[sp,#0]
+000042  4906              LDR      r1,|L8.92|
+000044  4806              LDR      r0,|L8.96|
+000046  f7fffffe          BL       uart_init
+;;;133            UART5,
+;;;134            UART5_GPIO_APBxClkCmd,
+;;;135            UART5_APBxClkCmd,
+;;;136            UART5_GPIO_CLK2, UART5_CLK,
+;;;137            UART5_TX_GPIO_PORT, UART5_TX_GPIO_PIN,
+;;;138            UART5_RX_GPIO_PORT, UART5_RX_GPIO_PIN,
+;;;139            UART5_IRQ, 1, 5,
+;;;140            baudrate, word_length,
+;;;141            stopbits, parity, mode, flow);
+;;;142    }
+00004a  b00f              ADD      sp,sp,#0x3c
+00004c  e8bd83f0          POP      {r4-r9,pc}
+;;;143    
                           ENDP
 
-00009a  0000              DCW      0x0000
-                  |L8.156|
-                          DCD      0x40011000
-                  |L8.160|
+                  |L8.80|
                           DCD      0x40011400
-                  |L8.164|
+                  |L8.84|
+                          DCD      0x40011000
+                  |L8.88|
+                          DCD      RCC_APB1PeriphClockCmd
+                  |L8.92|
+                          DCD      RCC_APB2PeriphClockCmd
+                  |L8.96|
                           DCD      0x40005000
+
+                          AREA ||i.uart_init||, CODE, READONLY, ALIGN=1
+
+                  uart_init PROC
+;;;15     
+;;;16     static void uart_init(
+000000  e92d4ff0          PUSH     {r4-r11,lr}
+;;;17         USART_TypeDef* uart,
+;;;18         void (*gpio_clk_fun)(uint32_t, FunctionalState),
+;;;19         void (*uart_clk_fun)(uint32_t, FunctionalState),
+;;;20         uint32_t gpio_clk, uint32_t uart_clk, GPIO_TypeDef* tx_port,
+;;;21         uint16_t tx_pin, GPIO_TypeDef* rx_port, uint16_t rx_pin,
+;;;22         uint8_t IRQChannel, uint8_t PreemptionPriority,
+;;;23         uint8_t SubPriority,
+;;;24         uint32_t baudrate, uint16_t word_length,
+;;;25         uint16_t stopbits, uint16_t parity, uint16_t mode,
+;;;26         uint16_t flow)
+;;;27     {
+000004  b085              SUB      sp,sp,#0x14
+000006  4607              MOV      r7,r0
+000008  460c              MOV      r4,r1
+00000a  4615              MOV      r5,r2
+00000c  461e              MOV      r6,r3
+00000e  e9ddab1a          LDRD     r10,r11,[sp,#0x68]
+000012  f8dd9064          LDR      r9,[sp,#0x64]
+000016  f8dd805c          LDR      r8,[sp,#0x5c]
+;;;28         GPIO_InitTypeDef gpio_init_type;
+;;;29         USART_InitTypeDef uart_init_type;
+;;;30     
+;;;31         gpio_clk_fun(gpio_clk, ENABLE);
+00001a  2101              MOVS     r1,#1
+00001c  4630              MOV      r0,r6
+00001e  47a0              BLX      r4
+;;;32     
+;;;33         gpio_init_type.GPIO_Pin = tx_pin;
+000020  9810              LDR      r0,[sp,#0x40]
+000022  f8ad0010          STRH     r0,[sp,#0x10]
+;;;34         gpio_init_type.GPIO_Mode = GPIO_Mode_AF_PP;
+000026  2018              MOVS     r0,#0x18
+000028  f88d0013          STRB     r0,[sp,#0x13]
+;;;35         gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
+00002c  2003              MOVS     r0,#3
+00002e  f88d0012          STRB     r0,[sp,#0x12]
+;;;36         GPIO_Init(tx_port, &gpio_init_type);
+000032  a904              ADD      r1,sp,#0x10
+000034  980f              LDR      r0,[sp,#0x3c]
+000036  f7fffffe          BL       GPIO_Init
+;;;37     
+;;;38         gpio_init_type.GPIO_Pin = rx_pin;
+00003a  9812              LDR      r0,[sp,#0x48]
+00003c  f8ad0010          STRH     r0,[sp,#0x10]
+;;;39         gpio_init_type.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+000040  2004              MOVS     r0,#4
+000042  f88d0013          STRB     r0,[sp,#0x13]
+;;;40         GPIO_Init(rx_port, &gpio_init_type);
+000046  a904              ADD      r1,sp,#0x10
+000048  9811              LDR      r0,[sp,#0x44]
+00004a  f7fffffe          BL       GPIO_Init
+;;;41     
+;;;42         uart_clk_fun(uart_clk, ENABLE);
+00004e  2101              MOVS     r1,#1
+000050  980e              LDR      r0,[sp,#0x38]
+000052  47a8              BLX      r5
+;;;43     
+;;;44         uart_init_type.USART_BaudRate = baudrate;
+000054  9816              LDR      r0,[sp,#0x58]
+000056  9000              STR      r0,[sp,#0]
+;;;45         uart_init_type.USART_WordLength = word_length;
+000058  f8ad8004          STRH     r8,[sp,#4]
+;;;46         uart_init_type.USART_StopBits = stopbits;
+00005c  9818              LDR      r0,[sp,#0x60]
+00005e  f8ad0006          STRH     r0,[sp,#6]
+;;;47         uart_init_type.USART_Parity = parity;
+000062  f8ad9008          STRH     r9,[sp,#8]
+;;;48         uart_init_type.USART_HardwareFlowControl = flow;
+000066  f8adb00c          STRH     r11,[sp,#0xc]
+;;;49         uart_init_type.USART_Mode = mode;
+00006a  f8ada00a          STRH     r10,[sp,#0xa]
+;;;50     
+;;;51         USART_Init(uart, &uart_init_type);
+00006e  4669              MOV      r1,sp
+000070  4638              MOV      r0,r7
+000072  f7fffffe          BL       USART_Init
+;;;52     
+;;;53         init_nvic(IRQChannel, PreemptionPriority, SubPriority);
+000076  a813              ADD      r0,sp,#0x4c
+000078  c807              LDM      r0,{r0-r2}
+00007a  f7fffffe          BL       init_nvic
+;;;54     
+;;;55         USART_ITConfig(uart, USART_IT_RXNE, ENABLE);
+00007e  2201              MOVS     r2,#1
+000080  f2405125          MOV      r1,#0x525
+000084  4638              MOV      r0,r7
+000086  f7fffffe          BL       USART_ITConfig
+;;;56     
+;;;57         USART_Cmd(uart, ENABLE);
+00008a  2101              MOVS     r1,#1
+00008c  4638              MOV      r0,r7
+00008e  f7fffffe          BL       USART_Cmd
+;;;58     }
+000092  b005              ADD      sp,sp,#0x14
+000094  e8bd8ff0          POP      {r4-r11,pc}
+;;;59     
+                          ENDP
+
 
                           AREA ||i.uart_send_byte||, CODE, READONLY, ALIGN=1
 
                   uart_send_byte PROC
-;;;229    
-;;;230    void uart_send_byte(USART_TypeDef* pUSARTx, uint8_t ch)
+;;;148    
+;;;149    void uart_send_byte(USART_TypeDef* pUSARTx, uint8_t ch)
 000000  b570              PUSH     {r4-r6,lr}
-;;;231    {
+;;;150    {
 000002  4604              MOV      r4,r0
 000004  460d              MOV      r5,r1
-;;;232        USART_SendData(pUSARTx, ch);
+;;;151        USART_SendData(pUSARTx, ch);
 000006  4629              MOV      r1,r5
 000008  4620              MOV      r0,r4
 00000a  f7fffffe          BL       USART_SendData
-;;;233    
-;;;234        while (USART_GetFlagStatus(pUSARTx,
+;;;152    
+;;;153        while (USART_GetFlagStatus(pUSARTx,
 00000e  bf00              NOP      
-                  |L9.16|
+                  |L10.16|
 000010  2180              MOVS     r1,#0x80
 000012  4620              MOV      r0,r4
 000014  f7fffffe          BL       USART_GetFlagStatus
 000018  2800              CMP      r0,#0
-00001a  d0f9              BEQ      |L9.16|
-;;;235                                   USART_FLAG_TXE) == RESET);
-;;;236    }
+00001a  d0f9              BEQ      |L10.16|
+;;;154                                   USART_FLAG_TXE) == RESET);
+;;;155    }
 00001c  bd70              POP      {r4-r6,pc}
-;;;237    
+;;;156    
                           ENDP
 
 
                           AREA ||i.uart_send_string||, CODE, READONLY, ALIGN=1
 
                   uart_send_string PROC
-;;;238    
-;;;239    void uart_send_string(USART_TypeDef* pUSARTx, char* str)
+;;;157    
+;;;158    void uart_send_string(USART_TypeDef* pUSARTx, char* str)
 000000  b5d0              PUSH     {r4,r6,r7,lr}
-;;;240    {
+;;;159    {
 000002  4607              MOV      r7,r0
 000004  460e              MOV      r6,r1
-;;;241        uint64_t k = 0;
+;;;160        uint64_t k = 0;
 000006  2400              MOVS     r4,#0
-;;;242    
-;;;243        do
+;;;161    
+;;;162        do
 000008  bf00              NOP      
-                  |L10.10|
-;;;244        {
-;;;245            uart_send_byte(pUSARTx, str[k]);
+                  |L11.10|
+;;;163        {
+;;;164            uart_send_byte(pUSARTx, str[k]);
 00000a  5d31              LDRB     r1,[r6,r4]
 00000c  4638              MOV      r0,r7
 00000e  f7fffffe          BL       uart_send_byte
-;;;246            k++;
+;;;165            k++;
 000012  1c64              ADDS     r4,r4,#1
-;;;247        }
-;;;248        while (str[k - 1] != '\0');
+;;;166        }
+;;;167        while (str[k - 1] != '\0');
 000014  1e60              SUBS     r0,r4,#1
 000016  5c30              LDRB     r0,[r6,r0]
 000018  2800              CMP      r0,#0
-00001a  d1f6              BNE      |L10.10|
-;;;249    
-;;;250        while (USART_GetFlagStatus(pUSARTx,
+00001a  d1f6              BNE      |L11.10|
+;;;168    
+;;;169        while (USART_GetFlagStatus(pUSARTx,
 00001c  bf00              NOP      
-                  |L10.30|
+                  |L11.30|
 00001e  f04f0140          MOV      r1,#0x40
 000022  4638              MOV      r0,r7
 000024  f7fffffe          BL       USART_GetFlagStatus
 000028  2800              CMP      r0,#0
-00002a  d0f8              BEQ      |L10.30|
-;;;251                                   USART_FLAG_TC) == RESET);
-;;;252    }
+00002a  d0f8              BEQ      |L11.30|
+;;;170                                   USART_FLAG_TC) == RESET);
+;;;171    }
 00002c  bdd0              POP      {r4,r6,r7,pc}
-;;;253    
+;;;172    
                           ENDP
 

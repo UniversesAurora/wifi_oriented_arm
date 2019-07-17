@@ -29,4 +29,4 @@
 ..\out\list_display.o: ..\lib\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h
 ..\out\list_display.o: ..\lib\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 ..\out\list_display.o: ..\lib\STM32F10x_StdPeriph_Driver\inc\misc.h
-..\out\list_display.o: ..\src\display\led_display.h
+..\out\list_display.o: ..\src\display\lcd_display.h

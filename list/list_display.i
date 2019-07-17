@@ -13359,27 +13359,27 @@ void SysTick_CLKSourceConfig(uint32_t SysTick_CLKSource);
 
  
 # 5 "..\\src\\display\\list_display.h"
-# 1 "..\\src\\display\\led_display.h"
+# 1 "..\\src\\display\\lcd_display.h"
 
 
 
-# 5 "..\\src\\display\\led_display.h"
-# 6 "..\\src\\display\\led_display.h"
-# 7 "..\\src\\display\\led_display.h"
-
-
-
-
-# 22 "..\\src\\display\\led_display.h"
+# 5 "..\\src\\display\\lcd_display.h"
+# 6 "..\\src\\display\\lcd_display.h"
+# 7 "..\\src\\display\\lcd_display.h"
 
 
 
 
+# 22 "..\\src\\display\\lcd_display.h"
 
 
 
 
-void init_led_display(void);
+
+
+
+
+void init_lcd_display(void);
 uint8_t read_status_byte(void);
 uint8_t read_data_byte(void);
 void write_cmd_byte(uint8_t data);

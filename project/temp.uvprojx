@@ -413,16 +413,6 @@
               <FilePath>..\src\stm32f10x_conf.h</FilePath>
             </File>
             <File>
-              <FileName>led_display.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\display\led_display.c</FilePath>
-            </File>
-            <File>
-              <FileName>led_display.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\src\display\led_display.h</FilePath>
-            </File>
-            <File>
               <FileName>base_timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\timers\base_timer.c</FilePath>
@@ -471,6 +461,16 @@
               <FileName>esp8266.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\src\wifi\esp8266.h</FilePath>
+            </File>
+            <File>
+              <FileName>lcd_display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\display\lcd_display.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcd_display.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\src\display\lcd_display.h</FilePath>
             </File>
           </Files>
         </Group>

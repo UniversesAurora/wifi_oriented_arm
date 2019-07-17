@@ -28862,17 +28862,17 @@ N  */
 N
 N/******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
 L 5 "..\src\display\list_display.h" 2
-N#include "led_display.h"
-L 1 "..\src\display\led_display.h" 1
-N#ifndef __LED_DISPLAY_H
-N#define __LED_DISPLAY_H
+N#include "lcd_display.h"
+L 1 "..\src\display\lcd_display.h" 1
+N#ifndef __LCD_DISPLAY_H
+N#define __LCD_DISPLAY_H
 N
 N#include <stm32f10x.h>
 N#include <stm32f10x_rcc.h>
 N#include <stm32f10x_gpio.h>
 N
-N#define LED_DIS_RCC RCC_APB2Periph_GPIOE
-N#define LED_DIS_PORT GPIOE
+N#define LCD_DIS_RCC RCC_APB2Periph_GPIOE
+N#define LCD_DIS_PORT GPIOE
 N
 N#define D0_PIN GPIO_Pin_0
 N#define D1_PIN GPIO_Pin_1
@@ -28893,7 +28893,7 @@ N#define hcol_num 16
 N
 N
 N
-Nvoid init_led_display(void);
+Nvoid init_lcd_display(void);
 Nuint8_t read_status_byte(void);
 Nuint8_t read_data_byte(void);
 Nvoid write_cmd_byte(uint8_t data);

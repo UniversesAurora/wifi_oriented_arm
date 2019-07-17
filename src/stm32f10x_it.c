@@ -59,34 +59,26 @@ void UART1_IRQHandler(void)
 void UART2_IRQHandler(void)
 {
     if (USART_GetITStatus(UART2, USART_IT_RXNE) != RESET)
-    {
         wifi_interrupt_handler(UART2, &wifi1_frame_record);
-    }
 }
 
 void UART3_IRQHandler(void)
 {
     if (USART_GetITStatus(UART3, USART_IT_RXNE) != RESET)
-    {
         wifi_interrupt_handler(UART3, &wifi2_frame_record);
-    }
 }
 
 void UART4_IRQHandler(void)
 {
     if (USART_GetITStatus(UART4, USART_IT_RXNE) != RESET)
-    {
         wifi_interrupt_handler(UART4, &wifi3_frame_record);
-    }
 }
 
 
 void UART5_IRQHandler(void)
 {
     if (USART_GetITStatus(UART5, USART_IT_RXNE) != RESET)
-    {
         wifi_interrupt_handler(UART5, &wifi4_frame_record);
-    }
 }
 
 

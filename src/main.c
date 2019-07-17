@@ -14,21 +14,21 @@ int main(void)
     wifi_init(WIFI_4);
 
 
-    printf("wait1\n");
+    debug_printf("wait1\n");
     wait_at(WIFI_1);
-    printf("wait2\n");
+    debug_printf("wait2\n");
     wait_at(WIFI_2);
-    printf("wait3\n");
+    debug_printf("wait3\n");
     wait_at(WIFI_3);
-    printf("wait4\n");
+    debug_printf("wait4\n");
     wait_at(WIFI_4);
-    printf("set1\n");
+    debug_printf("set1\n");
     mode_set(WIFI_1);
-    printf("set2\n");
+    debug_printf("set2\n");
     mode_set(WIFI_2);
-    printf("set3\n");
+    debug_printf("set3\n");
     mode_set(WIFI_3);
-    printf("set4\n");
+    debug_printf("set4\n");
     mode_set(WIFI_4);
 
 //while (1)
@@ -46,6 +46,7 @@ int main(void)
 //    printf("hello\n");
 //        ret = exec_wifi_cmd(WIFI_3, "AT+CWLAP", 2);
 //        printf("%s\n", ret);
+
     while (1)
     {
         exec_all_wifi_cmd("AT+CWLAP", 2000);

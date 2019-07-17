@@ -31804,6 +31804,11 @@ N    WIFI_4,
 N}
 Nwifi_t;
 N
+N
+N#define cmd_end_list_len 2
+Nextern char* cmd_end_list[];
+N
+N
 Ntypedef struct
 N{
 N    char Data_RX_BUF [RX_BUF_MAX_LEN];
@@ -31834,10 +31839,13 @@ Nvoid wifi_power_cut(void);
 Nvoid wifi_power_on(void);
 Nvoid wifi_init(wifi_t wifi);
 Nvoid wifi_reset(wifi_t wifi);
-Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd, uint64_t timeout);
+Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd,
+N                    uint64_t timeout);
 Nvoid exec_all_wifi_cmd(char* cmd, uint64_t timeout);
 Nvoid wait_at(wifi_t wifi);
 Nvoid mode_set(wifi_t wifi);
+Nvoid wifi_interrupt_handler(USART_TypeDef* uart,
+N                            wifi_frame_record* record_ptr);
 N
 N#endif
 N
@@ -31846,6 +31854,12 @@ L 2 "..\src\wifi\esp8266.c" 2
 N
 Nwifi_frame_record  wifi1_frame_record, wifi2_frame_record,
 N                   wifi3_frame_record, wifi4_frame_record;
+N
+Nchar* cmd_end_list[] =
+N{
+N    "OK\r\n",
+N    "ERROR\r\n",
+N};
 N
 N
 Nvoid init_wifi_power(void)
@@ -32059,7 +32073,7 @@ Nstatic char* wifi_cmd(wifi_frame_record* record,
 N                      USART_TypeDef* uart, char* cmd, uint64_t timeout)
 N{
 N    uint8_t timeouted = 0;
-N    
+N
 N    size_t cmd_len = strlen(cmd);
 N    char* to_send = malloc(cmd_len + 4);
 N    strcpy(to_send, cmd);
@@ -32072,7 +32086,9 @@ X    printf("send!\n");
 N    uart_send_string(uart, to_send);
 N    free(to_send);
 N
-N    uint64_t reg_identifier = tick_reg(timeout, timeout_handler, &timeouted);
+N    uint64_t reg_identifier = tick_reg(timeout, timeout_handler,
+N                                       &timeouted);
+N
 N    while (!record->InfBit.FramFinishFlag && !timeouted);
 N
 N    if (timeouted)
@@ -32089,25 +32105,30 @@ N    record->Data_RX_BUF[record->InfBit.FramLength] = '\0';
 N    return record->Data_RX_BUF;
 N}
 N
-Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd, uint64_t timeout)
+Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd,
+N                    uint64_t timeout)
 N{
 N    switch (wifi)
 N    {
 N    case WIFI_1:
-N        return wifi_cmd(&wifi1_frame_record, WIFI_1_UART, cmd, timeout);
-X        return wifi_cmd(&wifi1_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), cmd, timeout);
+N        return wifi_cmd(&wifi1_frame_record, WIFI_1_UART, cmd,
+X        return wifi_cmd(&wifi1_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), cmd,
+N                        timeout);
 N
 N    case WIFI_2:
-N        return wifi_cmd(&wifi2_frame_record, WIFI_2_UART, cmd, timeout);
-X        return wifi_cmd(&wifi2_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), cmd, timeout);
+N        return wifi_cmd(&wifi2_frame_record, WIFI_2_UART, cmd,
+X        return wifi_cmd(&wifi2_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), cmd,
+N                        timeout);
 N
 N    case WIFI_3:
-N        return wifi_cmd(&wifi3_frame_record, WIFI_3_UART, cmd, timeout);
-X        return wifi_cmd(&wifi3_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), cmd, timeout);
+N        return wifi_cmd(&wifi3_frame_record, WIFI_3_UART, cmd,
+X        return wifi_cmd(&wifi3_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), cmd,
+N                        timeout);
 N
 N    case WIFI_4:
-N        return wifi_cmd(&wifi4_frame_record, WIFI_4_UART, cmd, timeout);
-X        return wifi_cmd(&wifi4_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), cmd, timeout);
+N        return wifi_cmd(&wifi4_frame_record, WIFI_4_UART, cmd,
+X        return wifi_cmd(&wifi4_frame_record, ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), cmd,
+N                        timeout);
 N    }
 N
 N    return NULL;
@@ -32118,7 +32139,7 @@ N
 Nvoid exec_all_wifi_cmd(char* cmd, uint64_t timeout)
 N{
 N    uint8_t timeouted = 0;
-N    
+N
 N    size_t cmd_len = strlen(cmd);
 N    char* to_send = malloc(cmd_len + 4);
 N    strcpy(to_send, cmd);
@@ -32143,16 +32164,21 @@ X    uart_send_string(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), to_
 N    uart_send_string(WIFI_4_UART, to_send);
 X    uart_send_string(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), to_send);
 N    free(to_send);
-N    
-N    uint64_t reg_identifier = tick_reg(timeout, timeout_handler, &timeouted);
 N
-N    while (!wifi1_frame_record.InfBit.FramFinishFlag && !timeouted);
+N    uint64_t reg_identifier = tick_reg(timeout, timeout_handler,
+N                                       &timeouted);
 N
-N    while (!wifi2_frame_record.InfBit.FramFinishFlag && !timeouted);
+N    while (!wifi1_frame_record.InfBit.FramFinishFlag
+N            && !timeouted);
 N
-N    while (!wifi3_frame_record.InfBit.FramFinishFlag && !timeouted);
+N    while (!wifi2_frame_record.InfBit.FramFinishFlag
+N            && !timeouted);
 N
-N    while (!wifi4_frame_record.InfBit.FramFinishFlag && !timeouted);
+N    while (!wifi3_frame_record.InfBit.FramFinishFlag
+N            && !timeouted);
+N
+N    while (!wifi4_frame_record.InfBit.FramFinishFlag
+N            && !timeouted);
 N
 N    if (timeouted)
 N        debug_printf("timeout\n");
@@ -32199,3 +32225,35 @@ N                   "OK"))
 N            return;
 N    }
 N}
+N
+Nvoid wifi_interrupt_handler(USART_TypeDef* uart,
+N                            wifi_frame_record* record_ptr)
+N{
+N    uint8_t ucCh;
+N    uint16_t frame_len = record_ptr->InfBit.FramLength + 1;
+N    char* data = record_ptr->Data_RX_BUF;
+N    int i;
+N
+N    ucCh = USART_ReceiveData(uart);
+N
+N    if (record_ptr->InfBit.FramLength <
+N            (RX_BUF_MAX_LEN - 1))
+X            (4096 - 1))
+N        data[record_ptr->InfBit.FramLength++] = ucCh;
+N    else
+N        record_ptr->InfBit.FramFinishFlag = 1;
+N
+N    for (i = 0; i < cmd_end_list_len; i++)
+X    for (i = 0; i < 2; i++)
+N    {
+N        size_t len = strlen(cmd_end_list[i]);
+N
+N        if (memcmp(&data[frame_len - len], cmd_end_list[i],
+N                   len) == 0)
+N            record_ptr->InfBit.FramFinishFlag = 1;
+N    }
+N}
+N
+N
+N
+N

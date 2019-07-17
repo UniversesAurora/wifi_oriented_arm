@@ -121,6 +121,7 @@ void uart5_init(uint32_t baudrate, uint16_t word_length,
                 uint16_t stopbits, uint16_t parity, uint16_t mode,
                 uint16_t flow);
 
+void uart_send_byte(USART_TypeDef* pUSARTx, uint8_t ch);
 void uart_send_string(USART_TypeDef* pUSARTx, char* str);
 
 

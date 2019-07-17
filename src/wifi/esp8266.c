@@ -3,6 +3,12 @@
 wifi_frame_record  wifi1_frame_record, wifi2_frame_record,
                    wifi3_frame_record, wifi4_frame_record;
 
+char* cmd_end_list[] =
+{
+    "OK\r\n",
+    "ERROR\r\n",
+};
+
 
 void init_wifi_power(void)
 {

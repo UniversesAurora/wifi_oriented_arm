@@ -15776,6 +15776,11 @@ typedef enum
 }
 wifi_t;
 
+
+
+extern char* cmd_end_list[];
+
+
 typedef struct
 {
     char Data_RX_BUF [4096];
@@ -15802,10 +15807,13 @@ void wifi_power_cut(void);
 void wifi_power_on(void);
 void wifi_init(wifi_t wifi);
 void wifi_reset(wifi_t wifi);
-char* exec_wifi_cmd(wifi_t wifi, char* cmd, uint64_t timeout);
+char* exec_wifi_cmd(wifi_t wifi, char* cmd,
+                    uint64_t timeout);
 void exec_all_wifi_cmd(char* cmd, uint64_t timeout);
 void wait_at(wifi_t wifi);
 void mode_set(wifi_t wifi);
+void wifi_interrupt_handler(USART_TypeDef* uart,
+                            wifi_frame_record* record_ptr);
 
 
 
@@ -15886,98 +15894,27 @@ void USART1_IRQHandler(void)
 
 void USART2_IRQHandler(void)
 {
-    uint8_t ucCh;
-
     if (USART_GetITStatus(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), ((uint16_t)0x0525)) != RESET)
-    {
-        ucCh = USART_ReceiveData(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)));
-
-        if (wifi1_frame_record.InfBit.FramLength <
-                (4096 - 1))
-            wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength++]
-                = ucCh;
-
-        if (ucCh == 0x0a
-                && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength
-                        - 2] == 0x0d
-                && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength
-                        - 3] == 'K'
-                && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength
-                        - 4] == 'O')
-            wifi1_frame_record.InfBit.FramFinishFlag = 1;
-    }
+        wifi_interrupt_handler(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), &wifi1_frame_record);
 }
 
 void USART3_IRQHandler(void)
 {
-    uint8_t ucCh;
-
     if (USART_GetITStatus(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), ((uint16_t)0x0525)) != RESET)
-    {
-        ucCh = USART_ReceiveData(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)));
-
-        if (wifi2_frame_record.InfBit.FramLength <
-                (4096 - 1))
-            wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength++]
-                = ucCh;
-
-        if (ucCh == 0x0a
-                && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength
-                        - 2] == 0x0d
-                && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength
-                        - 3] == 'K'
-                && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength
-                        - 4] == 'O')
-            wifi2_frame_record.InfBit.FramFinishFlag = 1;
-    }
+        wifi_interrupt_handler(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), &wifi2_frame_record);
 }
 
 void UART4_IRQHandler(void)
 {
-    uint8_t ucCh;
-
     if (USART_GetITStatus(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), ((uint16_t)0x0525)) != RESET)
-    {
-        ucCh = USART_ReceiveData(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)));
-
-        if (wifi3_frame_record.InfBit.FramLength <
-                (4096 - 1))
-            wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength++]
-                = ucCh;
-
-        if (ucCh == 0x0a
-                && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength
-                        - 2] == 0x0d
-                && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength
-                        - 3] == 'K'
-                && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength
-                        - 4] == 'O')
-            wifi3_frame_record.InfBit.FramFinishFlag = 1;
-    }
+        wifi_interrupt_handler(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), &wifi3_frame_record);
 }
 
 
 void UART5_IRQHandler(void)
 {
-    uint8_t ucCh;
-
     if (USART_GetITStatus(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), ((uint16_t)0x0525)) != RESET)
-    {
-        ucCh = USART_ReceiveData(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)));
-
-        if (wifi4_frame_record.InfBit.FramLength <
-                (4096 - 1))
-            wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength++]
-                = ucCh;
-
-        if (ucCh == 0x0a
-                && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength
-                        - 2] == 0x0d
-                && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength
-                        - 3] == 'K'
-                && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength
-                        - 4] == 'O')
-            wifi4_frame_record.InfBit.FramFinishFlag = 1;
-    }
+        wifi_interrupt_handler(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), &wifi4_frame_record);
 }
+
 

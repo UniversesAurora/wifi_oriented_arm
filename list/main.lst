@@ -31805,6 +31805,11 @@ N    WIFI_4,
 N}
 Nwifi_t;
 N
+N
+N#define cmd_end_list_len 2
+Nextern char* cmd_end_list[];
+N
+N
 Ntypedef struct
 N{
 N    char Data_RX_BUF [RX_BUF_MAX_LEN];
@@ -31835,10 +31840,13 @@ Nvoid wifi_power_cut(void);
 Nvoid wifi_power_on(void);
 Nvoid wifi_init(wifi_t wifi);
 Nvoid wifi_reset(wifi_t wifi);
-Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd, uint64_t timeout);
+Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd,
+N                    uint64_t timeout);
 Nvoid exec_all_wifi_cmd(char* cmd, uint64_t timeout);
 Nvoid wait_at(wifi_t wifi);
 Nvoid mode_set(wifi_t wifi);
+Nvoid wifi_interrupt_handler(USART_TypeDef* uart,
+N                            wifi_frame_record* record_ptr);
 N
 N#endif
 N
@@ -31862,21 +31870,29 @@ N    wifi_init(WIFI_3);
 N    wifi_init(WIFI_4);
 N
 N
-N    printf("wait1\n");
+N    debug_printf("wait1\n");
+X    printf("wait1\n");
 N    wait_at(WIFI_1);
-N    printf("wait2\n");
+N    debug_printf("wait2\n");
+X    printf("wait2\n");
 N    wait_at(WIFI_2);
-N    printf("wait3\n");
+N    debug_printf("wait3\n");
+X    printf("wait3\n");
 N    wait_at(WIFI_3);
-N    printf("wait4\n");
+N    debug_printf("wait4\n");
+X    printf("wait4\n");
 N    wait_at(WIFI_4);
-N    printf("set1\n");
+N    debug_printf("set1\n");
+X    printf("set1\n");
 N    mode_set(WIFI_1);
-N    printf("set2\n");
+N    debug_printf("set2\n");
+X    printf("set2\n");
 N    mode_set(WIFI_2);
-N    printf("set3\n");
+N    debug_printf("set3\n");
+X    printf("set3\n");
 N    mode_set(WIFI_3);
-N    printf("set4\n");
+N    debug_printf("set4\n");
+X    printf("set4\n");
 N    mode_set(WIFI_4);
 N
 N//while (1)
@@ -31894,6 +31910,7 @@ N//        printf("%s\n", ret);
 N//    printf("hello\n");
 N//        ret = exec_wifi_cmd(WIFI_3, "AT+CWLAP", 2);
 N//        printf("%s\n", ret);
+N
 N    while (1)
 N    {
 N        exec_all_wifi_cmd("AT+CWLAP", 2000);

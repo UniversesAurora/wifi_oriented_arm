@@ -5,110 +5,110 @@
                           AREA ||i.exec_all_wifi_cmd||, CODE, READONLY, ALIGN=2
 
                   exec_all_wifi_cmd PROC
-;;;212    
-;;;213    void exec_all_wifi_cmd(char* cmd, uint64_t timeout)
+;;;225    
+;;;226    void exec_all_wifi_cmd(char* cmd, uint64_t timeout)
 000000  e92d4ff8          PUSH     {r3-r11,lr}
-;;;214    {
+;;;227    {
 000004  4604              MOV      r4,r0
 000006  4615              MOV      r5,r2
 000008  461e              MOV      r6,r3
-;;;215        uint8_t timeouted = 0;
+;;;228        uint8_t timeouted = 0;
 00000a  2000              MOVS     r0,#0
 00000c  9000              STR      r0,[sp,#0]
-;;;216        
-;;;217        size_t cmd_len = strlen(cmd);
+;;;229    
+;;;230        size_t cmd_len = strlen(cmd);
 00000e  4620              MOV      r0,r4
 000010  f7fffffe          BL       strlen
 000014  4681              MOV      r9,r0
-;;;218        char* to_send = malloc(cmd_len + 4);
+;;;231        char* to_send = malloc(cmd_len + 4);
 000016  f1090004          ADD      r0,r9,#4
 00001a  f7fffffe          BL       malloc
 00001e  4682              MOV      r10,r0
-;;;219        strcpy(to_send, cmd);
+;;;232        strcpy(to_send, cmd);
 000020  4621              MOV      r1,r4
 000022  4650              MOV      r0,r10
 000024  f7fffffe          BL       strcpy
-;;;220        strcat(to_send, "\r\n");
+;;;233        strcat(to_send, "\r\n");
 000028  a14f              ADR      r1,|L1.360|
 00002a  4650              MOV      r0,r10
 00002c  f7fffffe          BL       strcat
-;;;221        wifi1_frame_record.InfBit.FramLength = 0;
+;;;234        wifi1_frame_record.InfBit.FramLength = 0;
 000030  484e              LDR      r0,|L1.364|
 000032  8800              LDRH     r0,[r0,#0]  ; wifi1_frame_record
 000034  0bc1              LSRS     r1,r0,#15
 000036  03c9              LSLS     r1,r1,#15
 000038  484c              LDR      r0,|L1.364|
 00003a  8001              STRH     r1,[r0,#0]
-;;;222        wifi2_frame_record.InfBit.FramLength = 0;
+;;;235        wifi2_frame_record.InfBit.FramLength = 0;
 00003c  484c              LDR      r0,|L1.368|
 00003e  8800              LDRH     r0,[r0,#0]  ; wifi2_frame_record
 000040  0bc1              LSRS     r1,r0,#15
 000042  03c9              LSLS     r1,r1,#15
 000044  484a              LDR      r0,|L1.368|
 000046  8001              STRH     r1,[r0,#0]
-;;;223        wifi3_frame_record.InfBit.FramLength = 0;
+;;;236        wifi3_frame_record.InfBit.FramLength = 0;
 000048  484a              LDR      r0,|L1.372|
 00004a  8800              LDRH     r0,[r0,#0]  ; wifi3_frame_record
 00004c  0bc1              LSRS     r1,r0,#15
 00004e  03c9              LSLS     r1,r1,#15
 000050  4848              LDR      r0,|L1.372|
 000052  8001              STRH     r1,[r0,#0]
-;;;224        wifi4_frame_record.InfBit.FramLength = 0;
+;;;237        wifi4_frame_record.InfBit.FramLength = 0;
 000054  4848              LDR      r0,|L1.376|
 000056  8800              LDRH     r0,[r0,#0]  ; wifi4_frame_record
 000058  0bc1              LSRS     r1,r0,#15
 00005a  03c9              LSLS     r1,r1,#15
 00005c  4846              LDR      r0,|L1.376|
 00005e  8001              STRH     r1,[r0,#0]
-;;;225        wifi1_frame_record.InfBit.FramFinishFlag = 0;
+;;;238        wifi1_frame_record.InfBit.FramFinishFlag = 0;
 000060  4842              LDR      r0,|L1.364|
 000062  8800              LDRH     r0,[r0,#0]  ; wifi1_frame_record
 000064  f4204100          BIC      r1,r0,#0x8000
 000068  4840              LDR      r0,|L1.364|
 00006a  8001              STRH     r1,[r0,#0]
-;;;226        wifi2_frame_record.InfBit.FramFinishFlag = 0;
+;;;239        wifi2_frame_record.InfBit.FramFinishFlag = 0;
 00006c  4840              LDR      r0,|L1.368|
 00006e  8800              LDRH     r0,[r0,#0]  ; wifi2_frame_record
 000070  f4204100          BIC      r1,r0,#0x8000
 000074  483e              LDR      r0,|L1.368|
 000076  8001              STRH     r1,[r0,#0]
-;;;227        wifi3_frame_record.InfBit.FramFinishFlag = 0;
+;;;240        wifi3_frame_record.InfBit.FramFinishFlag = 0;
 000078  483e              LDR      r0,|L1.372|
 00007a  8800              LDRH     r0,[r0,#0]  ; wifi3_frame_record
 00007c  f4204100          BIC      r1,r0,#0x8000
 000080  483c              LDR      r0,|L1.372|
 000082  8001              STRH     r1,[r0,#0]
-;;;228        wifi4_frame_record.InfBit.FramFinishFlag = 0;
+;;;241        wifi4_frame_record.InfBit.FramFinishFlag = 0;
 000084  483c              LDR      r0,|L1.376|
 000086  8800              LDRH     r0,[r0,#0]  ; wifi4_frame_record
 000088  f4204100          BIC      r1,r0,#0x8000
 00008c  483a              LDR      r0,|L1.376|
 00008e  8001              STRH     r1,[r0,#0]
-;;;229    
-;;;230        debug_printf("send!\n");
+;;;242    
+;;;243        debug_printf("send!\n");
 000090  a03a              ADR      r0,|L1.380|
 000092  f7fffffe          BL       __2printf
-;;;231        uart_send_string(WIFI_1_UART, to_send);
+;;;244        uart_send_string(WIFI_1_UART, to_send);
 000096  4651              MOV      r1,r10
 000098  483a              LDR      r0,|L1.388|
 00009a  f7fffffe          BL       uart_send_string
-;;;232        uart_send_string(WIFI_2_UART, to_send);
+;;;245        uart_send_string(WIFI_2_UART, to_send);
 00009e  4651              MOV      r1,r10
 0000a0  4839              LDR      r0,|L1.392|
 0000a2  f7fffffe          BL       uart_send_string
-;;;233        uart_send_string(WIFI_3_UART, to_send);
+;;;246        uart_send_string(WIFI_3_UART, to_send);
 0000a6  4651              MOV      r1,r10
 0000a8  4838              LDR      r0,|L1.396|
 0000aa  f7fffffe          BL       uart_send_string
-;;;234        uart_send_string(WIFI_4_UART, to_send);
+;;;247        uart_send_string(WIFI_4_UART, to_send);
 0000ae  4651              MOV      r1,r10
 0000b0  4837              LDR      r0,|L1.400|
 0000b2  f7fffffe          BL       uart_send_string
-;;;235        free(to_send);
+;;;248        free(to_send);
 0000b6  4650              MOV      r0,r10
 0000b8  f7fffffe          BL       free
-;;;236        
-;;;237        uint64_t reg_identifier = tick_reg(timeout, timeout_handler, &timeouted);
+;;;249    
+;;;250        uint64_t reg_identifier = tick_reg(timeout, timeout_handler,
 0000bc  466b              MOV      r3,sp
 0000be  4a35              LDR      r2,|L1.404|
 0000c0  4628              MOV      r0,r5
@@ -116,108 +116,113 @@
 0000c4  f7fffffe          BL       tick_reg
 0000c8  4607              MOV      r7,r0
 0000ca  4688              MOV      r8,r1
-;;;238    
-;;;239        while (!wifi1_frame_record.InfBit.FramFinishFlag && !timeouted);
+;;;251                                           &timeouted);
+;;;252    
+;;;253        while (!wifi1_frame_record.InfBit.FramFinishFlag
 0000cc  bf00              NOP      
                   |L1.206|
 0000ce  4827              LDR      r0,|L1.364|
 0000d0  8800              LDRH     r0,[r0,#0]  ; wifi1_frame_record
 0000d2  0bc0              LSRS     r0,r0,#15
 0000d4  b918              CBNZ     r0,|L1.222|
+;;;254                && !timeouted);
 0000d6  f89d0000          LDRB     r0,[sp,#0]
 0000da  2800              CMP      r0,#0
 0000dc  d0f7              BEQ      |L1.206|
                   |L1.222|
-;;;240    
-;;;241        while (!wifi2_frame_record.InfBit.FramFinishFlag && !timeouted);
+;;;255    
+;;;256        while (!wifi2_frame_record.InfBit.FramFinishFlag
 0000de  bf00              NOP      
                   |L1.224|
 0000e0  4823              LDR      r0,|L1.368|
 0000e2  8800              LDRH     r0,[r0,#0]  ; wifi2_frame_record
 0000e4  0bc0              LSRS     r0,r0,#15
 0000e6  b918              CBNZ     r0,|L1.240|
+;;;257                && !timeouted);
 0000e8  f89d0000          LDRB     r0,[sp,#0]
 0000ec  2800              CMP      r0,#0
 0000ee  d0f7              BEQ      |L1.224|
                   |L1.240|
-;;;242    
-;;;243        while (!wifi3_frame_record.InfBit.FramFinishFlag && !timeouted);
+;;;258    
+;;;259        while (!wifi3_frame_record.InfBit.FramFinishFlag
 0000f0  bf00              NOP      
                   |L1.242|
 0000f2  4820              LDR      r0,|L1.372|
 0000f4  8800              LDRH     r0,[r0,#0]  ; wifi3_frame_record
 0000f6  0bc0              LSRS     r0,r0,#15
 0000f8  b918              CBNZ     r0,|L1.258|
+;;;260                && !timeouted);
 0000fa  f89d0000          LDRB     r0,[sp,#0]
 0000fe  2800              CMP      r0,#0
 000100  d0f7              BEQ      |L1.242|
                   |L1.258|
-;;;244    
-;;;245        while (!wifi4_frame_record.InfBit.FramFinishFlag && !timeouted);
+;;;261    
+;;;262        while (!wifi4_frame_record.InfBit.FramFinishFlag
 000102  bf00              NOP      
                   |L1.260|
 000104  481c              LDR      r0,|L1.376|
 000106  8800              LDRH     r0,[r0,#0]  ; wifi4_frame_record
 000108  0bc0              LSRS     r0,r0,#15
 00010a  b918              CBNZ     r0,|L1.276|
+;;;263                && !timeouted);
 00010c  f89d0000          LDRB     r0,[sp,#0]
 000110  2800              CMP      r0,#0
 000112  d0f7              BEQ      |L1.260|
                   |L1.276|
-;;;246    
-;;;247        if (timeouted)
+;;;264    
+;;;265        if (timeouted)
 000114  f89d0000          LDRB     r0,[sp,#0]
 000118  b118              CBZ      r0,|L1.290|
-;;;248            debug_printf("timeout\n");
+;;;266            debug_printf("timeout\n");
 00011a  a01f              ADR      r0,|L1.408|
 00011c  f7fffffe          BL       __2printf
 000120  e006              B        |L1.304|
                   |L1.290|
-;;;249        else
-;;;250        {
-;;;251            tick_unreg(reg_identifier);
+;;;267        else
+;;;268        {
+;;;269            tick_unreg(reg_identifier);
 000122  4638              MOV      r0,r7
 000124  4641              MOV      r1,r8
 000126  f7fffffe          BL       tick_unreg
-;;;252            debug_printf("ok\n");
+;;;270            debug_printf("ok\n");
 00012a  a01e              ADR      r0,|L1.420|
 00012c  f7fffffe          BL       __2printf
                   |L1.304|
-;;;253        }
-;;;254    
-;;;255        wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength]
+;;;271        }
+;;;272    
+;;;273        wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength]
 000130  2100              MOVS     r1,#0
 000132  480e              LDR      r0,|L1.364|
 000134  8800              LDRH     r0,[r0,#0]  ; wifi1_frame_record
 000136  f3c0000e          UBFX     r0,r0,#0,#15
 00013a  4a1b              LDR      r2,|L1.424|
 00013c  5411              STRB     r1,[r2,r0]
-;;;256            = '\0';
-;;;257        wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength]
+;;;274            = '\0';
+;;;275        wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength]
 00013e  480c              LDR      r0,|L1.368|
 000140  8800              LDRH     r0,[r0,#0]  ; wifi2_frame_record
 000142  f3c0000e          UBFX     r0,r0,#0,#15
 000146  4a19              LDR      r2,|L1.428|
 000148  5411              STRB     r1,[r2,r0]
-;;;258            = '\0';
-;;;259        wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength]
+;;;276            = '\0';
+;;;277        wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength]
 00014a  480a              LDR      r0,|L1.372|
 00014c  8800              LDRH     r0,[r0,#0]  ; wifi3_frame_record
 00014e  f3c0000e          UBFX     r0,r0,#0,#15
 000152  4a17              LDR      r2,|L1.432|
 000154  5411              STRB     r1,[r2,r0]
-;;;260            = '\0';
-;;;261        wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength]
+;;;278            = '\0';
+;;;279        wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength]
 000156  4808              LDR      r0,|L1.376|
 000158  8800              LDRH     r0,[r0,#0]  ; wifi4_frame_record
 00015a  f3c0000e          UBFX     r0,r0,#0,#15
 00015e  4a15              LDR      r2,|L1.436|
 000160  5411              STRB     r1,[r2,r0]
-;;;262            = '\0';
-;;;263        return;
-;;;264    }
+;;;280            = '\0';
+;;;281        return;
+;;;282    }
 000162  e8bd8ff8          POP      {r3-r11,pc}
-;;;265    
+;;;283    
                           ENDP
 
 000166  0000              DCW      0x0000
@@ -267,15 +272,16 @@
                           AREA ||i.exec_wifi_cmd||, CODE, READONLY, ALIGN=2
 
                   exec_wifi_cmd PROC
-;;;191    
-;;;192    char* exec_wifi_cmd(wifi_t wifi, char* cmd, uint64_t timeout)
+;;;199    
+;;;200    char* exec_wifi_cmd(wifi_t wifi, char* cmd,
 000000  e92d41fc          PUSH     {r2-r8,lr}
-;;;193    {
+;;;201                        uint64_t timeout)
+;;;202    {
 000004  4606              MOV      r6,r0
 000006  460f              MOV      r7,r1
 000008  4614              MOV      r4,r2
 00000a  461d              MOV      r5,r3
-;;;194        switch (wifi)
+;;;203        switch (wifi)
 00000c  b136              CBZ      r6,|L2.28|
 00000e  2e01              CMP      r6,#1
 000010  d00d              BEQ      |L2.46|
@@ -285,54 +291,58 @@
 000018  d121              BNE      |L2.94|
 00001a  e018              B        |L2.78|
                   |L2.28|
-;;;195        {
-;;;196        case WIFI_1:
-;;;197            return wifi_cmd(&wifi1_frame_record, WIFI_1_UART, cmd, timeout);
+;;;204        {
+;;;205        case WIFI_1:
+;;;206            return wifi_cmd(&wifi1_frame_record, WIFI_1_UART, cmd,
 00001c  463a              MOV      r2,r7
 00001e  4911              LDR      r1,|L2.100|
 000020  4811              LDR      r0,|L2.104|
 000022  e9cd4500          STRD     r4,r5,[sp,#0]
 000026  f7fffffe          BL       wifi_cmd
                   |L2.42|
-;;;198    
-;;;199        case WIFI_2:
-;;;200            return wifi_cmd(&wifi2_frame_record, WIFI_2_UART, cmd, timeout);
-;;;201    
-;;;202        case WIFI_3:
-;;;203            return wifi_cmd(&wifi3_frame_record, WIFI_3_UART, cmd, timeout);
-;;;204    
-;;;205        case WIFI_4:
-;;;206            return wifi_cmd(&wifi4_frame_record, WIFI_4_UART, cmd, timeout);
-;;;207        }
+;;;207                            timeout);
 ;;;208    
-;;;209        return NULL;
-;;;210    }
+;;;209        case WIFI_2:
+;;;210            return wifi_cmd(&wifi2_frame_record, WIFI_2_UART, cmd,
+;;;211                            timeout);
+;;;212    
+;;;213        case WIFI_3:
+;;;214            return wifi_cmd(&wifi3_frame_record, WIFI_3_UART, cmd,
+;;;215                            timeout);
+;;;216    
+;;;217        case WIFI_4:
+;;;218            return wifi_cmd(&wifi4_frame_record, WIFI_4_UART, cmd,
+;;;219                            timeout);
+;;;220        }
+;;;221    
+;;;222        return NULL;
+;;;223    }
 00002a  e8bd81fc          POP      {r2-r8,pc}
                   |L2.46|
-00002e  463a              MOV      r2,r7                 ;200
+00002e  463a              MOV      r2,r7                 ;210
 000030  490e              LDR      r1,|L2.108|
 000032  480f              LDR      r0,|L2.112|
-000034  e9cd4500          STRD     r4,r5,[sp,#0]         ;200
+000034  e9cd4500          STRD     r4,r5,[sp,#0]         ;210
 000038  f7fffffe          BL       wifi_cmd
 00003c  e7f5              B        |L2.42|
                   |L2.62|
-00003e  463a              MOV      r2,r7                 ;203
+00003e  463a              MOV      r2,r7                 ;214
 000040  490c              LDR      r1,|L2.116|
 000042  480d              LDR      r0,|L2.120|
-000044  e9cd4500          STRD     r4,r5,[sp,#0]         ;203
+000044  e9cd4500          STRD     r4,r5,[sp,#0]         ;214
 000048  f7fffffe          BL       wifi_cmd
 00004c  e7ed              B        |L2.42|
                   |L2.78|
-00004e  463a              MOV      r2,r7                 ;206
+00004e  463a              MOV      r2,r7                 ;218
 000050  490a              LDR      r1,|L2.124|
 000052  480b              LDR      r0,|L2.128|
-000054  e9cd4500          STRD     r4,r5,[sp,#0]         ;206
+000054  e9cd4500          STRD     r4,r5,[sp,#0]         ;218
 000058  f7fffffe          BL       wifi_cmd
 00005c  e7e5              B        |L2.42|
                   |L2.94|
-00005e  2000              MOVS     r0,#0                 ;209
+00005e  2000              MOVS     r0,#0                 ;222
 000060  e7e3              B        |L2.42|
-;;;211    
+;;;224    
                           ENDP
 
 000062  0000              DCW      0x0000
@@ -356,11 +366,11 @@
                           AREA ||i.init_wifi_1_en_rst||, CODE, READONLY, ALIGN=2
 
                   init_wifi_1_en_rst PROC
-;;;50     
-;;;51     static void init_wifi_1_en_rst(void)
+;;;56     
+;;;57     static void init_wifi_1_en_rst(void)
 000000  b51f              PUSH     {r0-r4,lr}
-;;;52     {
-;;;53         init_wifi_en_rst(WIFI_1_CH_PD_APBxClock_FUN,
+;;;58     {
+;;;59         init_wifi_en_rst(WIFI_1_CH_PD_APBxClock_FUN,
 000002  f44f6080          MOV      r0,#0x400
 000006  1041              ASRS     r1,r0,#1
 000008  4a05              LDR      r2,|L3.32|
@@ -372,12 +382,12 @@
 000016  4903              LDR      r1,|L3.36|
 000018  4608              MOV      r0,r1
 00001a  f7fffffe          BL       init_wifi_en_rst
-;;;54                          WIFI_1_RST_APBxClock_FUN, WIFI_1_CH_PD_CLK, WIFI_1_RST_CLK,
-;;;55                          WIFI_1_CH_PD_PORT, WIFI_1_RST_PORT, WIFI_1_CH_PD_PIN,
-;;;56                          WIFI_1_RST_PIN);
-;;;57     }
+;;;60                          WIFI_1_RST_APBxClock_FUN, WIFI_1_CH_PD_CLK, WIFI_1_RST_CLK,
+;;;61                          WIFI_1_CH_PD_PORT, WIFI_1_RST_PORT, WIFI_1_CH_PD_PIN,
+;;;62                          WIFI_1_RST_PIN);
+;;;63     }
 00001e  bd1f              POP      {r0-r4,pc}
-;;;58     
+;;;64     
                           ENDP
 
                   |L3.32|
@@ -388,11 +398,11 @@
                           AREA ||i.init_wifi_2_en_rst||, CODE, READONLY, ALIGN=2
 
                   init_wifi_2_en_rst PROC
-;;;58     
-;;;59     static void init_wifi_2_en_rst(void)
+;;;64     
+;;;65     static void init_wifi_2_en_rst(void)
 000000  b51f              PUSH     {r0-r4,lr}
-;;;60     {
-;;;61         init_wifi_en_rst(WIFI_2_CH_PD_APBxClock_FUN,
+;;;66     {
+;;;67         init_wifi_en_rst(WIFI_2_CH_PD_APBxClock_FUN,
 000002  f44f4080          MOV      r0,#0x4000
 000006  1041              ASRS     r1,r0,#1
 000008  4a05              LDR      r2,|L4.32|
@@ -404,12 +414,12 @@
 000016  4903              LDR      r1,|L4.36|
 000018  4608              MOV      r0,r1
 00001a  f7fffffe          BL       init_wifi_en_rst
-;;;62                          WIFI_2_RST_APBxClock_FUN, WIFI_2_CH_PD_CLK, WIFI_2_RST_CLK,
-;;;63                          WIFI_2_CH_PD_PORT, WIFI_2_RST_PORT, WIFI_2_CH_PD_PIN,
-;;;64                          WIFI_2_RST_PIN);
-;;;65     }
+;;;68                          WIFI_2_RST_APBxClock_FUN, WIFI_2_CH_PD_CLK, WIFI_2_RST_CLK,
+;;;69                          WIFI_2_CH_PD_PORT, WIFI_2_RST_PORT, WIFI_2_CH_PD_PIN,
+;;;70                          WIFI_2_RST_PIN);
+;;;71     }
 00001e  bd1f              POP      {r0-r4,pc}
-;;;66     
+;;;72     
                           ENDP
 
                   |L4.32|
@@ -420,11 +430,11 @@
                           AREA ||i.init_wifi_3_en_rst||, CODE, READONLY, ALIGN=2
 
                   init_wifi_3_en_rst PROC
-;;;66     
-;;;67     static void init_wifi_3_en_rst(void)
+;;;72     
+;;;73     static void init_wifi_3_en_rst(void)
 000000  b51f              PUSH     {r0-r4,lr}
-;;;68     {
-;;;69         init_wifi_en_rst(WIFI_3_CH_PD_APBxClock_FUN,
+;;;74     {
+;;;75         init_wifi_en_rst(WIFI_3_CH_PD_APBxClock_FUN,
 000002  2002              MOVS     r0,#2
 000004  2101              MOVS     r1,#1
 000006  4a06              LDR      r2,|L5.32|
@@ -436,12 +446,12 @@
 000014  4903              LDR      r1,|L5.36|
 000016  4608              MOV      r0,r1
 000018  f7fffffe          BL       init_wifi_en_rst
-;;;70                          WIFI_3_RST_APBxClock_FUN, WIFI_3_CH_PD_CLK, WIFI_3_RST_CLK,
-;;;71                          WIFI_3_CH_PD_PORT, WIFI_3_RST_PORT, WIFI_3_CH_PD_PIN,
-;;;72                          WIFI_3_RST_PIN);
-;;;73     }
+;;;76                          WIFI_3_RST_APBxClock_FUN, WIFI_3_CH_PD_CLK, WIFI_3_RST_CLK,
+;;;77                          WIFI_3_CH_PD_PORT, WIFI_3_RST_PORT, WIFI_3_CH_PD_PIN,
+;;;78                          WIFI_3_RST_PIN);
+;;;79     }
 00001c  bd1f              POP      {r0-r4,pc}
-;;;74     
+;;;80     
                           ENDP
 
 00001e  0000              DCW      0x0000
@@ -453,11 +463,11 @@
                           AREA ||i.init_wifi_4_en_rst||, CODE, READONLY, ALIGN=2
 
                   init_wifi_4_en_rst PROC
-;;;74     
-;;;75     static void init_wifi_4_en_rst(void)
+;;;80     
+;;;81     static void init_wifi_4_en_rst(void)
 000000  b51f              PUSH     {r0-r4,lr}
-;;;76     {
-;;;77         init_wifi_en_rst(WIFI_4_CH_PD_APBxClock_FUN,
+;;;82     {
+;;;83         init_wifi_en_rst(WIFI_4_CH_PD_APBxClock_FUN,
 000002  2008              MOVS     r0,#8
 000004  2104              MOVS     r1,#4
 000006  4a06              LDR      r2,|L6.32|
@@ -469,12 +479,12 @@
 000014  4903              LDR      r1,|L6.36|
 000016  4608              MOV      r0,r1
 000018  f7fffffe          BL       init_wifi_en_rst
-;;;78                          WIFI_4_RST_APBxClock_FUN, WIFI_4_CH_PD_CLK, WIFI_4_RST_CLK,
-;;;79                          WIFI_4_CH_PD_PORT, WIFI_4_RST_PORT, WIFI_4_CH_PD_PIN,
-;;;80                          WIFI_4_RST_PIN);
-;;;81     }
+;;;84                          WIFI_4_RST_APBxClock_FUN, WIFI_4_CH_PD_CLK, WIFI_4_RST_CLK,
+;;;85                          WIFI_4_CH_PD_PORT, WIFI_4_RST_PORT, WIFI_4_CH_PD_PIN,
+;;;86                          WIFI_4_RST_PIN);
+;;;87     }
 00001c  bd1f              POP      {r0-r4,pc}
-;;;82     
+;;;88     
                           ENDP
 
 00001e  0000              DCW      0x0000
@@ -486,87 +496,87 @@
                           AREA ||i.init_wifi_en_rst||, CODE, READONLY, ALIGN=1
 
                   init_wifi_en_rst PROC
-;;;31     
-;;;32     static void init_wifi_en_rst(void (*en_fun)(uint32_t,
+;;;37     
+;;;38     static void init_wifi_en_rst(void (*en_fun)(uint32_t,
 000000  e92d4ff8          PUSH     {r3-r11,lr}
-;;;33                                  FunctionalState), void (*rst_fun)(uint32_t,
-;;;34                                          FunctionalState), uint32_t en_clk, uint32_t rst_clk,
-;;;35                                  GPIO_TypeDef* en_port, GPIO_TypeDef* rst_port,
-;;;36                                  uint16_t en_pin, uint16_t rst_pin)
-;;;37     {
+;;;39                                  FunctionalState), void (*rst_fun)(uint32_t,
+;;;40                                          FunctionalState), uint32_t en_clk, uint32_t rst_clk,
+;;;41                                  GPIO_TypeDef* en_port, GPIO_TypeDef* rst_port,
+;;;42                                  uint16_t en_pin, uint16_t rst_pin)
+;;;43     {
 000004  4604              MOV      r4,r0
 000006  460d              MOV      r5,r1
 000008  4616              MOV      r6,r2
 00000a  461f              MOV      r7,r3
 00000c  e9ddab0c          LDRD     r10,r11,[sp,#0x30]
 000010  e9dd890a          LDRD     r8,r9,[sp,#0x28]
-;;;38         GPIO_InitTypeDef gpio_init_type;
-;;;39     
-;;;40         en_fun(en_clk, ENABLE);
+;;;44         GPIO_InitTypeDef gpio_init_type;
+;;;45     
+;;;46         en_fun(en_clk, ENABLE);
 000014  2101              MOVS     r1,#1
 000016  4630              MOV      r0,r6
 000018  47a0              BLX      r4
-;;;41         gpio_init_type.GPIO_Pin = en_pin;
+;;;47         gpio_init_type.GPIO_Pin = en_pin;
 00001a  f8ada000          STRH     r10,[sp,#0]
-;;;42         gpio_init_type.GPIO_Mode = GPIO_Mode_Out_PP;
+;;;48         gpio_init_type.GPIO_Mode = GPIO_Mode_Out_PP;
 00001e  2010              MOVS     r0,#0x10
 000020  f88d0003          STRB     r0,[sp,#3]
-;;;43         gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
+;;;49         gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
 000024  2003              MOVS     r0,#3
 000026  f88d0002          STRB     r0,[sp,#2]
-;;;44         GPIO_Init(en_port, &gpio_init_type);
+;;;50         GPIO_Init(en_port, &gpio_init_type);
 00002a  4669              MOV      r1,sp
 00002c  4640              MOV      r0,r8
 00002e  f7fffffe          BL       GPIO_Init
-;;;45     
-;;;46         rst_fun(rst_clk, ENABLE);
+;;;51     
+;;;52         rst_fun(rst_clk, ENABLE);
 000032  2101              MOVS     r1,#1
 000034  4638              MOV      r0,r7
 000036  47a8              BLX      r5
-;;;47         gpio_init_type.GPIO_Pin = rst_pin;
+;;;53         gpio_init_type.GPIO_Pin = rst_pin;
 000038  f8adb000          STRH     r11,[sp,#0]
-;;;48         GPIO_Init(rst_port, &gpio_init_type);
+;;;54         GPIO_Init(rst_port, &gpio_init_type);
 00003c  4669              MOV      r1,sp
 00003e  4648              MOV      r0,r9
 000040  f7fffffe          BL       GPIO_Init
-;;;49     }
+;;;55     }
 000044  e8bd8ff8          POP      {r3-r11,pc}
-;;;50     
+;;;56     
                           ENDP
 
 
                           AREA ||i.init_wifi_power||, CODE, READONLY, ALIGN=2
 
                   init_wifi_power PROC
-;;;6      
-;;;7      void init_wifi_power(void)
+;;;12     
+;;;13     void init_wifi_power(void)
 000000  b508              PUSH     {r3,lr}
-;;;8      {
-;;;9          GPIO_InitTypeDef gpio_init_type;
-;;;10     
-;;;11         WIFI_POWER_RST_APBxClock_FUN(WIFI_POWER_RST_CLK, ENABLE);
+;;;14     {
+;;;15         GPIO_InitTypeDef gpio_init_type;
+;;;16     
+;;;17         WIFI_POWER_RST_APBxClock_FUN(WIFI_POWER_RST_CLK, ENABLE);
 000002  2101              MOVS     r1,#1
 000004  2080              MOVS     r0,#0x80
 000006  f7fffffe          BL       RCC_APB2PeriphClockCmd
-;;;12         gpio_init_type.GPIO_Pin = WIFI_POWER_RST_PIN;
+;;;18         gpio_init_type.GPIO_Pin = WIFI_POWER_RST_PIN;
 00000a  2010              MOVS     r0,#0x10
 00000c  f8ad0000          STRH     r0,[sp,#0]
-;;;13         gpio_init_type.GPIO_Mode = GPIO_Mode_Out_PP;
+;;;19         gpio_init_type.GPIO_Mode = GPIO_Mode_Out_PP;
 000010  f88d0003          STRB     r0,[sp,#3]
-;;;14         gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
+;;;20         gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
 000014  2003              MOVS     r0,#3
 000016  f88d0002          STRB     r0,[sp,#2]
-;;;15         GPIO_Init(WIFI_POWER_RST_PORT, &gpio_init_type);
+;;;21         GPIO_Init(WIFI_POWER_RST_PORT, &gpio_init_type);
 00001a  4669              MOV      r1,sp
 00001c  4803              LDR      r0,|L8.44|
 00001e  f7fffffe          BL       GPIO_Init
-;;;16         wifi_power_cut();
+;;;22         wifi_power_cut();
 000022  f7fffffe          BL       wifi_power_cut
-;;;17         wifi_power_on();
+;;;23         wifi_power_on();
 000026  f7fffffe          BL       wifi_power_on
-;;;18     }
+;;;24     }
 00002a  bd08              POP      {r3,pc}
-;;;19     
+;;;25     
                           ENDP
 
                   |L8.44|
@@ -575,16 +585,16 @@
                           AREA ||i.mode_set||, CODE, READONLY, ALIGN=2
 
                   mode_set PROC
-;;;279    
-;;;280    void mode_set(wifi_t wifi)
+;;;297    
+;;;298    void mode_set(wifi_t wifi)
 000000  b570              PUSH     {r4-r6,lr}
-;;;281    {
+;;;299    {
 000002  4604              MOV      r4,r0
-;;;282        while (1)
+;;;300        while (1)
 000004  e00c              B        |L9.32|
                   |L9.6|
-;;;283        {
-;;;284            if (strstr(exec_wifi_cmd(wifi, "AT+CWMODE=1", 500),
+;;;301        {
+;;;302            if (strstr(exec_wifi_cmd(wifi, "AT+CWMODE=1", 500),
 000006  f44f72fa          MOV      r2,#0x1f4
 00000a  2300              MOVS     r3,#0
 00000c  a105              ADR      r1,|L9.36|
@@ -594,13 +604,14 @@
 000016  a106              ADR      r1,|L9.48|
 000018  f7fffffe          BL       strstr
 00001c  b100              CBZ      r0,|L9.32|
-;;;285                       "OK"))
-;;;286                return;
-;;;287        }
-;;;288    }
+;;;303                       "OK"))
+;;;304                return;
+;;;305        }
+;;;306    }
 00001e  bd70              POP      {r4-r6,pc}
                   |L9.32|
 000020  e7f1              B        |L9.6|
+;;;307    
                           ENDP
 
 000022  0000              DCW      0x0000
@@ -618,43 +629,43 @@
                           REQUIRE _printf_s
                           REQUIRE _printf_str
                   wait_at PROC
-;;;265    
-;;;266    void wait_at(wifi_t wifi)
+;;;283    
+;;;284    void wait_at(wifi_t wifi)
 000000  b570              PUSH     {r4-r6,lr}
-;;;267    {
+;;;285    {
 000002  4604              MOV      r4,r0
-;;;268        while (1)
+;;;286        while (1)
 000004  e012              B        |L10.44|
                   |L10.6|
-;;;269        {
-;;;270            char* ret = exec_wifi_cmd(wifi, "AT", 500);
+;;;287        {
+;;;288            char* ret = exec_wifi_cmd(wifi, "AT", 500);
 000006  f44f72fa          MOV      r2,#0x1f4
 00000a  2300              MOVS     r3,#0
 00000c  a108              ADR      r1,|L10.48|
 00000e  4620              MOV      r0,r4
 000010  f7fffffe          BL       exec_wifi_cmd
 000014  4605              MOV      r5,r0
-;;;271            debug_printf("\n\n%s\n\n============\n", ret);
+;;;289            debug_printf("\n\n%s\n\n============\n", ret);
 000016  4629              MOV      r1,r5
 000018  a006              ADR      r0,|L10.52|
 00001a  f7fffffe          BL       __2printf
-;;;272    
-;;;273            if (strstr(ret, "OK"))
+;;;290    
+;;;291            if (strstr(ret, "OK"))
 00001e  a10a              ADR      r1,|L10.72|
 000020  4628              MOV      r0,r5
 000022  f7fffffe          BL       strstr
 000026  b100              CBZ      r0,|L10.42|
-;;;274                return;
-;;;275    
-;;;276            //wifi_reset(wifi);
-;;;277        }
-;;;278    }
+;;;292                return;
+;;;293    
+;;;294            //wifi_reset(wifi);
+;;;295        }
+;;;296    }
 000028  bd70              POP      {r4-r6,pc}
                   |L10.42|
-00002a  bf00              NOP                            ;277
+00002a  bf00              NOP                            ;295
                   |L10.44|
 00002c  e7eb              B        |L10.6|
-;;;279    
+;;;297    
                           ENDP
 
 00002e  0000              DCW      0x0000
@@ -674,60 +685,60 @@
                           AREA ||i.wifi_cmd||, CODE, READONLY, ALIGN=2
 
                   wifi_cmd PROC
-;;;160    
-;;;161    static char* wifi_cmd(wifi_frame_record* record,
+;;;166    
+;;;167    static char* wifi_cmd(wifi_frame_record* record,
 000000  e92d5ffc          PUSH     {r2-r12,lr}
-;;;162                          USART_TypeDef* uart, char* cmd, uint64_t timeout)
-;;;163    {
+;;;168                          USART_TypeDef* uart, char* cmd, uint64_t timeout)
+;;;169    {
 000004  4604              MOV      r4,r0
 000006  468a              MOV      r10,r1
 000008  4691              MOV      r9,r2
 00000a  e9dd560c          LDRD     r5,r6,[sp,#0x30]
-;;;164        uint8_t timeouted = 0;
+;;;170        uint8_t timeouted = 0;
 00000e  2000              MOVS     r0,#0
 000010  9001              STR      r0,[sp,#4]
-;;;165        
-;;;166        size_t cmd_len = strlen(cmd);
+;;;171    
+;;;172        size_t cmd_len = strlen(cmd);
 000012  4648              MOV      r0,r9
 000014  f7fffffe          BL       strlen
 000018  4683              MOV      r11,r0
-;;;167        char* to_send = malloc(cmd_len + 4);
+;;;173        char* to_send = malloc(cmd_len + 4);
 00001a  f10b0004          ADD      r0,r11,#4
 00001e  f7fffffe          BL       malloc
 000022  9000              STR      r0,[sp,#0]
-;;;168        strcpy(to_send, cmd);
+;;;174        strcpy(to_send, cmd);
 000024  4649              MOV      r1,r9
 000026  9800              LDR      r0,[sp,#0]
 000028  f7fffffe          BL       strcpy
-;;;169        strcat(to_send, "\r\n");
+;;;175        strcat(to_send, "\r\n");
 00002c  a122              ADR      r1,|L11.184|
 00002e  9800              LDR      r0,[sp,#0]
 000030  f7fffffe          BL       strcat
-;;;170        record->InfBit.FramFinishFlag = 0;
+;;;176        record->InfBit.FramFinishFlag = 0;
 000034  f44f5080          MOV      r0,#0x1000
 000038  5b00              LDRH     r0,[r0,r4]
 00003a  f4204100          BIC      r1,r0,#0x8000
 00003e  f44f5080          MOV      r0,#0x1000
 000042  5301              STRH     r1,[r0,r4]
-;;;171        record->InfBit.FramLength = 0;
+;;;177        record->InfBit.FramLength = 0;
 000044  5b00              LDRH     r0,[r0,r4]
 000046  0bc1              LSRS     r1,r0,#15
 000048  03c9              LSLS     r1,r1,#15
 00004a  f44f5080          MOV      r0,#0x1000
 00004e  5301              STRH     r1,[r0,r4]
-;;;172    
-;;;173        debug_printf("send!\n");
+;;;178    
+;;;179        debug_printf("send!\n");
 000050  a01a              ADR      r0,|L11.188|
 000052  f7fffffe          BL       __2printf
-;;;174        uart_send_string(uart, to_send);
+;;;180        uart_send_string(uart, to_send);
 000056  4650              MOV      r0,r10
 000058  9900              LDR      r1,[sp,#0]
 00005a  f7fffffe          BL       uart_send_string
-;;;175        free(to_send);
+;;;181        free(to_send);
 00005e  9800              LDR      r0,[sp,#0]
 000060  f7fffffe          BL       free
-;;;176    
-;;;177        uint64_t reg_identifier = tick_reg(timeout, timeout_handler, &timeouted);
+;;;182    
+;;;183        uint64_t reg_identifier = tick_reg(timeout, timeout_handler,
 000064  ab01              ADD      r3,sp,#4
 000066  4a17              LDR      r2,|L11.196|
 000068  4628              MOV      r0,r5
@@ -735,7 +746,9 @@
 00006c  f7fffffe          BL       tick_reg
 000070  4607              MOV      r7,r0
 000072  4688              MOV      r8,r1
-;;;178        while (!record->InfBit.FramFinishFlag && !timeouted);
+;;;184                                           &timeouted);
+;;;185    
+;;;186        while (!record->InfBit.FramFinishFlag && !timeouted);
 000074  bf00              NOP      
                   |L11.118|
 000076  f44f5080          MOV      r0,#0x1000
@@ -746,38 +759,38 @@
 000084  2800              CMP      r0,#0
 000086  d0f6              BEQ      |L11.118|
                   |L11.136|
-;;;179    
-;;;180        if (timeouted)
+;;;187    
+;;;188        if (timeouted)
 000088  f89d0004          LDRB     r0,[sp,#4]
 00008c  b118              CBZ      r0,|L11.150|
-;;;181            debug_printf("timeout\n");
+;;;189            debug_printf("timeout\n");
 00008e  a00e              ADR      r0,|L11.200|
 000090  f7fffffe          BL       __2printf
 000094  e006              B        |L11.164|
                   |L11.150|
-;;;182        else
-;;;183        {
-;;;184            tick_unreg(reg_identifier);
+;;;190        else
+;;;191        {
+;;;192            tick_unreg(reg_identifier);
 000096  4638              MOV      r0,r7
 000098  4641              MOV      r1,r8
 00009a  f7fffffe          BL       tick_unreg
-;;;185            debug_printf("ok\n");
+;;;193            debug_printf("ok\n");
 00009e  a00d              ADR      r0,|L11.212|
 0000a0  f7fffffe          BL       __2printf
                   |L11.164|
-;;;186        }
-;;;187    
-;;;188        record->Data_RX_BUF[record->InfBit.FramLength] = '\0';
+;;;194        }
+;;;195    
+;;;196        record->Data_RX_BUF[record->InfBit.FramLength] = '\0';
 0000a4  2100              MOVS     r1,#0
 0000a6  f44f5080          MOV      r0,#0x1000
 0000aa  5b00              LDRH     r0,[r0,r4]
 0000ac  f3c0000e          UBFX     r0,r0,#0,#15
 0000b0  5421              STRB     r1,[r4,r0]
-;;;189        return record->Data_RX_BUF;
+;;;197        return record->Data_RX_BUF;
 0000b2  4620              MOV      r0,r4
-;;;190    }
+;;;198    }
 0000b4  e8bd9ffc          POP      {r2-r12,pc}
-;;;191    
+;;;199    
                           ENDP
 
                   |L11.184|
@@ -802,12 +815,12 @@
                           AREA ||i.wifi_init||, CODE, READONLY, ALIGN=2
 
                   wifi_init PROC
-;;;83     
-;;;84     void wifi_init(wifi_t wifi)
+;;;89     
+;;;90     void wifi_init(wifi_t wifi)
 000000  b51c              PUSH     {r2-r4,lr}
-;;;85     {
+;;;91     {
 000002  4604              MOV      r4,r0
-;;;86         switch (wifi)
+;;;92         switch (wifi)
 000004  b134              CBZ      r4,|L12.20|
 000006  2c01              CMP      r4,#1
 000008  d01c              BEQ      |L12.68|
@@ -817,11 +830,11 @@
 000010  d15c              BNE      |L12.204|
 000012  e045              B        |L12.160|
                   |L12.20|
-;;;87         {
-;;;88         case WIFI_1:
-;;;89             init_wifi_1_en_rst();
+;;;93         {
+;;;94         case WIFI_1:
+;;;95             init_wifi_1_en_rst();
 000014  f7fffffe          BL       init_wifi_1_en_rst
-;;;90             WIFI_1_UART_INIT(115200, USART_WordLength_8b,
+;;;96             WIFI_1_UART_INIT(115200, USART_WordLength_8b,
 000018  2000              MOVS     r0,#0
 00001a  210c              MOVS     r1,#0xc
 00001c  4603              MOV      r3,r0
@@ -830,25 +843,25 @@
 000024  4601              MOV      r1,r0
 000026  f44f30e1          MOV      r0,#0x1c200
 00002a  f7fffffe          BL       uart2_init
-;;;91                              USART_StopBits_1, USART_Parity_No,
-;;;92                              USART_Mode_Rx | USART_Mode_Tx,
-;;;93                              USART_HardwareFlowControl_None);
-;;;94             WIFI_1_RST_HIGH_LEVEL();
+;;;97                              USART_StopBits_1, USART_Parity_No,
+;;;98                              USART_Mode_Rx | USART_Mode_Tx,
+;;;99                              USART_HardwareFlowControl_None);
+;;;100            WIFI_1_RST_HIGH_LEVEL();
 00002e  f44f6180          MOV      r1,#0x400
 000032  4827              LDR      r0,|L12.208|
 000034  f7fffffe          BL       GPIO_SetBits
-;;;95             WIFI_1_EN_ENABLE();
+;;;101            WIFI_1_EN_ENABLE();
 000038  f44f7100          MOV      r1,#0x200
 00003c  4824              LDR      r0,|L12.208|
 00003e  f7fffffe          BL       GPIO_SetBits
-;;;96             break;
+;;;102            break;
 000042  e043              B        |L12.204|
                   |L12.68|
-;;;97     
-;;;98         case WIFI_2:
-;;;99             init_wifi_2_en_rst();
+;;;103    
+;;;104        case WIFI_2:
+;;;105            init_wifi_2_en_rst();
 000044  f7fffffe          BL       init_wifi_2_en_rst
-;;;100            WIFI_2_UART_INIT(115200, USART_WordLength_8b,
+;;;106            WIFI_2_UART_INIT(115200, USART_WordLength_8b,
 000048  2000              MOVS     r0,#0
 00004a  210c              MOVS     r1,#0xc
 00004c  4603              MOV      r3,r0
@@ -857,25 +870,25 @@
 000054  4601              MOV      r1,r0
 000056  f44f30e1          MOV      r0,#0x1c200
 00005a  f7fffffe          BL       uart3_init
-;;;101                             USART_StopBits_1, USART_Parity_No,
-;;;102                             USART_Mode_Rx | USART_Mode_Tx,
-;;;103                             USART_HardwareFlowControl_None);
-;;;104            WIFI_2_RST_HIGH_LEVEL();
+;;;107                             USART_StopBits_1, USART_Parity_No,
+;;;108                             USART_Mode_Rx | USART_Mode_Tx,
+;;;109                             USART_HardwareFlowControl_None);
+;;;110            WIFI_2_RST_HIGH_LEVEL();
 00005e  f44f4180          MOV      r1,#0x4000
 000062  481b              LDR      r0,|L12.208|
 000064  f7fffffe          BL       GPIO_SetBits
-;;;105            WIFI_2_EN_ENABLE();
+;;;111            WIFI_2_EN_ENABLE();
 000068  f44f5100          MOV      r1,#0x2000
 00006c  4818              LDR      r0,|L12.208|
 00006e  f7fffffe          BL       GPIO_SetBits
-;;;106            break;
+;;;112            break;
 000072  e02b              B        |L12.204|
                   |L12.116|
-;;;107    
-;;;108        case WIFI_3:
-;;;109            init_wifi_3_en_rst();
+;;;113    
+;;;114        case WIFI_3:
+;;;115            init_wifi_3_en_rst();
 000074  f7fffffe          BL       init_wifi_3_en_rst
-;;;110            WIFI_3_UART_INIT(115200, USART_WordLength_8b,
+;;;116            WIFI_3_UART_INIT(115200, USART_WordLength_8b,
 000078  2000              MOVS     r0,#0
 00007a  210c              MOVS     r1,#0xc
 00007c  4603              MOV      r3,r0
@@ -884,25 +897,25 @@
 000084  4601              MOV      r1,r0
 000086  f44f30e1          MOV      r0,#0x1c200
 00008a  f7fffffe          BL       uart4_init
-;;;111                             USART_StopBits_1, USART_Parity_No,
-;;;112                             USART_Mode_Rx | USART_Mode_Tx,
-;;;113                             USART_HardwareFlowControl_None);
-;;;114            WIFI_3_RST_HIGH_LEVEL();
+;;;117                             USART_StopBits_1, USART_Parity_No,
+;;;118                             USART_Mode_Rx | USART_Mode_Tx,
+;;;119                             USART_HardwareFlowControl_None);
+;;;120            WIFI_3_RST_HIGH_LEVEL();
 00008e  2102              MOVS     r1,#2
 000090  4810              LDR      r0,|L12.212|
 000092  f7fffffe          BL       GPIO_SetBits
-;;;115            WIFI_3_EN_ENABLE();
+;;;121            WIFI_3_EN_ENABLE();
 000096  2101              MOVS     r1,#1
 000098  480e              LDR      r0,|L12.212|
 00009a  f7fffffe          BL       GPIO_SetBits
-;;;116            break;
+;;;122            break;
 00009e  e015              B        |L12.204|
                   |L12.160|
-;;;117    
-;;;118        case WIFI_4:
-;;;119            init_wifi_4_en_rst();
+;;;123    
+;;;124        case WIFI_4:
+;;;125            init_wifi_4_en_rst();
 0000a0  f7fffffe          BL       init_wifi_4_en_rst
-;;;120            WIFI_4_UART_INIT(115200, USART_WordLength_8b,
+;;;126            WIFI_4_UART_INIT(115200, USART_WordLength_8b,
 0000a4  2000              MOVS     r0,#0
 0000a6  210c              MOVS     r1,#0xc
 0000a8  4603              MOV      r3,r0
@@ -911,25 +924,25 @@
 0000b0  4601              MOV      r1,r0
 0000b2  f44f30e1          MOV      r0,#0x1c200
 0000b6  f7fffffe          BL       uart5_init
-;;;121                             USART_StopBits_1, USART_Parity_No,
-;;;122                             USART_Mode_Rx | USART_Mode_Tx,
-;;;123                             USART_HardwareFlowControl_None);
-;;;124            WIFI_4_RST_HIGH_LEVEL();
+;;;127                             USART_StopBits_1, USART_Parity_No,
+;;;128                             USART_Mode_Rx | USART_Mode_Tx,
+;;;129                             USART_HardwareFlowControl_None);
+;;;130            WIFI_4_RST_HIGH_LEVEL();
 0000ba  2108              MOVS     r1,#8
 0000bc  4805              LDR      r0,|L12.212|
 0000be  f7fffffe          BL       GPIO_SetBits
-;;;125            WIFI_4_EN_ENABLE();
+;;;131            WIFI_4_EN_ENABLE();
 0000c2  2104              MOVS     r1,#4
 0000c4  4803              LDR      r0,|L12.212|
 0000c6  f7fffffe          BL       GPIO_SetBits
-;;;126            break;
+;;;132            break;
 0000ca  bf00              NOP      
                   |L12.204|
-0000cc  bf00              NOP                            ;96
-;;;127        }
-;;;128    }
+0000cc  bf00              NOP                            ;102
+;;;133        }
+;;;134    }
 0000ce  bd1c              POP      {r2-r4,pc}
-;;;129    
+;;;135    
                           ENDP
 
                   |L12.208|
@@ -937,140 +950,238 @@
                   |L12.212|
                           DCD      0x40011c00
 
+                          AREA ||i.wifi_interrupt_handler||, CODE, READONLY, ALIGN=2
+
+                  wifi_interrupt_handler PROC
+;;;307    
+;;;308    void wifi_interrupt_handler(USART_TypeDef* uart,
+000000  e92d47f0          PUSH     {r4-r10,lr}
+;;;309                                wifi_frame_record* record_ptr)
+;;;310    {
+000004  4680              MOV      r8,r0
+000006  460c              MOV      r4,r1
+;;;311        uint8_t ucCh;
+;;;312        uint16_t frame_len = record_ptr->InfBit.FramLength + 1;
+000008  f44f5080          MOV      r0,#0x1000
+00000c  5b00              LDRH     r0,[r0,r4]
+00000e  f3c0000e          UBFX     r0,r0,#0,#15
+000012  f1000a01          ADD      r10,r0,#1
+;;;313        char* data = record_ptr->Data_RX_BUF;
+000016  4626              MOV      r6,r4
+;;;314        int i;
+;;;315    
+;;;316        ucCh = USART_ReceiveData(uart);
+000018  4640              MOV      r0,r8
+00001a  f7fffffe          BL       USART_ReceiveData
+00001e  f00009ff          AND      r9,r0,#0xff
+;;;317    
+;;;318        if (record_ptr->InfBit.FramLength <
+000022  f44f5080          MOV      r0,#0x1000
+000026  5b00              LDRH     r0,[r0,r4]
+000028  f3c0000e          UBFX     r0,r0,#0,#15
+00002c  f64071ff          MOV      r1,#0xfff
+000030  4288              CMP      r0,r1
+000032  da0f              BGE      |L13.84|
+;;;319                (RX_BUF_MAX_LEN - 1))
+;;;320            data[record_ptr->InfBit.FramLength++] = ucCh;
+000034  1c49              ADDS     r1,r1,#1
+000036  5b09              LDRH     r1,[r1,r4]
+000038  f3c1000e          UBFX     r0,r1,#0,#15
+00003c  1c41              ADDS     r1,r0,#1
+00003e  f44f5280          MOV      r2,#0x1000
+000042  5b12              LDRH     r2,[r2,r4]
+000044  f361020e          BFI      r2,r1,#0,#15
+000048  f44f5180          MOV      r1,#0x1000
+00004c  530a              STRH     r2,[r1,r4]
+00004e  f8069000          STRB     r9,[r6,r0]
+000052  e009              B        |L13.104|
+                  |L13.84|
+;;;321        else
+;;;322            record_ptr->InfBit.FramFinishFlag = 1;
+000054  f44f5080          MOV      r0,#0x1000
+000058  5b00              LDRH     r0,[r0,r4]
+00005a  f4204000          BIC      r0,r0,#0x8000
+00005e  f5004000          ADD      r0,r0,#0x8000
+000062  f44f5180          MOV      r1,#0x1000
+000066  5308              STRH     r0,[r1,r4]
+                  |L13.104|
+;;;323    
+;;;324        for (i = 0; i < cmd_end_list_len; i++)
+000068  2500              MOVS     r5,#0
+00006a  e01a              B        |L13.162|
+                  |L13.108|
+;;;325        {
+;;;326            size_t len = strlen(cmd_end_list[i]);
+00006c  490f              LDR      r1,|L13.172|
+00006e  f8510025          LDR      r0,[r1,r5,LSL #2]
+000072  f7fffffe          BL       strlen
+000076  4607              MOV      r7,r0
+;;;327    
+;;;328            if (memcmp(&data[frame_len - len], cmd_end_list[i],
+000078  4a0c              LDR      r2,|L13.172|
+00007a  f8521025          LDR      r1,[r2,r5,LSL #2]
+00007e  ebaa0207          SUB      r2,r10,r7
+000082  1990              ADDS     r0,r2,r6
+000084  463a              MOV      r2,r7
+000086  f7fffffe          BL       memcmp
+00008a  b948              CBNZ     r0,|L13.160|
+;;;329                       len) == 0)
+;;;330                record_ptr->InfBit.FramFinishFlag = 1;
+00008c  f44f5080          MOV      r0,#0x1000
+000090  5b00              LDRH     r0,[r0,r4]
+000092  f4204000          BIC      r0,r0,#0x8000
+000096  f5004000          ADD      r0,r0,#0x8000
+00009a  f44f5180          MOV      r1,#0x1000
+00009e  5308              STRH     r0,[r1,r4]
+                  |L13.160|
+0000a0  1c6d              ADDS     r5,r5,#1              ;324
+                  |L13.162|
+0000a2  2d02              CMP      r5,#2                 ;324
+0000a4  dbe2              BLT      |L13.108|
+;;;331        }
+;;;332    }
+0000a6  e8bd87f0          POP      {r4-r10,pc}
+;;;333    
+                          ENDP
+
+0000aa  0000              DCW      0x0000
+                  |L13.172|
+                          DCD      cmd_end_list
+
                           AREA ||i.wifi_power_cut||, CODE, READONLY, ALIGN=2
 
                   wifi_power_cut PROC
-;;;19     
-;;;20     void wifi_power_cut(void)
+;;;25     
+;;;26     void wifi_power_cut(void)
 000000  b510              PUSH     {r4,lr}
-;;;21     {
-;;;22         GPIO_ResetBits(WIFI_POWER_RST_PORT, WIFI_POWER_RST_PIN);
-000002  2110              MOVS     r1,#0x10
-000004  4801              LDR      r0,|L13.12|
-000006  f7fffffe          BL       GPIO_ResetBits
-;;;23     }
-00000a  bd10              POP      {r4,pc}
-;;;24     
-                          ENDP
-
-                  |L13.12|
-                          DCD      0x40011c00
-
-                          AREA ||i.wifi_power_on||, CODE, READONLY, ALIGN=2
-
-                  wifi_power_on PROC
-;;;24     
-;;;25     void wifi_power_on(void)
-000000  b510              PUSH     {r4,lr}
-;;;26     {
-;;;27         GPIO_SetBits(WIFI_POWER_RST_PORT, WIFI_POWER_RST_PIN);
+;;;27     {
+;;;28         GPIO_ResetBits(WIFI_POWER_RST_PORT, WIFI_POWER_RST_PIN);
 000002  2110              MOVS     r1,#0x10
 000004  4801              LDR      r0,|L14.12|
-000006  f7fffffe          BL       GPIO_SetBits
-;;;28     }
+000006  f7fffffe          BL       GPIO_ResetBits
+;;;29     }
 00000a  bd10              POP      {r4,pc}
-;;;29     
+;;;30     
                           ENDP
 
                   |L14.12|
                           DCD      0x40011c00
 
+                          AREA ||i.wifi_power_on||, CODE, READONLY, ALIGN=2
+
+                  wifi_power_on PROC
+;;;30     
+;;;31     void wifi_power_on(void)
+000000  b510              PUSH     {r4,lr}
+;;;32     {
+;;;33         GPIO_SetBits(WIFI_POWER_RST_PORT, WIFI_POWER_RST_PIN);
+000002  2110              MOVS     r1,#0x10
+000004  4801              LDR      r0,|L15.12|
+000006  f7fffffe          BL       GPIO_SetBits
+;;;34     }
+00000a  bd10              POP      {r4,pc}
+;;;35     
+                          ENDP
+
+                  |L15.12|
+                          DCD      0x40011c00
+
                           AREA ||i.wifi_reset||, CODE, READONLY, ALIGN=2
 
                   wifi_reset PROC
-;;;129    
-;;;130    void wifi_reset(wifi_t wifi)
+;;;135    
+;;;136    void wifi_reset(wifi_t wifi)
 000000  b510              PUSH     {r4,lr}
-;;;131    {
+;;;137    {
 000002  4604              MOV      r4,r0
-;;;132        switch (wifi)
-000004  b134              CBZ      r4,|L15.20|
+;;;138        switch (wifi)
+000004  b134              CBZ      r4,|L16.20|
 000006  2c01              CMP      r4,#1
-000008  d014              BEQ      |L15.52|
+000008  d014              BEQ      |L16.52|
 00000a  2c02              CMP      r4,#2
-00000c  d022              BEQ      |L15.84|
+00000c  d022              BEQ      |L16.84|
 00000e  2c03              CMP      r4,#3
-000010  d13c              BNE      |L15.140|
-000012  e02d              B        |L15.112|
-                  |L15.20|
-;;;133        {
-;;;134        case WIFI_1:
-;;;135            WIFI_1_RST_LOW_LEVEL();
+000010  d13c              BNE      |L16.140|
+000012  e02d              B        |L16.112|
+                  |L16.20|
+;;;139        {
+;;;140        case WIFI_1:
+;;;141            WIFI_1_RST_LOW_LEVEL();
 000014  f44f6180          MOV      r1,#0x400
-000018  481d              LDR      r0,|L15.144|
+000018  481d              LDR      r0,|L16.144|
 00001a  f7fffffe          BL       GPIO_ResetBits
-;;;136            systick_delay(500);
+;;;142            systick_delay(500);
 00001e  f44f70fa          MOV      r0,#0x1f4
 000022  2100              MOVS     r1,#0
 000024  f7fffffe          BL       systick_delay
-;;;137            WIFI_1_RST_HIGH_LEVEL();
+;;;143            WIFI_1_RST_HIGH_LEVEL();
 000028  f44f6180          MOV      r1,#0x400
-00002c  4818              LDR      r0,|L15.144|
+00002c  4818              LDR      r0,|L16.144|
 00002e  f7fffffe          BL       GPIO_SetBits
-;;;138            break;
-000032  e02b              B        |L15.140|
-                  |L15.52|
-;;;139    
-;;;140        case WIFI_2:
-;;;141            WIFI_2_RST_LOW_LEVEL();
+;;;144            break;
+000032  e02b              B        |L16.140|
+                  |L16.52|
+;;;145    
+;;;146        case WIFI_2:
+;;;147            WIFI_2_RST_LOW_LEVEL();
 000034  f44f4180          MOV      r1,#0x4000
-000038  4815              LDR      r0,|L15.144|
+000038  4815              LDR      r0,|L16.144|
 00003a  f7fffffe          BL       GPIO_ResetBits
-;;;142            systick_delay(500);
+;;;148            systick_delay(500);
 00003e  f44f70fa          MOV      r0,#0x1f4
 000042  2100              MOVS     r1,#0
 000044  f7fffffe          BL       systick_delay
-;;;143            WIFI_2_RST_HIGH_LEVEL();
+;;;149            WIFI_2_RST_HIGH_LEVEL();
 000048  f44f4180          MOV      r1,#0x4000
-00004c  4810              LDR      r0,|L15.144|
+00004c  4810              LDR      r0,|L16.144|
 00004e  f7fffffe          BL       GPIO_SetBits
-;;;144            break;
-000052  e01b              B        |L15.140|
-                  |L15.84|
-;;;145    
-;;;146        case WIFI_3:
-;;;147            WIFI_3_RST_LOW_LEVEL();
+;;;150            break;
+000052  e01b              B        |L16.140|
+                  |L16.84|
+;;;151    
+;;;152        case WIFI_3:
+;;;153            WIFI_3_RST_LOW_LEVEL();
 000054  2102              MOVS     r1,#2
-000056  480f              LDR      r0,|L15.148|
+000056  480f              LDR      r0,|L16.148|
 000058  f7fffffe          BL       GPIO_ResetBits
-;;;148            systick_delay(500);
+;;;154            systick_delay(500);
 00005c  f44f70fa          MOV      r0,#0x1f4
 000060  2100              MOVS     r1,#0
 000062  f7fffffe          BL       systick_delay
-;;;149            WIFI_3_RST_HIGH_LEVEL();
+;;;155            WIFI_3_RST_HIGH_LEVEL();
 000066  2102              MOVS     r1,#2
-000068  480a              LDR      r0,|L15.148|
+000068  480a              LDR      r0,|L16.148|
 00006a  f7fffffe          BL       GPIO_SetBits
-;;;150            break;
-00006e  e00d              B        |L15.140|
-                  |L15.112|
-;;;151    
-;;;152        case WIFI_4:
-;;;153            WIFI_4_RST_LOW_LEVEL();
+;;;156            break;
+00006e  e00d              B        |L16.140|
+                  |L16.112|
+;;;157    
+;;;158        case WIFI_4:
+;;;159            WIFI_4_RST_LOW_LEVEL();
 000070  2108              MOVS     r1,#8
-000072  4808              LDR      r0,|L15.148|
+000072  4808              LDR      r0,|L16.148|
 000074  f7fffffe          BL       GPIO_ResetBits
-;;;154            systick_delay(500);
+;;;160            systick_delay(500);
 000078  f44f70fa          MOV      r0,#0x1f4
 00007c  2100              MOVS     r1,#0
 00007e  f7fffffe          BL       systick_delay
-;;;155            WIFI_4_RST_HIGH_LEVEL();
+;;;161            WIFI_4_RST_HIGH_LEVEL();
 000082  2108              MOVS     r1,#8
-000084  4803              LDR      r0,|L15.148|
+000084  4803              LDR      r0,|L16.148|
 000086  f7fffffe          BL       GPIO_SetBits
-;;;156            break;
+;;;162            break;
 00008a  bf00              NOP      
-                  |L15.140|
-00008c  bf00              NOP                            ;138
-;;;157        }
-;;;158    }
+                  |L16.140|
+00008c  bf00              NOP                            ;144
+;;;163        }
+;;;164    }
 00008e  bd10              POP      {r4,pc}
-;;;159    
+;;;165    
                           ENDP
 
-                  |L15.144|
+                  |L16.144|
                           DCD      0x40011800
-                  |L15.148|
+                  |L16.148|
                           DCD      0x40011c00
 
                           AREA ||.bss||, DATA, NOINIT, ALIGN=1
@@ -1083,3 +1194,19 @@
                           %        4098
                   wifi4_frame_record
                           %        4098
+
+                          AREA ||.conststring||, DATA, READONLY, MERGE=1, STRINGS, ALIGN=2
+
+000000  4f4b0d0a          DCB      "OK\r\n",0
+000004  00      
+000005  00                DCB      0
+000006  00                DCB      0
+000007  00                DCB      0
+000008  4552524f          DCB      "ERROR\r\n",0
+00000c  520d0a00
+
+                          AREA ||.data||, DATA, ALIGN=2
+
+                  cmd_end_list
+                          DCD      ||.conststring||
+                          DCD      ||.conststring||+0x8

@@ -31874,6 +31874,11 @@ N    WIFI_4,
 N}
 Nwifi_t;
 N
+N
+N#define cmd_end_list_len 2
+Nextern char* cmd_end_list[];
+N
+N
 Ntypedef struct
 N{
 N    char Data_RX_BUF [RX_BUF_MAX_LEN];
@@ -31904,10 +31909,13 @@ Nvoid wifi_power_cut(void);
 Nvoid wifi_power_on(void);
 Nvoid wifi_init(wifi_t wifi);
 Nvoid wifi_reset(wifi_t wifi);
-Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd, uint64_t timeout);
+Nchar* exec_wifi_cmd(wifi_t wifi, char* cmd,
+N                    uint64_t timeout);
 Nvoid exec_all_wifi_cmd(char* cmd, uint64_t timeout);
 Nvoid wait_at(wifi_t wifi);
 Nvoid mode_set(wifi_t wifi);
+Nvoid wifi_interrupt_handler(USART_TypeDef* uart,
+N                            wifi_frame_record* record_ptr);
 N
 N#endif
 N
@@ -31997,111 +32005,36 @@ N
 Nvoid UART2_IRQHandler(void)
 Xvoid USART2_IRQHandler(void)
 N{
-N    uint8_t ucCh;
-N
 N    if (USART_GetITStatus(UART2, USART_IT_RXNE) != RESET)
 X    if (USART_GetITStatus(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), ((uint16_t)0x0525)) != RESET)
-N    {
-N        ucCh = USART_ReceiveData(UART2);
-X        ucCh = USART_ReceiveData(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)));
-N
-N        if (wifi1_frame_record.InfBit.FramLength <
-N                (RX_BUF_MAX_LEN - 1))
-X                (4096 - 1))
-N            wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength++]
-N                = ucCh;
-N
-N        if (ucCh == 0x0a
-N                && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength
-N                        - 2] == 0x0d
-N                && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength
-N                        - 3] == 'K'
-N                && wifi1_frame_record.Data_RX_BUF[wifi1_frame_record.InfBit.FramLength
-N                        - 4] == 'O')
-N            wifi1_frame_record.InfBit.FramFinishFlag = 1;
-N    }
+N        wifi_interrupt_handler(UART2, &wifi1_frame_record);
+X        wifi_interrupt_handler(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), &wifi1_frame_record);
 N}
 N
 Nvoid UART3_IRQHandler(void)
 Xvoid USART3_IRQHandler(void)
 N{
-N    uint8_t ucCh;
-N
 N    if (USART_GetITStatus(UART3, USART_IT_RXNE) != RESET)
 X    if (USART_GetITStatus(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), ((uint16_t)0x0525)) != RESET)
-N    {
-N        ucCh = USART_ReceiveData(UART3);
-X        ucCh = USART_ReceiveData(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)));
-N
-N        if (wifi2_frame_record.InfBit.FramLength <
-N                (RX_BUF_MAX_LEN - 1))
-X                (4096 - 1))
-N            wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength++]
-N                = ucCh;
-N
-N        if (ucCh == 0x0a
-N                && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength
-N                        - 2] == 0x0d
-N                && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength
-N                        - 3] == 'K'
-N                && wifi2_frame_record.Data_RX_BUF[wifi2_frame_record.InfBit.FramLength
-N                        - 4] == 'O')
-N            wifi2_frame_record.InfBit.FramFinishFlag = 1;
-N    }
+N        wifi_interrupt_handler(UART3, &wifi2_frame_record);
+X        wifi_interrupt_handler(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), &wifi2_frame_record);
 N}
 N
 Nvoid UART4_IRQHandler(void)
 N{
-N    uint8_t ucCh;
-N
 N    if (USART_GetITStatus(UART4, USART_IT_RXNE) != RESET)
 X    if (USART_GetITStatus(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), ((uint16_t)0x0525)) != RESET)
-N    {
-N        ucCh = USART_ReceiveData(UART4);
-X        ucCh = USART_ReceiveData(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)));
-N
-N        if (wifi3_frame_record.InfBit.FramLength <
-N                (RX_BUF_MAX_LEN - 1))
-X                (4096 - 1))
-N            wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength++]
-N                = ucCh;
-N
-N        if (ucCh == 0x0a
-N                && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength
-N                        - 2] == 0x0d
-N                && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength
-N                        - 3] == 'K'
-N                && wifi3_frame_record.Data_RX_BUF[wifi3_frame_record.InfBit.FramLength
-N                        - 4] == 'O')
-N            wifi3_frame_record.InfBit.FramFinishFlag = 1;
-N    }
+N        wifi_interrupt_handler(UART4, &wifi3_frame_record);
+X        wifi_interrupt_handler(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), &wifi3_frame_record);
 N}
 N
 N
 Nvoid UART5_IRQHandler(void)
 N{
-N    uint8_t ucCh;
-N
 N    if (USART_GetITStatus(UART5, USART_IT_RXNE) != RESET)
 X    if (USART_GetITStatus(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), ((uint16_t)0x0525)) != RESET)
-N    {
-N        ucCh = USART_ReceiveData(UART5);
-X        ucCh = USART_ReceiveData(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)));
-N
-N        if (wifi4_frame_record.InfBit.FramLength <
-N                (RX_BUF_MAX_LEN - 1))
-X                (4096 - 1))
-N            wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength++]
-N                = ucCh;
-N
-N        if (ucCh == 0x0a
-N                && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength
-N                        - 2] == 0x0d
-N                && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength
-N                        - 3] == 'K'
-N                && wifi4_frame_record.Data_RX_BUF[wifi4_frame_record.InfBit.FramLength
-N                        - 4] == 'O')
-N            wifi4_frame_record.InfBit.FramFinishFlag = 1;
-N    }
+N        wifi_interrupt_handler(UART5, &wifi4_frame_record);
+X        wifi_interrupt_handler(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), &wifi4_frame_record);
 N}
+N
 N

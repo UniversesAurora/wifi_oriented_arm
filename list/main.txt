@@ -43,49 +43,49 @@
 000030  f7fffffe          BL       wifi_init
 ;;;15     
 ;;;16     
-;;;17         printf("wait1\n");
+;;;17         debug_printf("wait1\n");
 000034  a026              ADR      r0,|L1.208|
 000036  f7fffffe          BL       __2printf
 ;;;18         wait_at(WIFI_1);
 00003a  2000              MOVS     r0,#0
 00003c  f7fffffe          BL       wait_at
-;;;19         printf("wait2\n");
+;;;19         debug_printf("wait2\n");
 000040  a025              ADR      r0,|L1.216|
 000042  f7fffffe          BL       __2printf
 ;;;20         wait_at(WIFI_2);
 000046  2001              MOVS     r0,#1
 000048  f7fffffe          BL       wait_at
-;;;21         printf("wait3\n");
+;;;21         debug_printf("wait3\n");
 00004c  a024              ADR      r0,|L1.224|
 00004e  f7fffffe          BL       __2printf
 ;;;22         wait_at(WIFI_3);
 000052  2002              MOVS     r0,#2
 000054  f7fffffe          BL       wait_at
-;;;23         printf("wait4\n");
+;;;23         debug_printf("wait4\n");
 000058  a023              ADR      r0,|L1.232|
 00005a  f7fffffe          BL       __2printf
 ;;;24         wait_at(WIFI_4);
 00005e  2003              MOVS     r0,#3
 000060  f7fffffe          BL       wait_at
-;;;25         printf("set1\n");
+;;;25         debug_printf("set1\n");
 000064  a022              ADR      r0,|L1.240|
 000066  f7fffffe          BL       __2printf
 ;;;26         mode_set(WIFI_1);
 00006a  2000              MOVS     r0,#0
 00006c  f7fffffe          BL       mode_set
-;;;27         printf("set2\n");
+;;;27         debug_printf("set2\n");
 000070  a021              ADR      r0,|L1.248|
 000072  f7fffffe          BL       __2printf
 ;;;28         mode_set(WIFI_2);
 000076  2001              MOVS     r0,#1
 000078  f7fffffe          BL       mode_set
-;;;29         printf("set3\n");
+;;;29         debug_printf("set3\n");
 00007c  a020              ADR      r0,|L1.256|
 00007e  f7fffffe          BL       __2printf
 ;;;30         mode_set(WIFI_3);
 000082  2002              MOVS     r0,#2
 000084  f7fffffe          BL       mode_set
-;;;31         printf("set4\n");
+;;;31         debug_printf("set4\n");
 000088  a01f              ADR      r0,|L1.264|
 00008a  f7fffffe          BL       __2printf
 ;;;32         mode_set(WIFI_4);
@@ -107,39 +107,40 @@
 ;;;46     //    printf("hello\n");
 ;;;47     //        ret = exec_wifi_cmd(WIFI_3, "AT+CWLAP", 2);
 ;;;48     //        printf("%s\n", ret);
-;;;49         while (1)
+;;;49     
+;;;50         while (1)
 000094  e01a              B        |L1.204|
                   |L1.150|
-;;;50         {
-;;;51             exec_all_wifi_cmd("AT+CWLAP", 2000);
+;;;51         {
+;;;52             exec_all_wifi_cmd("AT+CWLAP", 2000);
 000096  f44f62fa          MOV      r2,#0x7d0
 00009a  2300              MOVS     r3,#0
 00009c  a01c              ADR      r0,|L1.272|
 00009e  f7fffffe          BL       exec_all_wifi_cmd
-;;;52             printf("%s\n", wifi1_frame_record.Data_RX_BUF);
+;;;53             printf("%s\n", wifi1_frame_record.Data_RX_BUF);
 0000a2  491e              LDR      r1,|L1.284|
 0000a4  a01e              ADR      r0,|L1.288|
 0000a6  f7fffffe          BL       __2printf
-;;;53             printf("%s\n", wifi2_frame_record.Data_RX_BUF);
+;;;54             printf("%s\n", wifi2_frame_record.Data_RX_BUF);
 0000aa  491e              LDR      r1,|L1.292|
 0000ac  a01c              ADR      r0,|L1.288|
 0000ae  f7fffffe          BL       __2printf
-;;;54             printf("%s\n", wifi3_frame_record.Data_RX_BUF);
+;;;55             printf("%s\n", wifi3_frame_record.Data_RX_BUF);
 0000b2  491d              LDR      r1,|L1.296|
 0000b4  a01a              ADR      r0,|L1.288|
 0000b6  f7fffffe          BL       __2printf
-;;;55             printf("%s\n", wifi4_frame_record.Data_RX_BUF);
+;;;56             printf("%s\n", wifi4_frame_record.Data_RX_BUF);
 0000ba  491c              LDR      r1,|L1.300|
 0000bc  a018              ADR      r0,|L1.288|
 0000be  f7fffffe          BL       __2printf
-;;;56             systick_delay(1000);
+;;;57             systick_delay(1000);
 0000c2  f44f707a          MOV      r0,#0x3e8
 0000c6  2100              MOVS     r1,#0
 0000c8  f7fffffe          BL       systick_delay
                   |L1.204|
 0000cc  e7e3              B        |L1.150|
-;;;57         }
-;;;58     }
+;;;58         }
+;;;59     }
                           ENDP
 
 0000ce  0000              DCW      0x0000

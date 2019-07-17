@@ -1,12 +1,12 @@
-#ifndef __LED_DISPLAY_H
-#define __LED_DISPLAY_H
+#ifndef __LCD_DISPLAY_H
+#define __LCD_DISPLAY_H
 
 #include <stm32f10x.h>
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_gpio.h>
 
-#define LED_DIS_RCC RCC_APB2Periph_GPIOE
-#define LED_DIS_PORT GPIOE
+#define LCD_DIS_RCC RCC_APB2Periph_GPIOE
+#define LCD_DIS_PORT GPIOE
 
 #define D0_PIN GPIO_Pin_0
 #define D1_PIN GPIO_Pin_1
@@ -27,7 +27,7 @@
 
 
 
-void init_led_display(void);
+void init_lcd_display(void);
 uint8_t read_status_byte(void);
 uint8_t read_data_byte(void);
 void write_cmd_byte(uint8_t data);

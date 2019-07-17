@@ -117,11 +117,7 @@ wifi_t;
 
 
 #define cmd_end_list_len 2
-char* cmd_end_list[] =
-{
-    "OK\r\n",
-    "ERROR\r\n",
-};
+extern char* cmd_end_list[];
 
 
 typedef struct

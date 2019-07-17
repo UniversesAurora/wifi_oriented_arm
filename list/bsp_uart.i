@@ -14398,86 +14398,80 @@ static void init_nvic(uint8_t IRQChannel,
     NVIC_Init(&nvic_init_type);
 }
 
-void uart1_init(uint32_t baudrate, uint16_t word_length,
-                uint16_t stopbits, uint16_t parity, uint16_t mode,
-                uint16_t flow)
+static void uart_init(
+    USART_TypeDef* uart,
+    void (*gpio_clk_fun)(uint32_t, FunctionalState),
+    void (*uart_clk_fun)(uint32_t, FunctionalState),
+    uint32_t gpio_clk, uint32_t uart_clk, GPIO_TypeDef* tx_port,
+    uint16_t tx_pin, GPIO_TypeDef* rx_port, uint16_t rx_pin,
+    uint8_t IRQChannel, uint8_t PreemptionPriority,
+    uint8_t SubPriority,
+    uint32_t baudrate, uint16_t word_length,
+    uint16_t stopbits, uint16_t parity, uint16_t mode,
+    uint16_t flow)
 {
     GPIO_InitTypeDef gpio_init_type;
     USART_InitTypeDef uart_init_type;
 
-    RCC_APB2PeriphClockCmd((((uint32_t)0x00000004)), ENABLE);
+    gpio_clk_fun(gpio_clk, ENABLE);
 
-    gpio_init_type.GPIO_Pin = ((uint16_t)0x0200);
+    gpio_init_type.GPIO_Pin = tx_pin;
     gpio_init_type.GPIO_Mode = GPIO_Mode_AF_PP;
     gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0800)), &gpio_init_type);
+    GPIO_Init(tx_port, &gpio_init_type);
 
-    gpio_init_type.GPIO_Pin = ((uint16_t)0x0400);
+    gpio_init_type.GPIO_Pin = rx_pin;
     gpio_init_type.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_Init(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0800)), &gpio_init_type);
+    GPIO_Init(rx_port, &gpio_init_type);
 
-    RCC_APB2PeriphClockCmd(((uint32_t)0x00004000), ENABLE);
+    uart_clk_fun(uart_clk, ENABLE);
 
     uart_init_type.USART_BaudRate = baudrate;
-
     uart_init_type.USART_WordLength = word_length;
-
     uart_init_type.USART_StopBits = stopbits;
-
     uart_init_type.USART_Parity = parity;
-
     uart_init_type.USART_HardwareFlowControl = flow;
-
     uart_init_type.USART_Mode = mode;
 
-    USART_Init(((USART_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x3800)), &uart_init_type);
+    USART_Init(uart, &uart_init_type);
 
-    init_nvic(USART1_IRQn, 1, 1);
+    init_nvic(IRQChannel, PreemptionPriority, SubPriority);
 
-    USART_ITConfig(((USART_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x3800)), ((uint16_t)0x0525), ENABLE);
+    USART_ITConfig(uart, ((uint16_t)0x0525), ENABLE);
 
-    USART_Cmd(((USART_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x3800)), ENABLE);
+    USART_Cmd(uart, ENABLE);
+}
+
+void uart1_init(uint32_t baudrate, uint16_t word_length,
+                uint16_t stopbits, uint16_t parity, uint16_t mode,
+                uint16_t flow)
+{
+    uart_init(
+        ((USART_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x3800)),
+        RCC_APB2PeriphClockCmd,
+        RCC_APB2PeriphClockCmd,
+        (((uint32_t)0x00000004)), ((uint32_t)0x00004000),
+        ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0800)), ((uint16_t)0x0200),
+        ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0800)), ((uint16_t)0x0400),
+        USART1_IRQn, 1, 1,
+        baudrate, word_length,
+        stopbits, parity, mode, flow);
 }
 
 void uart2_init(uint32_t baudrate, uint16_t word_length,
                 uint16_t stopbits, uint16_t parity, uint16_t mode,
                 uint16_t flow)
 {
-    GPIO_InitTypeDef gpio_init_type;
-    USART_InitTypeDef uart_init_type;
-
-    RCC_APB2PeriphClockCmd((((uint32_t)0x00000004)), ENABLE);
-
-    gpio_init_type.GPIO_Pin = ((uint16_t)0x0004);
-    gpio_init_type.GPIO_Mode = GPIO_Mode_AF_PP;
-    gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0800)), &gpio_init_type);
-
-    gpio_init_type.GPIO_Pin = ((uint16_t)0x0008);
-    gpio_init_type.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_Init(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0800)), &gpio_init_type);
-
-    RCC_APB1PeriphClockCmd(((uint32_t)0x00020000), ENABLE);
-
-    uart_init_type.USART_BaudRate = baudrate;
-
-    uart_init_type.USART_WordLength = word_length;
-
-    uart_init_type.USART_StopBits = stopbits;
-
-    uart_init_type.USART_Parity = parity;
-
-    uart_init_type.USART_HardwareFlowControl = flow;
-
-    uart_init_type.USART_Mode = mode;
-
-    USART_Init(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), &uart_init_type);
-
-    init_nvic(USART2_IRQn, 1, 2);
-
-    USART_ITConfig(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), ((uint16_t)0x0525), ENABLE);
-
-    USART_Cmd(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)), ENABLE);
+    uart_init(
+        ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4400)),
+        RCC_APB2PeriphClockCmd,
+        RCC_APB1PeriphClockCmd,
+        (((uint32_t)0x00000004)), ((uint32_t)0x00020000),
+        ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0800)), ((uint16_t)0x0004),
+        ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0800)), ((uint16_t)0x0008),
+        USART2_IRQn, 1, 2,
+        baudrate, word_length,
+        stopbits, parity, mode, flow);
 }
 
 
@@ -14485,41 +14479,16 @@ void uart3_init(uint32_t baudrate, uint16_t word_length,
                 uint16_t stopbits, uint16_t parity, uint16_t mode,
                 uint16_t flow)
 {
-    GPIO_InitTypeDef gpio_init_type;
-    USART_InitTypeDef uart_init_type;
-
-    RCC_APB2PeriphClockCmd((((uint32_t)0x00000008)), ENABLE);
-
-    gpio_init_type.GPIO_Pin = ((uint16_t)0x0400);
-    gpio_init_type.GPIO_Mode = GPIO_Mode_AF_PP;
-    gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0C00)), &gpio_init_type);
-
-    gpio_init_type.GPIO_Pin = ((uint16_t)0x0800);
-    gpio_init_type.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_Init(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0C00)), &gpio_init_type);
-
-    RCC_APB1PeriphClockCmd(((uint32_t)0x00040000), ENABLE);
-
-    uart_init_type.USART_BaudRate = baudrate;
-
-    uart_init_type.USART_WordLength = word_length;
-
-    uart_init_type.USART_StopBits = stopbits;
-
-    uart_init_type.USART_Parity = parity;
-
-    uart_init_type.USART_HardwareFlowControl = flow;
-
-    uart_init_type.USART_Mode = mode;
-
-    USART_Init(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), &uart_init_type);
-
-    init_nvic(USART3_IRQn, 1, 3);
-
-    USART_ITConfig(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), ((uint16_t)0x0525), ENABLE);
-
-    USART_Cmd(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)), ENABLE);
+    uart_init(
+        ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4800)),
+        RCC_APB2PeriphClockCmd,
+        RCC_APB1PeriphClockCmd,
+        (((uint32_t)0x00000008)), ((uint32_t)0x00040000),
+        ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0C00)), ((uint16_t)0x0400),
+        ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0C00)), ((uint16_t)0x0800),
+        USART3_IRQn, 1, 3,
+        baudrate, word_length,
+        stopbits, parity, mode, flow);
 }
 
 
@@ -14527,41 +14496,16 @@ void uart4_init(uint32_t baudrate, uint16_t word_length,
                 uint16_t stopbits, uint16_t parity, uint16_t mode,
                 uint16_t flow)
 {
-    GPIO_InitTypeDef gpio_init_type;
-    USART_InitTypeDef uart_init_type;
-
-    RCC_APB2PeriphClockCmd((((uint32_t)0x00000010)), ENABLE);
-
-    gpio_init_type.GPIO_Pin = ((uint16_t)0x0400);
-    gpio_init_type.GPIO_Mode = GPIO_Mode_AF_PP;
-    gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1000)), &gpio_init_type);
-
-    gpio_init_type.GPIO_Pin = ((uint16_t)0x0800);
-    gpio_init_type.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_Init(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1000)), &gpio_init_type);
-
-    RCC_APB1PeriphClockCmd(((uint32_t)0x00080000), ENABLE);
-
-    uart_init_type.USART_BaudRate = baudrate;
-
-    uart_init_type.USART_WordLength = word_length;
-
-    uart_init_type.USART_StopBits = stopbits;
-
-    uart_init_type.USART_Parity = parity;
-
-    uart_init_type.USART_HardwareFlowControl = flow;
-
-    uart_init_type.USART_Mode = mode;
-
-    USART_Init(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), &uart_init_type);
-
-    init_nvic(UART4_IRQn, 1, 4);
-
-    USART_ITConfig(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), ((uint16_t)0x0525), ENABLE);
-
-    USART_Cmd(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), ENABLE);
+    uart_init(
+        ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)),
+        RCC_APB2PeriphClockCmd,
+        RCC_APB1PeriphClockCmd,
+        (((uint32_t)0x00000010)), ((uint32_t)0x00080000),
+        ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1000)), ((uint16_t)0x0400),
+        ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1000)), ((uint16_t)0x0800),
+        UART4_IRQn, 1, 4,
+        baudrate, word_length,
+        stopbits, parity, mode, flow);
 }
 
 
@@ -14569,42 +14513,17 @@ void uart5_init(uint32_t baudrate, uint16_t word_length,
                 uint16_t stopbits, uint16_t parity, uint16_t mode,
                 uint16_t flow)
 {
-    GPIO_InitTypeDef gpio_init_type;
-    USART_InitTypeDef uart_init_type;
-
     RCC_APB2PeriphClockCmd((((uint32_t)0x00000010)), ENABLE);
-    RCC_APB2PeriphClockCmd((((uint32_t)0x00000020)), ENABLE);
-
-    gpio_init_type.GPIO_Pin = ((uint16_t)0x1000);
-    gpio_init_type.GPIO_Mode = GPIO_Mode_AF_PP;
-    gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1000)), &gpio_init_type);
-
-    gpio_init_type.GPIO_Pin = ((uint16_t)0x0004);
-    gpio_init_type.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_Init(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1400)), &gpio_init_type);
-
-    RCC_APB1PeriphClockCmd(((uint32_t)0x00100000), ENABLE);
-
-    uart_init_type.USART_BaudRate = baudrate;
-
-    uart_init_type.USART_WordLength = word_length;
-
-    uart_init_type.USART_StopBits = stopbits;
-
-    uart_init_type.USART_Parity = parity;
-
-    uart_init_type.USART_HardwareFlowControl = flow;
-
-    uart_init_type.USART_Mode = mode;
-
-    USART_Init(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), &uart_init_type);
-
-    init_nvic(UART5_IRQn, 1, 5);
-
-    USART_ITConfig(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), ((uint16_t)0x0525), ENABLE);
-
-    USART_Cmd(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), ENABLE);
+    uart_init(
+        ((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)),
+        RCC_APB2PeriphClockCmd,
+        RCC_APB1PeriphClockCmd,
+        (((uint32_t)0x00000020)), ((uint32_t)0x00100000),
+        ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1000)), ((uint16_t)0x1000),
+        ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1400)), ((uint16_t)0x0004),
+        UART5_IRQn, 1, 5,
+        baudrate, word_length,
+        stopbits, parity, mode, flow);
 }
 
 

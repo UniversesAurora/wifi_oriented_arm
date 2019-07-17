@@ -2,7 +2,7 @@
 #define __LIST_DISPLAY_H
 
 #include <stm32f10x.h>
-#include "led_display.h"
+#include "lcd_display.h"
 
 
 typedef struct

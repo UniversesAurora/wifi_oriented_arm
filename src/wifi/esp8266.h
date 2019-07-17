@@ -115,6 +115,15 @@ typedef enum
 }
 wifi_t;
 
+
+#define cmd_end_list_len 2
+char* cmd_end_list[] =
+{
+    "OK\r\n",
+    "ERROR\r\n",
+};
+
+
 typedef struct
 {
     char Data_RX_BUF [RX_BUF_MAX_LEN];
@@ -141,10 +150,13 @@ void wifi_power_cut(void);
 void wifi_power_on(void);
 void wifi_init(wifi_t wifi);
 void wifi_reset(wifi_t wifi);
-char* exec_wifi_cmd(wifi_t wifi, char* cmd, uint64_t timeout);
+char* exec_wifi_cmd(wifi_t wifi, char* cmd,
+                    uint64_t timeout);
 void exec_all_wifi_cmd(char* cmd, uint64_t timeout);
 void wait_at(wifi_t wifi);
 void mode_set(wifi_t wifi);
+void wifi_interrupt_handler(USART_TypeDef* uart,
+                            wifi_frame_record* record_ptr);
 
 #endif
 

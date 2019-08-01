@@ -5,12 +5,12 @@
                           AREA ||i.fgetc||, CODE, READONLY, ALIGN=2
 
                   fgetc PROC
-;;;182    
-;;;183    int fgetc(FILE* f)
+;;;180    
+;;;181    int fgetc(FILE* f)
 000000  b510              PUSH     {r4,lr}
-;;;184    {
+;;;182    {
 000002  4604              MOV      r4,r0
-;;;185        while (USART_GetFlagStatus(DEBUG_UART,
+;;;183        while (USART_GetFlagStatus(DEBUG_UART,
 000004  bf00              NOP      
                   |L1.6|
 000006  2120              MOVS     r1,#0x20
@@ -18,14 +18,14 @@
 00000a  f7fffffe          BL       USART_GetFlagStatus
 00000e  2800              CMP      r0,#0
 000010  d0f9              BEQ      |L1.6|
-;;;186                                   USART_FLAG_RXNE) == RESET);
-;;;187    
-;;;188        return (int)USART_ReceiveData(DEBUG_UART);
+;;;184                                   USART_FLAG_RXNE) == RESET);
+;;;185    
+;;;186        return (int)USART_ReceiveData(DEBUG_UART);
 000012  4802              LDR      r0,|L1.28|
 000014  f7fffffe          BL       USART_ReceiveData
-;;;189    }
+;;;187    }
 000018  bd10              POP      {r4,pc}
-;;;190    
+;;;188    
                           ENDP
 
 00001a  0000              DCW      0x0000
@@ -35,18 +35,18 @@
                           AREA ||i.fputc||, CODE, READONLY, ALIGN=2
 
                   fputc PROC
-;;;172    
-;;;173    int fputc(int ch, FILE* f)
+;;;170    
+;;;171    int fputc(int ch, FILE* f)
 000000  b570              PUSH     {r4-r6,lr}
-;;;174    {
+;;;172    {
 000002  4604              MOV      r4,r0
 000004  460d              MOV      r5,r1
-;;;175        USART_SendData(DEBUG_UART, (uint8_t) ch);
+;;;173        USART_SendData(DEBUG_UART, (uint8_t) ch);
 000006  b2e1              UXTB     r1,r4
 000008  4805              LDR      r0,|L2.32|
 00000a  f7fffffe          BL       USART_SendData
-;;;176    
-;;;177        while (USART_GetFlagStatus(DEBUG_UART,
+;;;174    
+;;;175        while (USART_GetFlagStatus(DEBUG_UART,
 00000e  bf00              NOP      
                   |L2.16|
 000010  2180              MOVS     r1,#0x80
@@ -54,13 +54,13 @@
 000014  f7fffffe          BL       USART_GetFlagStatus
 000018  2800              CMP      r0,#0
 00001a  d0f9              BEQ      |L2.16|
-;;;178                                   USART_FLAG_TXE) == RESET);
-;;;179    
-;;;180        return (ch);
+;;;176                                   USART_FLAG_TXE) == RESET);
+;;;177    
+;;;178        return (ch);
 00001c  4620              MOV      r0,r4
-;;;181    }
+;;;179    }
 00001e  bd70              POP      {r4-r6,pc}
-;;;182    
+;;;180    
                           ENDP
 
                   |L2.32|
@@ -507,18 +507,18 @@
                           AREA ||i.uart_send_byte||, CODE, READONLY, ALIGN=1
 
                   uart_send_byte PROC
-;;;148    
-;;;149    void uart_send_byte(USART_TypeDef* pUSARTx, uint8_t ch)
+;;;146    
+;;;147    void uart_send_byte(USART_TypeDef* pUSARTx, uint8_t ch)
 000000  b570              PUSH     {r4-r6,lr}
-;;;150    {
+;;;148    {
 000002  4604              MOV      r4,r0
 000004  460d              MOV      r5,r1
-;;;151        USART_SendData(pUSARTx, ch);
+;;;149        USART_SendData(pUSARTx, ch);
 000006  4629              MOV      r1,r5
 000008  4620              MOV      r0,r4
 00000a  f7fffffe          BL       USART_SendData
-;;;152    
-;;;153        while (USART_GetFlagStatus(pUSARTx,
+;;;150    
+;;;151        while (USART_GetFlagStatus(pUSARTx,
 00000e  bf00              NOP      
                   |L10.16|
 000010  2180              MOVS     r1,#0x80
@@ -526,43 +526,43 @@
 000014  f7fffffe          BL       USART_GetFlagStatus
 000018  2800              CMP      r0,#0
 00001a  d0f9              BEQ      |L10.16|
-;;;154                                   USART_FLAG_TXE) == RESET);
-;;;155    }
+;;;152                                   USART_FLAG_TXE) == RESET);
+;;;153    }
 00001c  bd70              POP      {r4-r6,pc}
-;;;156    
+;;;154    
                           ENDP
 
 
                           AREA ||i.uart_send_string||, CODE, READONLY, ALIGN=1
 
                   uart_send_string PROC
-;;;157    
-;;;158    void uart_send_string(USART_TypeDef* pUSARTx, char* str)
+;;;155    
+;;;156    void uart_send_string(USART_TypeDef* pUSARTx, char* str)
 000000  b5d0              PUSH     {r4,r6,r7,lr}
-;;;159    {
+;;;157    {
 000002  4607              MOV      r7,r0
 000004  460e              MOV      r6,r1
-;;;160        uint64_t k = 0;
+;;;158        uint64_t k = 0;
 000006  2400              MOVS     r4,#0
-;;;161    
-;;;162        do
+;;;159    
+;;;160        do
 000008  bf00              NOP      
                   |L11.10|
-;;;163        {
-;;;164            uart_send_byte(pUSARTx, str[k]);
+;;;161        {
+;;;162            uart_send_byte(pUSARTx, str[k]);
 00000a  5d31              LDRB     r1,[r6,r4]
 00000c  4638              MOV      r0,r7
 00000e  f7fffffe          BL       uart_send_byte
-;;;165            k++;
+;;;163            k++;
 000012  1c64              ADDS     r4,r4,#1
-;;;166        }
-;;;167        while (str[k - 1] != '\0');
+;;;164        }
+;;;165        while (str[k - 1] != '\0');
 000014  1e60              SUBS     r0,r4,#1
 000016  5c30              LDRB     r0,[r6,r0]
 000018  2800              CMP      r0,#0
 00001a  d1f6              BNE      |L11.10|
-;;;168    
-;;;169        while (USART_GetFlagStatus(pUSARTx,
+;;;166    
+;;;167        while (USART_GetFlagStatus(pUSARTx,
 00001c  bf00              NOP      
                   |L11.30|
 00001e  f04f0140          MOV      r1,#0x40
@@ -570,9 +570,9 @@
 000024  f7fffffe          BL       USART_GetFlagStatus
 000028  2800              CMP      r0,#0
 00002a  d0f8              BEQ      |L11.30|
-;;;170                                   USART_FLAG_TC) == RESET);
-;;;171    }
+;;;168                                   USART_FLAG_TC) == RESET);
+;;;169    }
 00002c  bdd0              POP      {r4,r6,r7,pc}
-;;;172    
+;;;170    
                           ENDP
 

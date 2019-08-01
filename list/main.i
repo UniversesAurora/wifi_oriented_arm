@@ -15543,6 +15543,7 @@ void uart5_init(uint32_t baudrate, uint16_t word_length,
                 uint16_t stopbits, uint16_t parity, uint16_t mode,
                 uint16_t flow);
 
+void uart_send_byte(USART_TypeDef* pUSARTx, uint8_t ch);
 void uart_send_string(USART_TypeDef* pUSARTx, char* str);
 
 
@@ -15762,36 +15763,198 @@ void wifi_interrupt_handler(USART_TypeDef* uart,
 
 
 # 3 "..\\src\\main.c"
+# 1 "..\\src\\display/list_display.h"
+
+
+
+# 5 "..\\src\\display/list_display.h"
+# 1 "..\\src\\display/lcd_display.h"
+
+
+
+# 5 "..\\src\\display/lcd_display.h"
+# 6 "..\\src\\display/lcd_display.h"
+# 7 "..\\src\\display/lcd_display.h"
+# 8 "..\\src\\display/lcd_display.h"
+# 9 "..\\src\\display/lcd_display.h"
+# 10 "..\\src\\display/lcd_display.h"
+
+
+
+
+# 25 "..\\src\\display/lcd_display.h"
+
+
+
+
+
+
+
+
+
+void init_lcd_display(void);
+uint8_t read_status_byte(void);
+uint8_t read_data_byte(void);
+void write_cmd_byte(uint8_t data);
+void write_cmd_byte_no_wait(uint8_t data);
+void write_data_byte(uint8_t data);
+void lcd_clear_screen(void);
+void lcd_set_ddram_ptr(uint8_t addr);
+void lcd_get_new_line(void);
+char* lcd_get_string(int row, int col, int num);
+void lcd_print_line(char* string, int row, int col);
+void lcd_print_line_with_num(char* string, int row, int col,
+                             int num);
+void lcd_print(char* string, int row, int col);
+
+
+
+
+
+# 6 "..\\src\\display/list_display.h"
+# 7 "..\\src\\display/list_display.h"
+# 1 "..\\src\\display/../key/bsp_key.h"
+
+
+
+# 5 "..\\src\\display/../key/bsp_key.h"
+# 6 "..\\src\\display/../key/bsp_key.h"
+# 7 "..\\src\\display/../key/bsp_key.h"
+# 8 "..\\src\\display/../key/bsp_key.h"
+# 9 "..\\src\\display/../key/bsp_key.h"
+
+ 
+
+# 21 "..\\src\\display/../key/bsp_key.h"
+
+ 
+
+# 33 "..\\src\\display/../key/bsp_key.h"
+
+ 
+
+# 45 "..\\src\\display/../key/bsp_key.h"
+
+ 
+
+# 57 "..\\src\\display/../key/bsp_key.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void exti_config(uint32_t line, EXTIMode_TypeDef mode, EXTITrigger_TypeDef trigger, FunctionalState cmd);
+void key_init(void);
+
+
+# 8 "..\\src\\display/list_display.h"
+
+
+
+
+
+
+
+
+typedef enum
+{
+    UPDATE,
+    NORMAL,
+}
+list_update_mode;
+
+typedef struct
+{
+    char* line_name;
+    char* line_icon;
+    void* message;
+}
+list_row;
+
+typedef struct
+{
+    uint8_t icon_num;
+    uint64_t row_num;
+    char indicator;
+    list_row rows[100];
+}
+display_list;
+
+
+void list_set_list(display_list* list);
+void list_set_update_time(uint64_t time);
+void list_set_update_func(void (* update_func)(
+                              display_list*));
+void list_set_callon_func(void (* callon_func)(void*));
+uint8_t test_cancel(void);
+int list_start_display(void);
+void list_stop_display(void);
+
+
+
+# 4 "..\\src\\main.c"
+
+void callme(void* ii)
+{
+    if (!ii)
+        list_stop_display();
+    else
+    {
+        lcd_clear_screen();
+        lcd_print(ii, 0, 0);
+        while(!test_cancel());
+    }
+}
+
+void update(display_list* dis)
+{
+    dis->icon_num = 1;
+    dis->indicator = '*';
+    dis->row_num = 8;
+    
+    dis->rows[0].line_icon = "<";
+    dis->rows[0].line_name = "Calendar";
+    dis->rows[0].message = "2019...Maybe";
+    dis->rows[1].line_icon = ">";
+    dis->rows[1].line_name = "Clock";
+    dis->rows[1].message = "00:00, error less than 24h";
+    dis->rows[2].line_icon = "$";
+    dis->rows[2].line_name = "Notes";
+    dis->rows[2].message = "Write on paper, man";
+    dis->rows[3].line_icon = " ";
+    dis->rows[3].line_name = "Reminders";
+    dis->rows[3].message = "I'll remind you, if I can";
+    dis->rows[4].line_icon = "{";
+    dis->rows[4].line_name = "Stocks";
+    dis->rows[4].message = "If you have money.";
+    dis->rows[5].line_icon = "|";
+    dis->rows[5].line_name = "Safari";
+    dis->rows[5].message = "Welcome! But what's that";
+    dis->rows[6].line_icon = " ";
+    dis->rows[6].line_name = "Settings";
+    dis->rows[6].message = "You thing you need that?";
+    dis->rows[7].line_icon = "#";
+    dis->rows[7].line_name = "EXIT!!!";
+}
+
+display_list list;
+
+
 
 int main(void)
 {
-    uart1_init(115200, ((uint16_t)0x0000),
-               ((uint16_t)0x0000), ((uint16_t)0x0000),
-               ((uint16_t)0x0004) | ((uint16_t)0x0008),
-               ((uint16_t)0x0000));
-    init_wifi_power();
-    wifi_init(WIFI_1);
-    wifi_init(WIFI_2);
-    wifi_init(WIFI_3);
-    wifi_init(WIFI_4);
-
-
-    printf("wait1\n");
-    wait_at(WIFI_1);
-    printf("wait2\n");
-    wait_at(WIFI_2);
-    printf("wait3\n");
-    wait_at(WIFI_3);
-    printf("wait4\n");
-    wait_at(WIFI_4);
-    printf("set1\n");
-    mode_set(WIFI_1);
-    printf("set2\n");
-    mode_set(WIFI_2);
-    printf("set3\n");
-    mode_set(WIFI_3);
-    printf("set4\n");
-    mode_set(WIFI_4);
 
 
 
@@ -15809,13 +15972,49 @@ int main(void)
 
 
 
-    while (1)
-    {
-        exec_all_wifi_cmd("AT+CWLAP", 2000);
-        printf("%s\n", wifi1_frame_record.Data_RX_BUF);
-        printf("%s\n", wifi2_frame_record.Data_RX_BUF);
-        printf("%s\n", wifi3_frame_record.Data_RX_BUF);
-        printf("%s\n", wifi4_frame_record.Data_RX_BUF);
-        systick_delay(1000);
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    list_set_list(&list);
+    list_set_update_func(update);
+    list_set_callon_func(callme);
+    list_start_display();
+    
+    lcd_clear_screen();
+    lcd_print("YOU HAVE LOST!!!!", 0, 0);
 }

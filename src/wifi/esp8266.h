@@ -9,7 +9,7 @@
 #define      WIFI_POWER_RST_APBxClock_FUN                 RCC_APB2PeriphClockCmd
 #define      WIFI_POWER_RST_CLK                           RCC_APB2Periph_GPIOF
 #define      WIFI_POWER_RST_PORT                          GPIOF
-#define      WIFI_POWER_RST_PIN                           GPIO_Pin_4
+#define      WIFI_POWER_RST_PIN                           GPIO_Pin_9
 
 
 #define      WIFI_1_UART                                  UART2
@@ -26,12 +26,12 @@
 #define      WIFI_1_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
 #define      WIFI_1_CH_PD_CLK                             RCC_APB2Periph_GPIOE
 #define      WIFI_1_CH_PD_PORT                            GPIOE
-#define      WIFI_1_CH_PD_PIN                             GPIO_Pin_9
+#define      WIFI_1_CH_PD_PIN                             GPIO_Pin_8
 
 #define      WIFI_1_RST_APBxClock_FUN                     RCC_APB2PeriphClockCmd
 #define      WIFI_1_RST_CLK                               RCC_APB2Periph_GPIOE
 #define      WIFI_1_RST_PORT                              GPIOE
-#define      WIFI_1_RST_PIN                               GPIO_Pin_10
+#define      WIFI_1_RST_PIN                               GPIO_Pin_9
 
 
 /*=========================================================================================*/
@@ -40,40 +40,40 @@
 #define      WIFI_2_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
 #define      WIFI_2_CH_PD_CLK                             RCC_APB2Periph_GPIOE
 #define      WIFI_2_CH_PD_PORT                            GPIOE
-#define      WIFI_2_CH_PD_PIN                             GPIO_Pin_13
+#define      WIFI_2_CH_PD_PIN                             GPIO_Pin_10
 
 #define      WIFI_2_RST_APBxClock_FUN                     RCC_APB2PeriphClockCmd
 #define      WIFI_2_RST_CLK                               RCC_APB2Periph_GPIOE
 #define      WIFI_2_RST_PORT                              GPIOE
-#define      WIFI_2_RST_PIN                               GPIO_Pin_14
+#define      WIFI_2_RST_PIN                               GPIO_Pin_11
 
 
 /*=========================================================================================*/
 
 
 #define      WIFI_3_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
-#define      WIFI_3_CH_PD_CLK                             RCC_APB2Periph_GPIOF
-#define      WIFI_3_CH_PD_PORT                            GPIOF
-#define      WIFI_3_CH_PD_PIN                             GPIO_Pin_0
+#define      WIFI_3_CH_PD_CLK                             RCC_APB2Periph_GPIOE
+#define      WIFI_3_CH_PD_PORT                            GPIOE
+#define      WIFI_3_CH_PD_PIN                             GPIO_Pin_12
 
 #define      WIFI_3_RST_APBxClock_FUN                     RCC_APB2PeriphClockCmd
-#define      WIFI_3_RST_CLK                               RCC_APB2Periph_GPIOF
-#define      WIFI_3_RST_PORT                              GPIOF
-#define      WIFI_3_RST_PIN                               GPIO_Pin_1
+#define      WIFI_3_RST_CLK                               RCC_APB2Periph_GPIOE
+#define      WIFI_3_RST_PORT                              GPIOE
+#define      WIFI_3_RST_PIN                               GPIO_Pin_13
 
 
 /*=========================================================================================*/
 
 
 #define      WIFI_4_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
-#define      WIFI_4_CH_PD_CLK                             RCC_APB2Periph_GPIOF
-#define      WIFI_4_CH_PD_PORT                            GPIOF
-#define      WIFI_4_CH_PD_PIN                             GPIO_Pin_2
+#define      WIFI_4_CH_PD_CLK                             RCC_APB2Periph_GPIOE
+#define      WIFI_4_CH_PD_PORT                            GPIOE
+#define      WIFI_4_CH_PD_PIN                             GPIO_Pin_14
 
 #define      WIFI_4_RST_APBxClock_FUN                     RCC_APB2PeriphClockCmd
-#define      WIFI_4_RST_CLK                               RCC_APB2Periph_GPIOF
-#define      WIFI_4_RST_PORT                              GPIOF
-#define      WIFI_4_RST_PIN                               GPIO_Pin_3
+#define      WIFI_4_RST_CLK                               RCC_APB2Periph_GPIOE
+#define      WIFI_4_RST_PORT                              GPIOE
+#define      WIFI_4_RST_PIN                               GPIO_Pin_15
 
 
 #define     WIFI_1_EN_ENABLE()                 GPIO_SetBits (WIFI_1_CH_PD_PORT, WIFI_1_CH_PD_PIN)

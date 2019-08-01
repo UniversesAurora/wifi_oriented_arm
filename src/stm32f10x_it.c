@@ -1,5 +1,12 @@
 #include "stm32f10x_it.h"
 
+static void delay_s(uint64_t time)
+{
+    for (; time > 0; time--);
+}
+
+
+
 extern tick_wait_queue tick_wait_record;
 
 void SysTick_Handler(void)
@@ -53,7 +60,6 @@ void BASIC_TIM2_IRQHandler(void)
 
 void UART1_IRQHandler(void)
 {
-
 }
 
 void UART2_IRQHandler(void)
@@ -80,5 +86,48 @@ void UART5_IRQHandler(void)
     if (USART_GetITStatus(UART5, USART_IT_RXNE) != RESET)
         wifi_interrupt_handler(UART5, &wifi4_frame_record);
 }
+
+extern uint8_t penter, pcancel, pup, pdown;
+
+void KEY_ENTER_IRQHAND(void)
+{
+    delay_s(KEY_WAIT_TIME);
+
+    if (EXTI_GetITStatus(KEY_ENTER_LINE) != RESET)
+        penter = 1;
+
+    EXTI_ClearITPendingBit(KEY_ENTER_LINE);
+}
+
+void KEY_CANCEL_IRQHAND(void)
+{
+    delay_s(KEY_WAIT_TIME);
+
+    if (EXTI_GetITStatus(KEY_CANCEL_LINE) != RESET)
+        pcancel = 1;
+
+    EXTI_ClearITPendingBit(KEY_CANCEL_LINE);
+}
+
+void KEY_UP_IRQHAND(void)
+{
+    delay_s(KEY_WAIT_TIME);
+
+    if (EXTI_GetITStatus(KEY_UP_LINE) != RESET)
+        pup = 1;
+
+    EXTI_ClearITPendingBit(KEY_UP_LINE);
+}
+
+void KEY_DOWN_IRQHAND(void)
+{
+    delay_s(KEY_WAIT_TIME);
+
+    if (EXTI_GetITStatus(KEY_DOWN_LINE) != RESET)
+        pdown = 1;
+
+    EXTI_ClearITPendingBit(KEY_DOWN_LINE);
+}
+
 
 

@@ -13,10 +13,9 @@ char* cmd_end_list[] =
 void init_wifi_power(void)
 {
     GPIO_InitTypeDef gpio_init_type;
-
     WIFI_POWER_RST_APBxClock_FUN(WIFI_POWER_RST_CLK, ENABLE);
     gpio_init_type.GPIO_Pin = WIFI_POWER_RST_PIN;
-    gpio_init_type.GPIO_Mode = GPIO_Mode_Out_PP;
+    gpio_init_type.GPIO_Mode = GPIO_Mode_Out_OD;
     gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(WIFI_POWER_RST_PORT, &gpio_init_type);
     wifi_power_cut();
@@ -42,13 +41,11 @@ static void init_wifi_en_rst(void (*en_fun)(uint32_t,
                              uint16_t en_pin, uint16_t rst_pin)
 {
     GPIO_InitTypeDef gpio_init_type;
-
     en_fun(en_clk, ENABLE);
     gpio_init_type.GPIO_Pin = en_pin;
     gpio_init_type.GPIO_Mode = GPIO_Mode_Out_PP;
     gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(en_port, &gpio_init_type);
-
     rst_fun(rst_clk, ENABLE);
     gpio_init_type.GPIO_Pin = rst_pin;
     GPIO_Init(rst_port, &gpio_init_type);
@@ -168,18 +165,15 @@ static char* wifi_cmd(wifi_frame_record* record,
                       USART_TypeDef* uart, char* cmd, uint64_t timeout)
 {
     uint8_t timeouted = 0;
-
     size_t cmd_len = strlen(cmd);
     char* to_send = malloc(cmd_len + 4);
     strcpy(to_send, cmd);
     strcat(to_send, "\r\n");
     record->InfBit.FramFinishFlag = 0;
     record->InfBit.FramLength = 0;
-
     debug_printf("send!\n");
     uart_send_string(uart, to_send);
     free(to_send);
-
     uint64_t reg_identifier = tick_reg(timeout, timeout_handler,
                                        &timeouted);
 
@@ -226,7 +220,6 @@ char* exec_wifi_cmd(wifi_t wifi, char* cmd,
 void exec_all_wifi_cmd(char* cmd, uint64_t timeout)
 {
     uint8_t timeouted = 0;
-
     size_t cmd_len = strlen(cmd);
     char* to_send = malloc(cmd_len + 4);
     strcpy(to_send, cmd);
@@ -239,14 +232,12 @@ void exec_all_wifi_cmd(char* cmd, uint64_t timeout)
     wifi2_frame_record.InfBit.FramFinishFlag = 0;
     wifi3_frame_record.InfBit.FramFinishFlag = 0;
     wifi4_frame_record.InfBit.FramFinishFlag = 0;
-
     debug_printf("send!\n");
     uart_send_string(WIFI_1_UART, to_send);
     uart_send_string(WIFI_2_UART, to_send);
     uart_send_string(WIFI_3_UART, to_send);
     uart_send_string(WIFI_4_UART, to_send);
     free(to_send);
-
     uint64_t reg_identifier = tick_reg(timeout, timeout_handler,
                                        &timeouted);
 
@@ -312,7 +303,6 @@ void wifi_interrupt_handler(USART_TypeDef* uart,
     uint16_t frame_len = record_ptr->InfBit.FramLength + 1;
     char* data = record_ptr->Data_RX_BUF;
     int i;
-
     ucCh = USART_ReceiveData(uart);
 
     if (record_ptr->InfBit.FramLength <

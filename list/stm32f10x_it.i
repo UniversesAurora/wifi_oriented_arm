@@ -14914,6 +14914,7 @@ void uart5_init(uint32_t baudrate, uint16_t word_length,
                 uint16_t stopbits, uint16_t parity, uint16_t mode,
                 uint16_t flow);
 
+void uart_send_byte(USART_TypeDef* pUSARTx, uint8_t ch);
 void uart_send_string(USART_TypeDef* pUSARTx, char* str);
 
 
@@ -15819,6 +15820,53 @@ void wifi_interrupt_handler(USART_TypeDef* uart,
 
 
 # 36 "..\\src\\stm32f10x_it.h"
+# 1 "..\\src\\key/bsp_key.h"
+
+
+
+# 5 "..\\src\\key/bsp_key.h"
+# 6 "..\\src\\key/bsp_key.h"
+# 7 "..\\src\\key/bsp_key.h"
+# 8 "..\\src\\key/bsp_key.h"
+# 9 "..\\src\\key/bsp_key.h"
+
+ 
+
+# 21 "..\\src\\key/bsp_key.h"
+
+ 
+
+# 33 "..\\src\\key/bsp_key.h"
+
+ 
+
+# 45 "..\\src\\key/bsp_key.h"
+
+ 
+
+# 57 "..\\src\\key/bsp_key.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void exti_config(uint32_t line, EXTIMode_TypeDef mode, EXTITrigger_TypeDef trigger, FunctionalState cmd);
+void key_init(void);
+
+
+# 37 "..\\src\\stm32f10x_it.h"
 
 
  
@@ -15835,6 +15883,13 @@ void wifi_interrupt_handler(USART_TypeDef* uart,
 
  
 # 2 "..\\src\\stm32f10x_it.c"
+
+static void delay_s(uint64_t time)
+{
+    for (; time > 0; time--);
+}
+
+
 
 extern tick_wait_queue tick_wait_record;
 
@@ -15916,5 +15971,40 @@ void UART5_IRQHandler(void)
     if (USART_GetITStatus(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), ((uint16_t)0x0525)) != RESET)
         wifi_interrupt_handler(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), &wifi4_frame_record);
 }
+
+extern uint8_t penter, pcancel, pup, pdown;
+
+void EXTI4_IRQHandler()
+{
+    delay_s(0x220000);
+    if (EXTI_GetITStatus(((uint32_t)0x00010)) != RESET)
+        penter = 1;
+    EXTI_ClearITPendingBit(((uint32_t)0x00010));
+}
+
+void EXTI3_IRQHandler()
+{
+    delay_s(0x220000);
+    if (EXTI_GetITStatus(((uint32_t)0x00008)) != RESET)
+        pcancel = 1;
+    EXTI_ClearITPendingBit(((uint32_t)0x00008));
+}
+
+void EXTI2_IRQHandler()
+{
+    delay_s(0x220000);
+    if (EXTI_GetITStatus(((uint32_t)0x00004)) != RESET)
+        pup = 1;
+    EXTI_ClearITPendingBit(((uint32_t)0x00004));
+}
+
+void EXTI0_IRQHandler()
+{
+    delay_s(0x220000);
+    if (EXTI_GetITStatus(((uint32_t)0x00001)) != RESET)
+        pdown = 1;
+    EXTI_ClearITPendingBit(((uint32_t)0x00001));
+}
+
 
 

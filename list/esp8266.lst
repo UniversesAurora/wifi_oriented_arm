@@ -31625,6 +31625,7 @@ Nvoid uart5_init(uint32_t baudrate, uint16_t word_length,
 N                uint16_t stopbits, uint16_t parity, uint16_t mode,
 N                uint16_t flow);
 N
+Nvoid uart_send_byte(USART_TypeDef* pUSARTx, uint8_t ch);
 Nvoid uart_send_string(USART_TypeDef* pUSARTx, char* str);
 N
 N
@@ -31698,7 +31699,7 @@ N
 N#define      WIFI_POWER_RST_APBxClock_FUN                 RCC_APB2PeriphClockCmd
 N#define      WIFI_POWER_RST_CLK                           RCC_APB2Periph_GPIOF
 N#define      WIFI_POWER_RST_PORT                          GPIOF
-N#define      WIFI_POWER_RST_PIN                           GPIO_Pin_4
+N#define      WIFI_POWER_RST_PIN                           GPIO_Pin_9
 N
 N
 N#define      WIFI_1_UART                                  UART2
@@ -31715,12 +31716,12 @@ N
 N#define      WIFI_1_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
 N#define      WIFI_1_CH_PD_CLK                             RCC_APB2Periph_GPIOE
 N#define      WIFI_1_CH_PD_PORT                            GPIOE
-N#define      WIFI_1_CH_PD_PIN                             GPIO_Pin_9
+N#define      WIFI_1_CH_PD_PIN                             GPIO_Pin_8
 N
 N#define      WIFI_1_RST_APBxClock_FUN                     RCC_APB2PeriphClockCmd
 N#define      WIFI_1_RST_CLK                               RCC_APB2Periph_GPIOE
 N#define      WIFI_1_RST_PORT                              GPIOE
-N#define      WIFI_1_RST_PIN                               GPIO_Pin_10
+N#define      WIFI_1_RST_PIN                               GPIO_Pin_9
 N
 N
 N/*=========================================================================================*/
@@ -31729,40 +31730,40 @@ N
 N#define      WIFI_2_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
 N#define      WIFI_2_CH_PD_CLK                             RCC_APB2Periph_GPIOE
 N#define      WIFI_2_CH_PD_PORT                            GPIOE
-N#define      WIFI_2_CH_PD_PIN                             GPIO_Pin_13
+N#define      WIFI_2_CH_PD_PIN                             GPIO_Pin_10
 N
 N#define      WIFI_2_RST_APBxClock_FUN                     RCC_APB2PeriphClockCmd
 N#define      WIFI_2_RST_CLK                               RCC_APB2Periph_GPIOE
 N#define      WIFI_2_RST_PORT                              GPIOE
-N#define      WIFI_2_RST_PIN                               GPIO_Pin_14
+N#define      WIFI_2_RST_PIN                               GPIO_Pin_11
 N
 N
 N/*=========================================================================================*/
 N
 N
 N#define      WIFI_3_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
-N#define      WIFI_3_CH_PD_CLK                             RCC_APB2Periph_GPIOF
-N#define      WIFI_3_CH_PD_PORT                            GPIOF
-N#define      WIFI_3_CH_PD_PIN                             GPIO_Pin_0
+N#define      WIFI_3_CH_PD_CLK                             RCC_APB2Periph_GPIOE
+N#define      WIFI_3_CH_PD_PORT                            GPIOE
+N#define      WIFI_3_CH_PD_PIN                             GPIO_Pin_12
 N
 N#define      WIFI_3_RST_APBxClock_FUN                     RCC_APB2PeriphClockCmd
-N#define      WIFI_3_RST_CLK                               RCC_APB2Periph_GPIOF
-N#define      WIFI_3_RST_PORT                              GPIOF
-N#define      WIFI_3_RST_PIN                               GPIO_Pin_1
+N#define      WIFI_3_RST_CLK                               RCC_APB2Periph_GPIOE
+N#define      WIFI_3_RST_PORT                              GPIOE
+N#define      WIFI_3_RST_PIN                               GPIO_Pin_13
 N
 N
 N/*=========================================================================================*/
 N
 N
 N#define      WIFI_4_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
-N#define      WIFI_4_CH_PD_CLK                             RCC_APB2Periph_GPIOF
-N#define      WIFI_4_CH_PD_PORT                            GPIOF
-N#define      WIFI_4_CH_PD_PIN                             GPIO_Pin_2
+N#define      WIFI_4_CH_PD_CLK                             RCC_APB2Periph_GPIOE
+N#define      WIFI_4_CH_PD_PORT                            GPIOE
+N#define      WIFI_4_CH_PD_PIN                             GPIO_Pin_14
 N
 N#define      WIFI_4_RST_APBxClock_FUN                     RCC_APB2PeriphClockCmd
-N#define      WIFI_4_RST_CLK                               RCC_APB2Periph_GPIOF
-N#define      WIFI_4_RST_PORT                              GPIOF
-N#define      WIFI_4_RST_PIN                               GPIO_Pin_3
+N#define      WIFI_4_RST_CLK                               RCC_APB2Periph_GPIOE
+N#define      WIFI_4_RST_PORT                              GPIOE
+N#define      WIFI_4_RST_PIN                               GPIO_Pin_15
 N
 N
 N#define     WIFI_1_EN_ENABLE()                 GPIO_SetBits (WIFI_1_CH_PD_PORT, WIFI_1_CH_PD_PIN)
@@ -31865,12 +31866,11 @@ N
 Nvoid init_wifi_power(void)
 N{
 N    GPIO_InitTypeDef gpio_init_type;
-N
 N    WIFI_POWER_RST_APBxClock_FUN(WIFI_POWER_RST_CLK, ENABLE);
 X    RCC_APB2PeriphClockCmd(((uint32_t)0x00000080), ENABLE);
 N    gpio_init_type.GPIO_Pin = WIFI_POWER_RST_PIN;
-X    gpio_init_type.GPIO_Pin = ((uint16_t)0x0010);
-N    gpio_init_type.GPIO_Mode = GPIO_Mode_Out_PP;
+X    gpio_init_type.GPIO_Pin = ((uint16_t)0x0200);
+N    gpio_init_type.GPIO_Mode = GPIO_Mode_Out_OD;
 N    gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
 N    GPIO_Init(WIFI_POWER_RST_PORT, &gpio_init_type);
 X    GPIO_Init(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), &gpio_init_type);
@@ -31881,13 +31881,13 @@ N
 Nvoid wifi_power_cut(void)
 N{
 N    GPIO_ResetBits(WIFI_POWER_RST_PORT, WIFI_POWER_RST_PIN);
-X    GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0010));
+X    GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0200));
 N}
 N
 Nvoid wifi_power_on(void)
 N{
 N    GPIO_SetBits(WIFI_POWER_RST_PORT, WIFI_POWER_RST_PIN);
-X    GPIO_SetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0010));
+X    GPIO_SetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0200));
 N}
 N
 N
@@ -31899,13 +31899,11 @@ N                             GPIO_TypeDef* en_port, GPIO_TypeDef* rst_port,
 N                             uint16_t en_pin, uint16_t rst_pin)
 N{
 N    GPIO_InitTypeDef gpio_init_type;
-N
 N    en_fun(en_clk, ENABLE);
 N    gpio_init_type.GPIO_Pin = en_pin;
 N    gpio_init_type.GPIO_Mode = GPIO_Mode_Out_PP;
 N    gpio_init_type.GPIO_Speed = GPIO_Speed_50MHz;
 N    GPIO_Init(en_port, &gpio_init_type);
-N
 N    rst_fun(rst_clk, ENABLE);
 N    gpio_init_type.GPIO_Pin = rst_pin;
 N    GPIO_Init(rst_port, &gpio_init_type);
@@ -31918,9 +31916,9 @@ X    init_wifi_en_rst(RCC_APB2PeriphClockCmd,
 N                     WIFI_1_RST_APBxClock_FUN, WIFI_1_CH_PD_CLK, WIFI_1_RST_CLK,
 X                     RCC_APB2PeriphClockCmd, ((uint32_t)0x00000040), ((uint32_t)0x00000040),
 N                     WIFI_1_CH_PD_PORT, WIFI_1_RST_PORT, WIFI_1_CH_PD_PIN,
-X                     ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0200),
+X                     ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0100),
 N                     WIFI_1_RST_PIN);
-X                     ((uint16_t)0x0400));
+X                     ((uint16_t)0x0200));
 N}
 N
 Nstatic void init_wifi_2_en_rst(void)
@@ -31930,9 +31928,9 @@ X    init_wifi_en_rst(RCC_APB2PeriphClockCmd,
 N                     WIFI_2_RST_APBxClock_FUN, WIFI_2_CH_PD_CLK, WIFI_2_RST_CLK,
 X                     RCC_APB2PeriphClockCmd, ((uint32_t)0x00000040), ((uint32_t)0x00000040),
 N                     WIFI_2_CH_PD_PORT, WIFI_2_RST_PORT, WIFI_2_CH_PD_PIN,
-X                     ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x2000),
+X                     ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0400),
 N                     WIFI_2_RST_PIN);
-X                     ((uint16_t)0x4000));
+X                     ((uint16_t)0x0800));
 N}
 N
 Nstatic void init_wifi_3_en_rst(void)
@@ -31940,11 +31938,11 @@ N{
 N    init_wifi_en_rst(WIFI_3_CH_PD_APBxClock_FUN,
 X    init_wifi_en_rst(RCC_APB2PeriphClockCmd,
 N                     WIFI_3_RST_APBxClock_FUN, WIFI_3_CH_PD_CLK, WIFI_3_RST_CLK,
-X                     RCC_APB2PeriphClockCmd, ((uint32_t)0x00000080), ((uint32_t)0x00000080),
+X                     RCC_APB2PeriphClockCmd, ((uint32_t)0x00000040), ((uint32_t)0x00000040),
 N                     WIFI_3_CH_PD_PORT, WIFI_3_RST_PORT, WIFI_3_CH_PD_PIN,
-X                     ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0001),
+X                     ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x1000),
 N                     WIFI_3_RST_PIN);
-X                     ((uint16_t)0x0002));
+X                     ((uint16_t)0x2000));
 N}
 N
 Nstatic void init_wifi_4_en_rst(void)
@@ -31952,11 +31950,11 @@ N{
 N    init_wifi_en_rst(WIFI_4_CH_PD_APBxClock_FUN,
 X    init_wifi_en_rst(RCC_APB2PeriphClockCmd,
 N                     WIFI_4_RST_APBxClock_FUN, WIFI_4_CH_PD_CLK, WIFI_4_RST_CLK,
-X                     RCC_APB2PeriphClockCmd, ((uint32_t)0x00000080), ((uint32_t)0x00000080),
+X                     RCC_APB2PeriphClockCmd, ((uint32_t)0x00000040), ((uint32_t)0x00000040),
 N                     WIFI_4_CH_PD_PORT, WIFI_4_RST_PORT, WIFI_4_CH_PD_PIN,
-X                     ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0004),
+X                     ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x4000),
 N                     WIFI_4_RST_PIN);
-X                     ((uint16_t)0x0008));
+X                     ((uint16_t)0x8000));
 N}
 N
 N
@@ -31975,9 +31973,9 @@ X                         ((uint16_t)0x0004) | ((uint16_t)0x0008),
 N                         USART_HardwareFlowControl_None);
 X                         ((uint16_t)0x0000));
 N        WIFI_1_RST_HIGH_LEVEL();
-X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0400));
-N        WIFI_1_EN_ENABLE();
 X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0200));
+N        WIFI_1_EN_ENABLE();
+X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0100));
 N        break;
 N
 N    case WIFI_2:
@@ -31991,9 +31989,9 @@ X                         ((uint16_t)0x0004) | ((uint16_t)0x0008),
 N                         USART_HardwareFlowControl_None);
 X                         ((uint16_t)0x0000));
 N        WIFI_2_RST_HIGH_LEVEL();
-X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x4000));
+X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0800));
 N        WIFI_2_EN_ENABLE();
-X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x2000));
+X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0400));
 N        break;
 N
 N    case WIFI_3:
@@ -32007,9 +32005,9 @@ X                         ((uint16_t)0x0004) | ((uint16_t)0x0008),
 N                         USART_HardwareFlowControl_None);
 X                         ((uint16_t)0x0000));
 N        WIFI_3_RST_HIGH_LEVEL();
-X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0002));
+X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x2000));
 N        WIFI_3_EN_ENABLE();
-X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0001));
+X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x1000));
 N        break;
 N
 N    case WIFI_4:
@@ -32023,9 +32021,9 @@ X                         ((uint16_t)0x0004) | ((uint16_t)0x0008),
 N                         USART_HardwareFlowControl_None);
 X                         ((uint16_t)0x0000));
 N        WIFI_4_RST_HIGH_LEVEL();
-X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0008));
+X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x8000));
 N        WIFI_4_EN_ENABLE();
-X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0004));
+X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x4000));
 N        break;
 N    }
 N}
@@ -32036,34 +32034,34 @@ N    switch (wifi)
 N    {
 N    case WIFI_1:
 N        WIFI_1_RST_LOW_LEVEL();
-X        GPIO_ResetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0400));
+X        GPIO_ResetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0200));
 N        systick_delay(500);
 N        WIFI_1_RST_HIGH_LEVEL();
-X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0400));
+X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0200));
 N        break;
 N
 N    case WIFI_2:
 N        WIFI_2_RST_LOW_LEVEL();
-X        GPIO_ResetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x4000));
+X        GPIO_ResetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0800));
 N        systick_delay(500);
 N        WIFI_2_RST_HIGH_LEVEL();
-X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x4000));
+X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x0800));
 N        break;
 N
 N    case WIFI_3:
 N        WIFI_3_RST_LOW_LEVEL();
-X        GPIO_ResetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0002));
+X        GPIO_ResetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x2000));
 N        systick_delay(500);
 N        WIFI_3_RST_HIGH_LEVEL();
-X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0002));
+X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x2000));
 N        break;
 N
 N    case WIFI_4:
 N        WIFI_4_RST_LOW_LEVEL();
-X        GPIO_ResetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0008));
+X        GPIO_ResetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x8000));
 N        systick_delay(500);
 N        WIFI_4_RST_HIGH_LEVEL();
-X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1C00)), ((uint16_t)0x0008));
+X        GPIO_SetBits (((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x1800)), ((uint16_t)0x8000));
 N        break;
 N    }
 N}
@@ -32073,19 +32071,16 @@ Nstatic char* wifi_cmd(wifi_frame_record* record,
 N                      USART_TypeDef* uart, char* cmd, uint64_t timeout)
 N{
 N    uint8_t timeouted = 0;
-N
 N    size_t cmd_len = strlen(cmd);
 N    char* to_send = malloc(cmd_len + 4);
 N    strcpy(to_send, cmd);
 N    strcat(to_send, "\r\n");
 N    record->InfBit.FramFinishFlag = 0;
 N    record->InfBit.FramLength = 0;
-N
 N    debug_printf("send!\n");
 X    printf("send!\n");
 N    uart_send_string(uart, to_send);
 N    free(to_send);
-N
 N    uint64_t reg_identifier = tick_reg(timeout, timeout_handler,
 N                                       &timeouted);
 N
@@ -32139,7 +32134,6 @@ N
 Nvoid exec_all_wifi_cmd(char* cmd, uint64_t timeout)
 N{
 N    uint8_t timeouted = 0;
-N
 N    size_t cmd_len = strlen(cmd);
 N    char* to_send = malloc(cmd_len + 4);
 N    strcpy(to_send, cmd);
@@ -32152,7 +32146,6 @@ N    wifi1_frame_record.InfBit.FramFinishFlag = 0;
 N    wifi2_frame_record.InfBit.FramFinishFlag = 0;
 N    wifi3_frame_record.InfBit.FramFinishFlag = 0;
 N    wifi4_frame_record.InfBit.FramFinishFlag = 0;
-N
 N    debug_printf("send!\n");
 X    printf("send!\n");
 N    uart_send_string(WIFI_1_UART, to_send);
@@ -32164,7 +32157,6 @@ X    uart_send_string(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x4C00)), to_
 N    uart_send_string(WIFI_4_UART, to_send);
 X    uart_send_string(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), to_send);
 N    free(to_send);
-N
 N    uint64_t reg_identifier = tick_reg(timeout, timeout_handler,
 N                                       &timeouted);
 N
@@ -32233,7 +32225,6 @@ N    uint8_t ucCh;
 N    uint16_t frame_len = record_ptr->InfBit.FramLength + 1;
 N    char* data = record_ptr->Data_RX_BUF;
 N    int i;
-N
 N    ucCh = USART_ReceiveData(uart);
 N
 N    if (record_ptr->InfBit.FramLength <

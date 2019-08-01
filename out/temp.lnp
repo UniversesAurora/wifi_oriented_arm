@@ -8,6 +8,7 @@
 "..\out\bsp_uart.o"
 "..\out\esp8266.o"
 "..\out\lcd_display.o"
+"..\out\bsp_key.o"
 "..\out\misc.o"
 "..\out\stm32f10x_adc.o"
 "..\out\stm32f10x_bkp.o"

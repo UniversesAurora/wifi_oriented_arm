@@ -34,3 +34,6 @@
 ..\out\main.o: ..\src\wifi/bsp_uart.h
 ..\out\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\out\main.o: ..\src\wifi/../timers/bsp_systick.h
+..\out\main.o: ..\src\display/list_display.h
+..\out\main.o: ..\src\display/lcd_display.h
+..\out\main.o: ..\src\display/../key/bsp_key.h

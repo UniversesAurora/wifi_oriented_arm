@@ -36,3 +36,4 @@
 ..\out\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\out\stm32f10x_it.o: ..\src\wifi/esp8266.h
 ..\out\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\out\stm32f10x_it.o: ..\src\key/bsp_key.h

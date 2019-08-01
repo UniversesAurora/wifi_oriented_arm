@@ -33,6 +33,7 @@ extern "C" {
 #include "timers/bsp_systick.h"
 #include "wifi/bsp_uart.h"
 #include "wifi/esp8266.h"
+#include "key/bsp_key.h"
 
 
 /* Exported types ------------------------------------------------------------*/

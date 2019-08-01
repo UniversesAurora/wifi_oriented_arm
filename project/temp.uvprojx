@@ -472,6 +472,16 @@
               <FileType>5</FileType>
               <FilePath>..\src\display\lcd_display.h</FilePath>
             </File>
+            <File>
+              <FileName>bsp_key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\key\bsp_key.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_key.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\src\key\bsp_key.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

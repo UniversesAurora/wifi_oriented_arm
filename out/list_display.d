@@ -30,3 +30,8 @@
 ..\out\list_display.o: ..\lib\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 ..\out\list_display.o: ..\lib\STM32F10x_StdPeriph_Driver\inc\misc.h
 ..\out\list_display.o: ..\src\display\lcd_display.h
+..\out\list_display.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\out\list_display.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\out\list_display.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\out\list_display.o: ..\src\display\../timers/bsp_systick.h
+..\out\list_display.o: ..\src\display\../key/bsp_key.h

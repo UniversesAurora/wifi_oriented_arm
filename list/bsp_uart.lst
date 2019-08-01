@@ -30093,6 +30093,7 @@ Nvoid uart5_init(uint32_t baudrate, uint16_t word_length,
 N                uint16_t stopbits, uint16_t parity, uint16_t mode,
 N                uint16_t flow);
 N
+Nvoid uart_send_byte(USART_TypeDef* pUSARTx, uint8_t ch);
 Nvoid uart_send_string(USART_TypeDef* pUSARTx, char* str);
 N
 N
@@ -30278,8 +30279,6 @@ X        UART5_IRQn, 1, 5,
 N        baudrate, word_length,
 N        stopbits, parity, mode, flow);
 N}
-N
-N
 N
 N
 N

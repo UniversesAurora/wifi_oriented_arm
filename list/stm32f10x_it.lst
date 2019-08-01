@@ -30774,6 +30774,7 @@ Nvoid uart5_init(uint32_t baudrate, uint16_t word_length,
 N                uint16_t stopbits, uint16_t parity, uint16_t mode,
 N                uint16_t flow);
 N
+Nvoid uart_send_byte(USART_TypeDef* pUSARTx, uint8_t ch);
 Nvoid uart_send_string(USART_TypeDef* pUSARTx, char* str);
 N
 N
@@ -31768,7 +31769,7 @@ N
 N#define      WIFI_POWER_RST_APBxClock_FUN                 RCC_APB2PeriphClockCmd
 N#define      WIFI_POWER_RST_CLK                           RCC_APB2Periph_GPIOF
 N#define      WIFI_POWER_RST_PORT                          GPIOF
-N#define      WIFI_POWER_RST_PIN                           GPIO_Pin_4
+N#define      WIFI_POWER_RST_PIN                           GPIO_Pin_9
 N
 N
 N#define      WIFI_1_UART                                  UART2
@@ -31785,12 +31786,12 @@ N
 N#define      WIFI_1_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
 N#define      WIFI_1_CH_PD_CLK                             RCC_APB2Periph_GPIOE
 N#define      WIFI_1_CH_PD_PORT                            GPIOE
-N#define      WIFI_1_CH_PD_PIN                             GPIO_Pin_9
+N#define      WIFI_1_CH_PD_PIN                             GPIO_Pin_8
 N
 N#define      WIFI_1_RST_APBxClock_FUN                     RCC_APB2PeriphClockCmd
 N#define      WIFI_1_RST_CLK                               RCC_APB2Periph_GPIOE
 N#define      WIFI_1_RST_PORT                              GPIOE
-N#define      WIFI_1_RST_PIN                               GPIO_Pin_10
+N#define      WIFI_1_RST_PIN                               GPIO_Pin_9
 N
 N
 N/*=========================================================================================*/
@@ -31799,40 +31800,40 @@ N
 N#define      WIFI_2_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
 N#define      WIFI_2_CH_PD_CLK                             RCC_APB2Periph_GPIOE
 N#define      WIFI_2_CH_PD_PORT                            GPIOE
-N#define      WIFI_2_CH_PD_PIN                             GPIO_Pin_13
+N#define      WIFI_2_CH_PD_PIN                             GPIO_Pin_10
 N
 N#define      WIFI_2_RST_APBxClock_FUN                     RCC_APB2PeriphClockCmd
 N#define      WIFI_2_RST_CLK                               RCC_APB2Periph_GPIOE
 N#define      WIFI_2_RST_PORT                              GPIOE
-N#define      WIFI_2_RST_PIN                               GPIO_Pin_14
+N#define      WIFI_2_RST_PIN                               GPIO_Pin_11
 N
 N
 N/*=========================================================================================*/
 N
 N
 N#define      WIFI_3_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
-N#define      WIFI_3_CH_PD_CLK                             RCC_APB2Periph_GPIOF
-N#define      WIFI_3_CH_PD_PORT                            GPIOF
-N#define      WIFI_3_CH_PD_PIN                             GPIO_Pin_0
+N#define      WIFI_3_CH_PD_CLK                             RCC_APB2Periph_GPIOE
+N#define      WIFI_3_CH_PD_PORT                            GPIOE
+N#define      WIFI_3_CH_PD_PIN                             GPIO_Pin_12
 N
 N#define      WIFI_3_RST_APBxClock_FUN                     RCC_APB2PeriphClockCmd
-N#define      WIFI_3_RST_CLK                               RCC_APB2Periph_GPIOF
-N#define      WIFI_3_RST_PORT                              GPIOF
-N#define      WIFI_3_RST_PIN                               GPIO_Pin_1
+N#define      WIFI_3_RST_CLK                               RCC_APB2Periph_GPIOE
+N#define      WIFI_3_RST_PORT                              GPIOE
+N#define      WIFI_3_RST_PIN                               GPIO_Pin_13
 N
 N
 N/*=========================================================================================*/
 N
 N
 N#define      WIFI_4_CH_PD_APBxClock_FUN                   RCC_APB2PeriphClockCmd
-N#define      WIFI_4_CH_PD_CLK                             RCC_APB2Periph_GPIOF
-N#define      WIFI_4_CH_PD_PORT                            GPIOF
-N#define      WIFI_4_CH_PD_PIN                             GPIO_Pin_2
+N#define      WIFI_4_CH_PD_CLK                             RCC_APB2Periph_GPIOE
+N#define      WIFI_4_CH_PD_PORT                            GPIOE
+N#define      WIFI_4_CH_PD_PIN                             GPIO_Pin_14
 N
 N#define      WIFI_4_RST_APBxClock_FUN                     RCC_APB2PeriphClockCmd
-N#define      WIFI_4_RST_CLK                               RCC_APB2Periph_GPIOF
-N#define      WIFI_4_RST_PORT                              GPIOF
-N#define      WIFI_4_RST_PIN                               GPIO_Pin_3
+N#define      WIFI_4_RST_CLK                               RCC_APB2Periph_GPIOE
+N#define      WIFI_4_RST_PORT                              GPIOE
+N#define      WIFI_4_RST_PIN                               GPIO_Pin_15
 N
 N
 N#define     WIFI_1_EN_ENABLE()                 GPIO_SetBits (WIFI_1_CH_PD_PORT, WIFI_1_CH_PD_PIN)
@@ -31921,6 +31922,87 @@ N#endif
 N
 N
 L 36 "..\src\stm32f10x_it.h" 2
+N#include "key/bsp_key.h"
+L 1 "..\src\key/bsp_key.h" 1
+N#ifndef __BSP_KEY_H
+N#define __BSP_KEY_H
+N
+N#include <stm32f10x.h>
+N#include <stm32f10x_rcc.h>
+N#include <stm32f10x_gpio.h>
+N#include <stm32f10x_exti.h>
+N#include <misc.h>
+N
+N/*============S1=============*/
+N
+N#define KEY_ENTER_RCC RCC_APB2Periph_GPIOE
+N#define KEY_ENTER_Pin GPIO_Pin_4
+N#define KEY_ENTER_PORT GPIOE
+N#define KEY_ENTER_PORTS GPIO_PortSourceGPIOE
+N#define KEY_ENTER_PinS GPIO_PinSource4
+N#define KEY_ENTER_LINE EXTI_Line4
+N#define KEY_ENTER_TRIG EXTI_Trigger_Rising
+N#define KEY_ENTER_IRQC EXTI4_IRQn
+N#define KEY_ENTER_IRQHAND EXTI4_IRQHandler
+N
+N/*============S2=============*/
+N
+N#define KEY_CANCEL_RCC RCC_APB2Periph_GPIOE
+N#define KEY_CANCEL_Pin GPIO_Pin_3
+N#define KEY_CANCEL_PORT GPIOE
+N#define KEY_CANCEL_PORTS GPIO_PortSourceGPIOE
+N#define KEY_CANCEL_PinS GPIO_PinSource3
+N#define KEY_CANCEL_LINE EXTI_Line3
+N#define KEY_CANCEL_TRIG EXTI_Trigger_Rising
+N#define KEY_CANCEL_IRQC EXTI3_IRQn
+N#define KEY_CANCEL_IRQHAND EXTI3_IRQHandler
+N
+N/*============S3=============*/
+N
+N#define KEY_UP_RCC RCC_APB2Periph_GPIOE
+N#define KEY_UP_Pin GPIO_Pin_2
+N#define KEY_UP_PORT GPIOE
+N#define KEY_UP_PORTS GPIO_PortSourceGPIOE
+N#define KEY_UP_PinS GPIO_PinSource2
+N#define KEY_UP_LINE EXTI_Line2
+N#define KEY_UP_TRIG EXTI_Trigger_Rising
+N#define KEY_UP_IRQC EXTI2_IRQn
+N#define KEY_UP_IRQHAND EXTI2_IRQHandler
+N
+N/*============S4=============*/
+N
+N#define KEY_DOWN_RCC RCC_APB2Periph_GPIOA
+N#define KEY_DOWN_Pin GPIO_Pin_0
+N#define KEY_DOWN_PORT GPIOA
+N#define KEY_DOWN_PORTS GPIO_PortSourceGPIOA
+N#define KEY_DOWN_PinS GPIO_PinSource0
+N#define KEY_DOWN_LINE EXTI_Line0
+N#define KEY_DOWN_TRIG EXTI_Trigger_Falling
+N#define KEY_DOWN_IRQC EXTI0_IRQn
+N#define KEY_DOWN_IRQHAND EXTI0_IRQHandler
+N
+N#define KEY_WAIT_TIME 0x220000
+N
+N#define key_enter_open exti_config(KEY_ENTER_LINE, EXTI_Mode_Interrupt, KEY_ENTER_TRIG, ENABLE)
+N#define key_enter_close exti_config(KEY_ENTER_LINE, EXTI_Mode_Interrupt, KEY_ENTER_TRIG, DISABLE)
+N
+N#define key_cancel_open exti_config(KEY_CANCEL_LINE, EXTI_Mode_Interrupt, KEY_CANCEL_TRIG, ENABLE)
+N#define key_cancel_close exti_config(KEY_CANCEL_LINE, EXTI_Mode_Interrupt, KEY_CANCEL_TRIG, DISABLE)
+N
+N#define key_up_open exti_config(KEY_UP_LINE, EXTI_Mode_Interrupt, KEY_UP_TRIG, ENABLE)
+N#define key_up_close exti_config(KEY_UP_LINE, EXTI_Mode_Interrupt, KEY_UP_TRIG, DISABLE)
+N
+N#define key_down_open exti_config(KEY_DOWN_LINE, EXTI_Mode_Interrupt, KEY_DOWN_TRIG, ENABLE)
+N#define key_down_close exti_config(KEY_DOWN_LINE, EXTI_Mode_Interrupt, KEY_DOWN_TRIG, DISABLE)
+N
+N
+N
+Nvoid exti_config(uint32_t line, EXTIMode_TypeDef mode, EXTITrigger_TypeDef trigger, FunctionalState cmd);
+Nvoid key_init(void);
+N
+N
+N#endif
+L 37 "..\src\stm32f10x_it.h" 2
 N
 N
 N/* Exported types ------------------------------------------------------------*/
@@ -31937,6 +32019,13 @@ N#endif /* __STM32F10x_IT_H */
 N
 N/******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
 L 2 "..\src\stm32f10x_it.c" 2
+N
+Nstatic void delay_s(uint64_t time)
+N{
+N    for (; time > 0; time--);
+N}
+N
+N
 N
 Nextern tick_wait_queue tick_wait_record;
 N
@@ -32036,5 +32125,56 @@ X    if (USART_GetITStatus(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000))
 N        wifi_interrupt_handler(UART5, &wifi4_frame_record);
 X        wifi_interrupt_handler(((USART_TypeDef *) (((uint32_t)0x40000000) + 0x5000)), &wifi4_frame_record);
 N}
+N
+Nextern uint8_t penter, pcancel, pup, pdown;
+N
+Nvoid KEY_ENTER_IRQHAND()
+Xvoid EXTI4_IRQHandler()
+N{
+N    delay_s(KEY_WAIT_TIME);
+X    delay_s(0x220000);
+N    if (EXTI_GetITStatus(KEY_ENTER_LINE) != RESET)
+X    if (EXTI_GetITStatus(((uint32_t)0x00010)) != RESET)
+N        penter = 1;
+N    EXTI_ClearITPendingBit(KEY_ENTER_LINE);
+X    EXTI_ClearITPendingBit(((uint32_t)0x00010));
+N}
+N
+Nvoid KEY_CANCEL_IRQHAND()
+Xvoid EXTI3_IRQHandler()
+N{
+N    delay_s(KEY_WAIT_TIME);
+X    delay_s(0x220000);
+N    if (EXTI_GetITStatus(KEY_CANCEL_LINE) != RESET)
+X    if (EXTI_GetITStatus(((uint32_t)0x00008)) != RESET)
+N        pcancel = 1;
+N    EXTI_ClearITPendingBit(KEY_CANCEL_LINE);
+X    EXTI_ClearITPendingBit(((uint32_t)0x00008));
+N}
+N
+Nvoid KEY_UP_IRQHAND()
+Xvoid EXTI2_IRQHandler()
+N{
+N    delay_s(KEY_WAIT_TIME);
+X    delay_s(0x220000);
+N    if (EXTI_GetITStatus(KEY_UP_LINE) != RESET)
+X    if (EXTI_GetITStatus(((uint32_t)0x00004)) != RESET)
+N        pup = 1;
+N    EXTI_ClearITPendingBit(KEY_UP_LINE);
+X    EXTI_ClearITPendingBit(((uint32_t)0x00004));
+N}
+N
+Nvoid KEY_DOWN_IRQHAND()
+Xvoid EXTI0_IRQHandler()
+N{
+N    delay_s(KEY_WAIT_TIME);
+X    delay_s(0x220000);
+N    if (EXTI_GetITStatus(KEY_DOWN_LINE) != RESET)
+X    if (EXTI_GetITStatus(((uint32_t)0x00001)) != RESET)
+N        pdown = 1;
+N    EXTI_ClearITPendingBit(KEY_DOWN_LINE);
+X    EXTI_ClearITPendingBit(((uint32_t)0x00001));
+N}
+N
 N
 N
